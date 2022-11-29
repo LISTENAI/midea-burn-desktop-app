@@ -5,7 +5,8 @@
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            Constants.ColorProcceed = Color.FromArgb(0, 192, 0);
+            panelCskBurn1.BackColor = Constants.ColorCsk6PanelBackground;
+            panelWifiBurn1.BackColor = Constants.ColorWifiPanelBackground;
         }
 
         private void btnFwSelect_Click(object sender, EventArgs e) {
@@ -26,7 +27,15 @@
         }
 
         private void btnFlash_Click(object sender, EventArgs e) {
+            if (!File.Exists(Global.SelectedFirmwarePath)) {
+                Global.SelectedFirmwarePath = "";
+                tsslCurrentFirmware.Text = $"当前固件: (未选择)";
+                btnFwSelect.BackColor = Constants.ColorBlock;
+                MessageBox.Show("选择的固件不存在，请重新选择");
+                return;
+            }
 
+            btnFlash.BackColor = Constants.ColorProcceed;
         }
     }
 }
