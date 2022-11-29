@@ -5,8 +5,22 @@
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            panelCskBurn1.BackColor = Constants.ColorCsk6PanelBackground;
-            panelWifiBurn1.BackColor = Constants.ColorWifiPanelBackground;
+            FormElementsInit();
+        }
+
+        private void FormElementsInit() {
+            var cskPanels = new List<Panel>() {
+                panelCsk1, panelCsk2, panelCsk3, panelCsk4
+            };
+            foreach (var panel in cskPanels) {
+                panel.BackColor = Constants.ColorCsk6PanelBackground;
+            }
+            var wifiPanels = new List<Panel>() {
+                panelWifi1, panelWifi2, panelWifi3, panelWifi4
+            };
+            foreach (var panel in wifiPanels) {
+                panel.BackColor = Constants.ColorWifiPanelBackground;
+            }
         }
 
         private void btnFwSelect_Click(object sender, EventArgs e) {
