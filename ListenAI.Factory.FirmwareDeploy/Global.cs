@@ -3,6 +3,7 @@
         public static string SelectedFirmwarePath = "";
         public static short GroupCount = 1;
         public static Dictionary<int, Dictionary<string, Control>> ControlGroups = new();
+        public static List<LineWorker> Workers = new();
     }
 
     public static class Constants {
@@ -52,9 +53,9 @@
         public enum GroupConfigType {
             Port = 0,
             BaudRate = 1,
-            Databit = 2,
-            Checksum = 3,
-            Stopbit = 4,
+            Databits = 2,
+            Parity = 3,
+            Stopbits = 4,
             IsDefault = 5,
             Result = 6,
             Serial = 7

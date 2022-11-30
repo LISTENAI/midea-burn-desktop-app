@@ -39,11 +39,11 @@
             this.panelWifi1 = new System.Windows.Forms.Panel();
             this.cbWifi1Default = new System.Windows.Forms.CheckBox();
             this.lbWifi1TitleDefault = new System.Windows.Forms.Label();
-            this.tbWifi1Stopbit = new System.Windows.Forms.TextBox();
+            this.tbWifi1Stopbits = new System.Windows.Forms.TextBox();
             this.lbWifi1TitleStopbit = new System.Windows.Forms.Label();
-            this.tbWifi1Checksum = new System.Windows.Forms.TextBox();
+            this.tbWifi1Parity = new System.Windows.Forms.TextBox();
             this.lbWifi1TitleChecksum = new System.Windows.Forms.Label();
-            this.tbWifi1Databit = new System.Windows.Forms.TextBox();
+            this.tbWifi1Databits = new System.Windows.Forms.TextBox();
             this.lbWifi1TitleDatabit = new System.Windows.Forms.Label();
             this.tbWifi1BaudRate = new System.Windows.Forms.TextBox();
             this.lbWifi1TitleBaudRate = new System.Windows.Forms.Label();
@@ -53,11 +53,11 @@
             this.panelCsk1 = new System.Windows.Forms.Panel();
             this.cbCsk1Default = new System.Windows.Forms.CheckBox();
             this.lbCsk1TitleDefault = new System.Windows.Forms.Label();
-            this.tbCsk1Stopbit = new System.Windows.Forms.TextBox();
+            this.tbCsk1Stopbits = new System.Windows.Forms.TextBox();
             this.lbCsk1TitleStopbit = new System.Windows.Forms.Label();
-            this.tbCsk1Checksum = new System.Windows.Forms.TextBox();
+            this.tbCsk1Parity = new System.Windows.Forms.TextBox();
             this.lbCsk1TitleChecksum = new System.Windows.Forms.Label();
-            this.tbCsk1Databit = new System.Windows.Forms.TextBox();
+            this.tbCsk1Databits = new System.Windows.Forms.TextBox();
             this.lbCsk1TitleDatabit = new System.Windows.Forms.Label();
             this.tbCsk1BaudRate = new System.Windows.Forms.TextBox();
             this.lbCsk1TitleBaudRate = new System.Windows.Forms.Label();
@@ -175,7 +175,7 @@
             this.lbCommon1Title.Size = new System.Drawing.Size(92, 32);
             this.lbCommon1Title.TabIndex = 0;
             this.lbCommon1Title.Text = "模组一";
-            this.lbCommon1Title.TextAlign = ContentAlignment.TopRight;
+            this.lbCommon1Title.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // panelSn1
             // 
@@ -207,11 +207,11 @@
             // 
             this.panelWifi1.Controls.Add(this.cbWifi1Default);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleDefault);
-            this.panelWifi1.Controls.Add(this.tbWifi1Stopbit);
+            this.panelWifi1.Controls.Add(this.tbWifi1Stopbits);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleStopbit);
-            this.panelWifi1.Controls.Add(this.tbWifi1Checksum);
+            this.panelWifi1.Controls.Add(this.tbWifi1Parity);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleChecksum);
-            this.panelWifi1.Controls.Add(this.tbWifi1Databit);
+            this.panelWifi1.Controls.Add(this.tbWifi1Databits);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleDatabit);
             this.panelWifi1.Controls.Add(this.tbWifi1BaudRate);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleBaudRate);
@@ -241,12 +241,12 @@
             this.lbWifi1TitleDefault.TabIndex = 23;
             this.lbWifi1TitleDefault.Text = "是否默认";
             // 
-            // tbWifi1Stopbit
+            // tbWifi1Stopbits
             // 
-            this.tbWifi1Stopbit.Location = new System.Drawing.Point(106, 304);
-            this.tbWifi1Stopbit.Name = "tbWifi1Stopbit";
-            this.tbWifi1Stopbit.Size = new System.Drawing.Size(68, 31);
-            this.tbWifi1Stopbit.TabIndex = 22;
+            this.tbWifi1Stopbits.Location = new System.Drawing.Point(106, 304);
+            this.tbWifi1Stopbits.Name = "tbWifi1Stopbits";
+            this.tbWifi1Stopbits.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi1Stopbits.TabIndex = 22;
             // 
             // lbWifi1TitleStopbit
             // 
@@ -257,12 +257,12 @@
             this.lbWifi1TitleStopbit.TabIndex = 21;
             this.lbWifi1TitleStopbit.Text = "停止位";
             // 
-            // tbWifi1Checksum
+            // tbWifi1Parity
             // 
-            this.tbWifi1Checksum.Location = new System.Drawing.Point(106, 247);
-            this.tbWifi1Checksum.Name = "tbWifi1Checksum";
-            this.tbWifi1Checksum.Size = new System.Drawing.Size(68, 31);
-            this.tbWifi1Checksum.TabIndex = 20;
+            this.tbWifi1Parity.Location = new System.Drawing.Point(106, 247);
+            this.tbWifi1Parity.Name = "tbWifi1Parity";
+            this.tbWifi1Parity.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi1Parity.TabIndex = 20;
             // 
             // lbWifi1TitleChecksum
             // 
@@ -273,12 +273,12 @@
             this.lbWifi1TitleChecksum.TabIndex = 19;
             this.lbWifi1TitleChecksum.Text = "校验位";
             // 
-            // tbWifi1Databit
+            // tbWifi1Databits
             // 
-            this.tbWifi1Databit.Location = new System.Drawing.Point(106, 192);
-            this.tbWifi1Databit.Name = "tbWifi1Databit";
-            this.tbWifi1Databit.Size = new System.Drawing.Size(68, 31);
-            this.tbWifi1Databit.TabIndex = 18;
+            this.tbWifi1Databits.Location = new System.Drawing.Point(106, 192);
+            this.tbWifi1Databits.Name = "tbWifi1Databits";
+            this.tbWifi1Databits.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi1Databits.TabIndex = 18;
             // 
             // lbWifi1TitleDatabit
             // 
@@ -335,11 +335,11 @@
             // 
             this.panelCsk1.Controls.Add(this.cbCsk1Default);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleDefault);
-            this.panelCsk1.Controls.Add(this.tbCsk1Stopbit);
+            this.panelCsk1.Controls.Add(this.tbCsk1Stopbits);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleStopbit);
-            this.panelCsk1.Controls.Add(this.tbCsk1Checksum);
+            this.panelCsk1.Controls.Add(this.tbCsk1Parity);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleChecksum);
-            this.panelCsk1.Controls.Add(this.tbCsk1Databit);
+            this.panelCsk1.Controls.Add(this.tbCsk1Databits);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleDatabit);
             this.panelCsk1.Controls.Add(this.tbCsk1BaudRate);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleBaudRate);
@@ -369,12 +369,12 @@
             this.lbCsk1TitleDefault.TabIndex = 11;
             this.lbCsk1TitleDefault.Text = "是否默认";
             // 
-            // tbCsk1Stopbit
+            // tbCsk1Stopbits
             // 
-            this.tbCsk1Stopbit.Location = new System.Drawing.Point(102, 304);
-            this.tbCsk1Stopbit.Name = "tbCsk1Stopbit";
-            this.tbCsk1Stopbit.Size = new System.Drawing.Size(68, 31);
-            this.tbCsk1Stopbit.TabIndex = 10;
+            this.tbCsk1Stopbits.Location = new System.Drawing.Point(102, 304);
+            this.tbCsk1Stopbits.Name = "tbCsk1Stopbits";
+            this.tbCsk1Stopbits.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk1Stopbits.TabIndex = 10;
             // 
             // lbCsk1TitleStopbit
             // 
@@ -385,12 +385,12 @@
             this.lbCsk1TitleStopbit.TabIndex = 9;
             this.lbCsk1TitleStopbit.Text = "停止位";
             // 
-            // tbCsk1Checksum
+            // tbCsk1Parity
             // 
-            this.tbCsk1Checksum.Location = new System.Drawing.Point(102, 247);
-            this.tbCsk1Checksum.Name = "tbCsk1Checksum";
-            this.tbCsk1Checksum.Size = new System.Drawing.Size(68, 31);
-            this.tbCsk1Checksum.TabIndex = 8;
+            this.tbCsk1Parity.Location = new System.Drawing.Point(102, 247);
+            this.tbCsk1Parity.Name = "tbCsk1Parity";
+            this.tbCsk1Parity.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk1Parity.TabIndex = 8;
             // 
             // lbCsk1TitleChecksum
             // 
@@ -401,12 +401,12 @@
             this.lbCsk1TitleChecksum.TabIndex = 7;
             this.lbCsk1TitleChecksum.Text = "校验位";
             // 
-            // tbCsk1Databit
+            // tbCsk1Databits
             // 
-            this.tbCsk1Databit.Location = new System.Drawing.Point(102, 192);
-            this.tbCsk1Databit.Name = "tbCsk1Databit";
-            this.tbCsk1Databit.Size = new System.Drawing.Size(68, 31);
-            this.tbCsk1Databit.TabIndex = 6;
+            this.tbCsk1Databits.Location = new System.Drawing.Point(102, 192);
+            this.tbCsk1Databits.Name = "tbCsk1Databits";
+            this.tbCsk1Databits.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk1Databits.TabIndex = 6;
             // 
             // lbCsk1TitleDatabit
             // 
@@ -505,22 +505,22 @@
         private Panel panelSn1;
         private TextBox tbCsk1Port;
         private Label lbCsk1TitlePort;
-        private TextBox tbCsk1Stopbit;
+        private TextBox tbCsk1Stopbits;
         private Label lbCsk1TitleStopbit;
-        private TextBox tbCsk1Checksum;
+        private TextBox tbCsk1Parity;
         private Label lbCsk1TitleChecksum;
-        private TextBox tbCsk1Databit;
+        private TextBox tbCsk1Databits;
         private Label lbCsk1TitleDatabit;
         private TextBox tbCsk1BaudRate;
         private Label lbCsk1TitleBaudRate;
         private Label lbCsk1TitleDefault;
         private CheckBox cbWifi1Default;
         private Label lbWifi1TitleDefault;
-        private TextBox tbWifi1Stopbit;
+        private TextBox tbWifi1Stopbits;
         private Label lbWifi1TitleStopbit;
-        private TextBox tbWifi1Checksum;
+        private TextBox tbWifi1Parity;
         private Label lbWifi1TitleChecksum;
-        private TextBox tbWifi1Databit;
+        private TextBox tbWifi1Databits;
         private Label lbWifi1TitleDatabit;
         private TextBox tbWifi1BaudRate;
         private Label lbWifi1TitleBaudRate;

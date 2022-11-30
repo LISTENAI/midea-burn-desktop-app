@@ -58,15 +58,17 @@
                 Global.SelectedFirmwarePath = "";
                 tsslCurrentFirmware.Text = $"当前固件: (未选择)";
                 btnFwSelect.BackColor = Constants.ColorBlock;
-                MessageBox.Show("选择的固件不存在，请重新选择");
+                MessageBox.Show("请浏览并导入正确的固件包后再点击烧录。", "错误");
                 return;
             }
 
-            for (int i = 1; i <= Global.GroupCount; i++) {
-                var targetControl = Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.Port);
-                if (!string.IsNullOrWhiteSpace(targetControl.Text)) {
-                    MessageBox.Show($"CSK{i}: {targetControl.Text}");
-                }
+            var checkCskPortResult = LineWorker.CheckComPorts(Constants.GroupType.Csk);
+            //var checkWifiPortResult = LineWorker.CheckComPorts(Constants.GroupType.Wifi);
+            var checkWifiPortResult = true;
+            if (!checkCskPortResult || !checkWifiPortResult) {
+                btnFlash.BackColor = Constants.ColorBlock;
+                MessageBox.Show("请正确配置烧录串口后再点击烧录。", "错误");
+                return;
             }
 
             btnFlash.BackColor = Constants.ColorProcceed;
