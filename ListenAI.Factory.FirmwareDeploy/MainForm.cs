@@ -9,17 +9,22 @@
         }
 
         private void FormElementsInit() {
-            var cskPanels = new List<Panel>() {
-                panelCsk1, panelCsk2, panelCsk3, panelCsk4
-            };
-            foreach (var panel in cskPanels) {
-                panel.BackColor = Constants.ColorCsk6PanelBackground;
+            panelCsk1.BackColor = Constants.ColorCsk6PanelBackground;
+            panelWifi1.BackColor = Constants.ColorWifiPanelBackground;
+            CreateUiGroup(4);
+        }
+
+        private void CreateUiGroup(ushort count) {
+            if (count <= 1 || count > 4) {
+                count = 1;
             }
-            var wifiPanels = new List<Panel>() {
-                panelWifi1, panelWifi2, panelWifi3, panelWifi4
-            };
-            foreach (var panel in wifiPanels) {
-                panel.BackColor = Constants.ColorWifiPanelBackground;
+            while (Global.GroupCount < count) {
+                Global.GroupCount++;
+                var clonedGrpbox = Utils.CloneControl(gbMod1);
+                clonedGrpbox = Utils.CtrlPropModify(clonedGrpbox, Global.GroupCount);
+                var locX = gbMod1.Location.X + 454 * (Global.GroupCount - 1);
+                clonedGrpbox.Location = new Point(locX, gbMod1.Location.Y);
+                this.Controls.Add(clonedGrpbox);
             }
         }
 

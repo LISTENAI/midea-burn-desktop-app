@@ -1,6 +1,7 @@
 ﻿namespace ListenAI.Factory.FirmwareDeploy {
     public static class Global {
         public static string SelectedFirmwarePath = "";
+        public static short GroupCount = 1;
     }
 
     public static class Constants {
