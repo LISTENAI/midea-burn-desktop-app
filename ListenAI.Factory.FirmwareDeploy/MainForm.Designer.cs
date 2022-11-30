@@ -31,11 +31,11 @@
             this.tsslCurrentFirmware = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbMod1 = new System.Windows.Forms.GroupBox();
             this.panelResult1 = new System.Windows.Forms.Panel();
-            this.btnCsk1Result = new System.Windows.Forms.Button();
-            this.lbGroup1Title = new System.Windows.Forms.Label();
+            this.btnCommon1Result = new System.Windows.Forms.Button();
+            this.lbCommon1Title = new System.Windows.Forms.Label();
             this.panelSn1 = new System.Windows.Forms.Panel();
-            this.tbCsk1Serial = new System.Windows.Forms.TextBox();
-            this.lbCsk1TitleSn = new System.Windows.Forms.Label();
+            this.tbCommon1Serial = new System.Windows.Forms.TextBox();
+            this.lbCommon1TitleSn = new System.Windows.Forms.Label();
             this.panelWifi1 = new System.Windows.Forms.Panel();
             this.cbWifi1Default = new System.Windows.Forms.CheckBox();
             this.lbWifi1TitleDefault = new System.Windows.Forms.Label();
@@ -148,57 +148,60 @@
             // 
             // panelResult1
             // 
-            this.panelResult1.Controls.Add(this.btnCsk1Result);
-            this.panelResult1.Controls.Add(this.lbGroup1Title);
+            this.panelResult1.Controls.Add(this.btnCommon1Result);
+            this.panelResult1.Controls.Add(this.lbCommon1Title);
             this.panelResult1.Location = new System.Drawing.Point(17, 509);
             this.panelResult1.Name = "panelResult1";
             this.panelResult1.Size = new System.Drawing.Size(414, 65);
             this.panelResult1.TabIndex = 3;
             // 
-            // btnCsk1Result
+            // btnCommon1Result
             // 
-            this.btnCsk1Result.Location = new System.Drawing.Point(172, 14);
-            this.btnCsk1Result.Name = "btnCsk1Result";
-            this.btnCsk1Result.Size = new System.Drawing.Size(188, 34);
-            this.btnCsk1Result.TabIndex = 1;
-            this.btnCsk1Result.Text = "Pass/Fail";
-            this.btnCsk1Result.UseVisualStyleBackColor = true;
+            this.btnCommon1Result.BackColor = System.Drawing.Color.Red;
+            this.btnCommon1Result.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnCommon1Result.Location = new System.Drawing.Point(172, 14);
+            this.btnCommon1Result.Name = "btnCommon1Result";
+            this.btnCommon1Result.Size = new System.Drawing.Size(188, 34);
+            this.btnCommon1Result.TabIndex = 1;
+            this.btnCommon1Result.Text = "Pass/Fail";
+            this.btnCommon1Result.UseVisualStyleBackColor = false;
             // 
-            // lbGroup1Title
+            // lbCommon1Title
             // 
-            this.lbGroup1Title.AutoSize = true;
-            this.lbGroup1Title.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbGroup1Title.Location = new System.Drawing.Point(36, 16);
-            this.lbGroup1Title.Name = "lbGroup1Title";
-            this.lbGroup1Title.Size = new System.Drawing.Size(92, 32);
-            this.lbGroup1Title.TabIndex = 0;
-            this.lbGroup1Title.Text = "模组一";
+            this.lbCommon1Title.AutoSize = true;
+            this.lbCommon1Title.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbCommon1Title.Location = new System.Drawing.Point(36, 16);
+            this.lbCommon1Title.Name = "lbCommon1Title";
+            this.lbCommon1Title.Size = new System.Drawing.Size(92, 32);
+            this.lbCommon1Title.TabIndex = 0;
+            this.lbCommon1Title.Text = "模组一";
+            this.lbCommon1Title.TextAlign = ContentAlignment.TopRight;
             // 
             // panelSn1
             // 
-            this.panelSn1.Controls.Add(this.tbCsk1Serial);
-            this.panelSn1.Controls.Add(this.lbCsk1TitleSn);
+            this.panelSn1.Controls.Add(this.tbCommon1Serial);
+            this.panelSn1.Controls.Add(this.lbCommon1TitleSn);
             this.panelSn1.Location = new System.Drawing.Point(17, 445);
             this.panelSn1.Name = "panelSn1";
             this.panelSn1.Size = new System.Drawing.Size(414, 58);
             this.panelSn1.TabIndex = 2;
             // 
-            // tbCsk1Serial
+            // tbCommon1Serial
             // 
-            this.tbCsk1Serial.Location = new System.Drawing.Point(141, 13);
-            this.tbCsk1Serial.Name = "tbCsk1Serial";
-            this.tbCsk1Serial.Size = new System.Drawing.Size(219, 31);
-            this.tbCsk1Serial.TabIndex = 6;
+            this.tbCommon1Serial.Location = new System.Drawing.Point(141, 13);
+            this.tbCommon1Serial.Name = "tbCommon1Serial";
+            this.tbCommon1Serial.Size = new System.Drawing.Size(219, 31);
+            this.tbCommon1Serial.TabIndex = 6;
             // 
-            // lbCsk1TitleSn
+            // lbCommon1TitleSn
             // 
-            this.lbCsk1TitleSn.AutoSize = true;
-            this.lbCsk1TitleSn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbCsk1TitleSn.Location = new System.Drawing.Point(17, 16);
-            this.lbCsk1TitleSn.Name = "lbCsk1TitleSn";
-            this.lbCsk1TitleSn.Size = new System.Drawing.Size(112, 25);
-            this.lbCsk1TitleSn.TabIndex = 5;
-            this.lbCsk1TitleSn.Text = "产品序列号";
+            this.lbCommon1TitleSn.AutoSize = true;
+            this.lbCommon1TitleSn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbCommon1TitleSn.Location = new System.Drawing.Point(17, 16);
+            this.lbCommon1TitleSn.Name = "lbCommon1TitleSn";
+            this.lbCommon1TitleSn.Size = new System.Drawing.Size(112, 25);
+            this.lbCommon1TitleSn.TabIndex = 5;
+            this.lbCommon1TitleSn.Text = "产品序列号";
             // 
             // panelWifi1
             // 
@@ -524,10 +527,10 @@
         private TextBox tbWifi1Port;
         private Label lbWifi1TitlePort;
         private CheckBox cbCsk1Default;
-        private TextBox tbCsk1Serial;
-        private Label lbCsk1TitleSn;
+        private TextBox tbCommon1Serial;
+        private Label lbCommon1TitleSn;
         private Panel panelResult1;
-        private Label lbGroup1Title;
-        private Button btnCsk1Result;
+        private Label lbCommon1Title;
+        private Button btnCommon1Result;
     }
 }
