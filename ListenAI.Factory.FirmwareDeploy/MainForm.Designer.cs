@@ -66,107 +66,107 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.tbCsk2Result = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbCsk2Serial = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.panelWifi2 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cbWifi2Default = new System.Windows.Forms.CheckBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbWifi2Stopbit = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.tbWifi2Checksum = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.tbWifi2Databit = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.tbWifi2BaudRate = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.tbWifi2Port = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.panelCsk2 = new System.Windows.Forms.Panel();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.cbCsk2Default = new System.Windows.Forms.CheckBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.tbCsk2Stopbit = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.tbCsk2Checksum = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.tbCsk2Databit = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.tbCsk2BaudRate = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.tbCsk2Port = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.tbCsk3Result = new System.Windows.Forms.Button();
             this.label33 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.tbCsk3Serial = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.panelWifi3 = new System.Windows.Forms.Panel();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.cbWifi3Default = new System.Windows.Forms.CheckBox();
             this.label35 = new System.Windows.Forms.Label();
-            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.tbWifi3Stopbit = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
-            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.tbWifi3Checksum = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
-            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.tbWifi3Databit = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
-            this.textBox16 = new System.Windows.Forms.TextBox();
+            this.tbWifi3BaudRate = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
-            this.textBox17 = new System.Windows.Forms.TextBox();
+            this.tbWifi3Port = new System.Windows.Forms.TextBox();
             this.label40 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.panelCsk3 = new System.Windows.Forms.Panel();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.cbCsk3Default = new System.Windows.Forms.CheckBox();
             this.label42 = new System.Windows.Forms.Label();
-            this.textBox18 = new System.Windows.Forms.TextBox();
+            this.tbCsk3Stopbit = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
-            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.tbCsk3Checksum = new System.Windows.Forms.TextBox();
             this.label44 = new System.Windows.Forms.Label();
-            this.textBox20 = new System.Windows.Forms.TextBox();
+            this.tbCsk3Databit = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
-            this.textBox21 = new System.Windows.Forms.TextBox();
+            this.tbCsk3BaudRate = new System.Windows.Forms.TextBox();
             this.label46 = new System.Windows.Forms.Label();
-            this.textBox22 = new System.Windows.Forms.TextBox();
+            this.tbCsk3Port = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel11 = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
+            this.tbCsk4Result = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.textBox23 = new System.Windows.Forms.TextBox();
+            this.tbCsk4Serial = new System.Windows.Forms.TextBox();
             this.label50 = new System.Windows.Forms.Label();
             this.panelWifi4 = new System.Windows.Forms.Panel();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.cbWifi4Default = new System.Windows.Forms.CheckBox();
             this.label51 = new System.Windows.Forms.Label();
-            this.textBox24 = new System.Windows.Forms.TextBox();
+            this.tbWifi4Stopbit = new System.Windows.Forms.TextBox();
             this.label52 = new System.Windows.Forms.Label();
-            this.textBox25 = new System.Windows.Forms.TextBox();
+            this.tbWifi4Checksum = new System.Windows.Forms.TextBox();
             this.label53 = new System.Windows.Forms.Label();
-            this.textBox26 = new System.Windows.Forms.TextBox();
+            this.tbWifi4Databit = new System.Windows.Forms.TextBox();
             this.label54 = new System.Windows.Forms.Label();
-            this.textBox27 = new System.Windows.Forms.TextBox();
+            this.tbWifi4BaudRate = new System.Windows.Forms.TextBox();
             this.label55 = new System.Windows.Forms.Label();
-            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.tbWifi4Port = new System.Windows.Forms.TextBox();
             this.label56 = new System.Windows.Forms.Label();
             this.label57 = new System.Windows.Forms.Label();
             this.panelCsk4 = new System.Windows.Forms.Panel();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.cbCsk4Default = new System.Windows.Forms.CheckBox();
             this.label58 = new System.Windows.Forms.Label();
-            this.textBox29 = new System.Windows.Forms.TextBox();
+            this.tbCsk4Stopbit = new System.Windows.Forms.TextBox();
             this.label59 = new System.Windows.Forms.Label();
-            this.textBox30 = new System.Windows.Forms.TextBox();
+            this.tbCsk4Checksum = new System.Windows.Forms.TextBox();
             this.label60 = new System.Windows.Forms.Label();
-            this.textBox31 = new System.Windows.Forms.TextBox();
+            this.tbCsk4Databit = new System.Windows.Forms.TextBox();
             this.label61 = new System.Windows.Forms.Label();
-            this.textBox32 = new System.Windows.Forms.TextBox();
+            this.tbCsk4BaudRate = new System.Windows.Forms.TextBox();
             this.label62 = new System.Windows.Forms.Label();
-            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.tbCsk4Port = new System.Windows.Forms.TextBox();
             this.label63 = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
             this.gbSettings.SuspendLayout();
@@ -590,21 +590,21 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.tbCsk2Result);
             this.panel3.Controls.Add(this.label17);
             this.panel3.Location = new System.Drawing.Point(17, 509);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(414, 65);
             this.panel3.TabIndex = 3;
             // 
-            // button1
+            // tbCsk2Result
             // 
-            this.button1.Location = new System.Drawing.Point(172, 14);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(188, 34);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Pass/Fail";
-            this.button1.UseVisualStyleBackColor = true;
+            this.tbCsk2Result.Location = new System.Drawing.Point(172, 14);
+            this.tbCsk2Result.Name = "tbCsk2Result";
+            this.tbCsk2Result.Size = new System.Drawing.Size(188, 34);
+            this.tbCsk2Result.TabIndex = 1;
+            this.tbCsk2Result.Text = "Pass/Fail";
+            this.tbCsk2Result.UseVisualStyleBackColor = true;
             // 
             // label17
             // 
@@ -618,19 +618,19 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.textBox1);
+            this.panel4.Controls.Add(this.tbCsk2Serial);
             this.panel4.Controls.Add(this.label18);
             this.panel4.Location = new System.Drawing.Point(17, 445);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(414, 58);
             this.panel4.TabIndex = 2;
             // 
-            // textBox1
+            // tbCsk2Serial
             // 
-            this.textBox1.Location = new System.Drawing.Point(141, 13);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(219, 31);
-            this.textBox1.TabIndex = 6;
+            this.tbCsk2Serial.Location = new System.Drawing.Point(141, 13);
+            this.tbCsk2Serial.Name = "tbCsk2Serial";
+            this.tbCsk2Serial.Size = new System.Drawing.Size(219, 31);
+            this.tbCsk2Serial.TabIndex = 6;
             // 
             // label18
             // 
@@ -644,17 +644,17 @@
             // 
             // panelWifi2
             // 
-            this.panelWifi2.Controls.Add(this.checkBox1);
+            this.panelWifi2.Controls.Add(this.cbWifi2Default);
             this.panelWifi2.Controls.Add(this.label19);
-            this.panelWifi2.Controls.Add(this.textBox2);
+            this.panelWifi2.Controls.Add(this.tbWifi2Stopbit);
             this.panelWifi2.Controls.Add(this.label20);
-            this.panelWifi2.Controls.Add(this.textBox3);
+            this.panelWifi2.Controls.Add(this.tbWifi2Checksum);
             this.panelWifi2.Controls.Add(this.label21);
-            this.panelWifi2.Controls.Add(this.textBox4);
+            this.panelWifi2.Controls.Add(this.tbWifi2Databit);
             this.panelWifi2.Controls.Add(this.label22);
-            this.panelWifi2.Controls.Add(this.textBox5);
+            this.panelWifi2.Controls.Add(this.tbWifi2BaudRate);
             this.panelWifi2.Controls.Add(this.label23);
-            this.panelWifi2.Controls.Add(this.textBox6);
+            this.panelWifi2.Controls.Add(this.tbWifi2Port);
             this.panelWifi2.Controls.Add(this.label24);
             this.panelWifi2.Controls.Add(this.label25);
             this.panelWifi2.Location = new System.Drawing.Point(227, 30);
@@ -662,14 +662,14 @@
             this.panelWifi2.Size = new System.Drawing.Size(204, 409);
             this.panelWifi2.TabIndex = 1;
             // 
-            // checkBox1
+            // cbWifi2Default
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(128, 362);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(22, 21);
-            this.checkBox1.TabIndex = 24;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbWifi2Default.AutoSize = true;
+            this.cbWifi2Default.Location = new System.Drawing.Point(128, 362);
+            this.cbWifi2Default.Name = "cbWifi2Default";
+            this.cbWifi2Default.Size = new System.Drawing.Size(22, 21);
+            this.cbWifi2Default.TabIndex = 24;
+            this.cbWifi2Default.UseVisualStyleBackColor = true;
             // 
             // label19
             // 
@@ -680,12 +680,12 @@
             this.label19.TabIndex = 23;
             this.label19.Text = "是否默认";
             // 
-            // textBox2
+            // tbWifi2Stopbit
             // 
-            this.textBox2.Location = new System.Drawing.Point(106, 304);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(68, 31);
-            this.textBox2.TabIndex = 22;
+            this.tbWifi2Stopbit.Location = new System.Drawing.Point(106, 304);
+            this.tbWifi2Stopbit.Name = "tbWifi2Stopbit";
+            this.tbWifi2Stopbit.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi2Stopbit.TabIndex = 22;
             // 
             // label20
             // 
@@ -696,12 +696,12 @@
             this.label20.TabIndex = 21;
             this.label20.Text = "停止位";
             // 
-            // textBox3
+            // tbWifi2Checksum
             // 
-            this.textBox3.Location = new System.Drawing.Point(106, 247);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(68, 31);
-            this.textBox3.TabIndex = 20;
+            this.tbWifi2Checksum.Location = new System.Drawing.Point(106, 247);
+            this.tbWifi2Checksum.Name = "tbWifi2Checksum";
+            this.tbWifi2Checksum.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi2Checksum.TabIndex = 20;
             // 
             // label21
             // 
@@ -712,12 +712,12 @@
             this.label21.TabIndex = 19;
             this.label21.Text = "校验位";
             // 
-            // textBox4
+            // tbWifi2Databit
             // 
-            this.textBox4.Location = new System.Drawing.Point(106, 192);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(68, 31);
-            this.textBox4.TabIndex = 18;
+            this.tbWifi2Databit.Location = new System.Drawing.Point(106, 192);
+            this.tbWifi2Databit.Name = "tbWifi2Databit";
+            this.tbWifi2Databit.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi2Databit.TabIndex = 18;
             // 
             // label22
             // 
@@ -728,12 +728,12 @@
             this.label22.TabIndex = 17;
             this.label22.Text = "数据位";
             // 
-            // textBox5
+            // tbWifi2BaudRate
             // 
-            this.textBox5.Location = new System.Drawing.Point(106, 139);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(68, 31);
-            this.textBox5.TabIndex = 16;
+            this.tbWifi2BaudRate.Location = new System.Drawing.Point(106, 139);
+            this.tbWifi2BaudRate.Name = "tbWifi2BaudRate";
+            this.tbWifi2BaudRate.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi2BaudRate.TabIndex = 16;
             // 
             // label23
             // 
@@ -744,12 +744,12 @@
             this.label23.TabIndex = 15;
             this.label23.Text = "波特率";
             // 
-            // textBox6
+            // tbWifi2Port
             // 
-            this.textBox6.Location = new System.Drawing.Point(106, 88);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(68, 31);
-            this.textBox6.TabIndex = 14;
+            this.tbWifi2Port.Location = new System.Drawing.Point(106, 88);
+            this.tbWifi2Port.Name = "tbWifi2Port";
+            this.tbWifi2Port.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi2Port.TabIndex = 14;
             // 
             // label24
             // 
@@ -772,17 +772,17 @@
             // 
             // panelCsk2
             // 
-            this.panelCsk2.Controls.Add(this.checkBox2);
+            this.panelCsk2.Controls.Add(this.cbCsk2Default);
             this.panelCsk2.Controls.Add(this.label26);
-            this.panelCsk2.Controls.Add(this.textBox7);
+            this.panelCsk2.Controls.Add(this.tbCsk2Stopbit);
             this.panelCsk2.Controls.Add(this.label27);
-            this.panelCsk2.Controls.Add(this.textBox8);
+            this.panelCsk2.Controls.Add(this.tbCsk2Checksum);
             this.panelCsk2.Controls.Add(this.label28);
-            this.panelCsk2.Controls.Add(this.textBox9);
+            this.panelCsk2.Controls.Add(this.tbCsk2Databit);
             this.panelCsk2.Controls.Add(this.label29);
-            this.panelCsk2.Controls.Add(this.textBox10);
+            this.panelCsk2.Controls.Add(this.tbCsk2BaudRate);
             this.panelCsk2.Controls.Add(this.label30);
-            this.panelCsk2.Controls.Add(this.textBox11);
+            this.panelCsk2.Controls.Add(this.tbCsk2Port);
             this.panelCsk2.Controls.Add(this.label31);
             this.panelCsk2.Controls.Add(this.label32);
             this.panelCsk2.Location = new System.Drawing.Point(17, 30);
@@ -790,14 +790,14 @@
             this.panelCsk2.Size = new System.Drawing.Size(204, 409);
             this.panelCsk2.TabIndex = 0;
             // 
-            // checkBox2
+            // cbCsk2Default
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(122, 362);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(22, 21);
-            this.checkBox2.TabIndex = 12;
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.cbCsk2Default.AutoSize = true;
+            this.cbCsk2Default.Location = new System.Drawing.Point(122, 362);
+            this.cbCsk2Default.Name = "cbCsk2Default";
+            this.cbCsk2Default.Size = new System.Drawing.Size(22, 21);
+            this.cbCsk2Default.TabIndex = 12;
+            this.cbCsk2Default.UseVisualStyleBackColor = true;
             // 
             // label26
             // 
@@ -808,12 +808,12 @@
             this.label26.TabIndex = 11;
             this.label26.Text = "是否默认";
             // 
-            // textBox7
+            // tbCsk2Stopbit
             // 
-            this.textBox7.Location = new System.Drawing.Point(102, 304);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(68, 31);
-            this.textBox7.TabIndex = 10;
+            this.tbCsk2Stopbit.Location = new System.Drawing.Point(102, 304);
+            this.tbCsk2Stopbit.Name = "tbCsk2Stopbit";
+            this.tbCsk2Stopbit.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk2Stopbit.TabIndex = 10;
             // 
             // label27
             // 
@@ -824,12 +824,12 @@
             this.label27.TabIndex = 9;
             this.label27.Text = "停止位";
             // 
-            // textBox8
+            // tbCsk2Checksum
             // 
-            this.textBox8.Location = new System.Drawing.Point(102, 247);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(68, 31);
-            this.textBox8.TabIndex = 8;
+            this.tbCsk2Checksum.Location = new System.Drawing.Point(102, 247);
+            this.tbCsk2Checksum.Name = "tbCsk2Checksum";
+            this.tbCsk2Checksum.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk2Checksum.TabIndex = 8;
             // 
             // label28
             // 
@@ -840,12 +840,12 @@
             this.label28.TabIndex = 7;
             this.label28.Text = "校验位";
             // 
-            // textBox9
+            // tbCsk2Databit
             // 
-            this.textBox9.Location = new System.Drawing.Point(102, 192);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(68, 31);
-            this.textBox9.TabIndex = 6;
+            this.tbCsk2Databit.Location = new System.Drawing.Point(102, 192);
+            this.tbCsk2Databit.Name = "tbCsk2Databit";
+            this.tbCsk2Databit.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk2Databit.TabIndex = 6;
             // 
             // label29
             // 
@@ -856,12 +856,12 @@
             this.label29.TabIndex = 5;
             this.label29.Text = "数据位";
             // 
-            // textBox10
+            // tbCsk2BaudRate
             // 
-            this.textBox10.Location = new System.Drawing.Point(102, 139);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(68, 31);
-            this.textBox10.TabIndex = 4;
+            this.tbCsk2BaudRate.Location = new System.Drawing.Point(102, 139);
+            this.tbCsk2BaudRate.Name = "tbCsk2BaudRate";
+            this.tbCsk2BaudRate.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk2BaudRate.TabIndex = 4;
             // 
             // label30
             // 
@@ -872,12 +872,12 @@
             this.label30.TabIndex = 3;
             this.label30.Text = "波特率";
             // 
-            // textBox11
+            // tbCsk2Port
             // 
-            this.textBox11.Location = new System.Drawing.Point(102, 88);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(68, 31);
-            this.textBox11.TabIndex = 2;
+            this.tbCsk2Port.Location = new System.Drawing.Point(102, 88);
+            this.tbCsk2Port.Name = "tbCsk2Port";
+            this.tbCsk2Port.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk2Port.TabIndex = 2;
             // 
             // label31
             // 
@@ -912,21 +912,21 @@
             // 
             // panel7
             // 
-            this.panel7.Controls.Add(this.button2);
+            this.panel7.Controls.Add(this.tbCsk3Result);
             this.panel7.Controls.Add(this.label33);
             this.panel7.Location = new System.Drawing.Point(17, 509);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(414, 65);
             this.panel7.TabIndex = 3;
             // 
-            // button2
+            // tbCsk3Result
             // 
-            this.button2.Location = new System.Drawing.Point(172, 14);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(188, 34);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Pass/Fail";
-            this.button2.UseVisualStyleBackColor = true;
+            this.tbCsk3Result.Location = new System.Drawing.Point(172, 14);
+            this.tbCsk3Result.Name = "tbCsk3Result";
+            this.tbCsk3Result.Size = new System.Drawing.Size(188, 34);
+            this.tbCsk3Result.TabIndex = 1;
+            this.tbCsk3Result.Text = "Pass/Fail";
+            this.tbCsk3Result.UseVisualStyleBackColor = true;
             // 
             // label33
             // 
@@ -940,19 +940,19 @@
             // 
             // panel8
             // 
-            this.panel8.Controls.Add(this.textBox12);
+            this.panel8.Controls.Add(this.tbCsk3Serial);
             this.panel8.Controls.Add(this.label34);
             this.panel8.Location = new System.Drawing.Point(17, 445);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(414, 58);
             this.panel8.TabIndex = 2;
             // 
-            // textBox12
+            // tbCsk3Serial
             // 
-            this.textBox12.Location = new System.Drawing.Point(141, 13);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(219, 31);
-            this.textBox12.TabIndex = 6;
+            this.tbCsk3Serial.Location = new System.Drawing.Point(141, 13);
+            this.tbCsk3Serial.Name = "tbCsk3Serial";
+            this.tbCsk3Serial.Size = new System.Drawing.Size(219, 31);
+            this.tbCsk3Serial.TabIndex = 6;
             // 
             // label34
             // 
@@ -966,17 +966,17 @@
             // 
             // panelWifi3
             // 
-            this.panelWifi3.Controls.Add(this.checkBox3);
+            this.panelWifi3.Controls.Add(this.cbWifi3Default);
             this.panelWifi3.Controls.Add(this.label35);
-            this.panelWifi3.Controls.Add(this.textBox13);
+            this.panelWifi3.Controls.Add(this.tbWifi3Stopbit);
             this.panelWifi3.Controls.Add(this.label36);
-            this.panelWifi3.Controls.Add(this.textBox14);
+            this.panelWifi3.Controls.Add(this.tbWifi3Checksum);
             this.panelWifi3.Controls.Add(this.label37);
-            this.panelWifi3.Controls.Add(this.textBox15);
+            this.panelWifi3.Controls.Add(this.tbWifi3Databit);
             this.panelWifi3.Controls.Add(this.label38);
-            this.panelWifi3.Controls.Add(this.textBox16);
+            this.panelWifi3.Controls.Add(this.tbWifi3BaudRate);
             this.panelWifi3.Controls.Add(this.label39);
-            this.panelWifi3.Controls.Add(this.textBox17);
+            this.panelWifi3.Controls.Add(this.tbWifi3Port);
             this.panelWifi3.Controls.Add(this.label40);
             this.panelWifi3.Controls.Add(this.label41);
             this.panelWifi3.Location = new System.Drawing.Point(227, 30);
@@ -984,14 +984,14 @@
             this.panelWifi3.Size = new System.Drawing.Size(204, 409);
             this.panelWifi3.TabIndex = 1;
             // 
-            // checkBox3
+            // cbWifi3Default
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(128, 362);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(22, 21);
-            this.checkBox3.TabIndex = 24;
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.cbWifi3Default.AutoSize = true;
+            this.cbWifi3Default.Location = new System.Drawing.Point(128, 362);
+            this.cbWifi3Default.Name = "cbWifi3Default";
+            this.cbWifi3Default.Size = new System.Drawing.Size(22, 21);
+            this.cbWifi3Default.TabIndex = 24;
+            this.cbWifi3Default.UseVisualStyleBackColor = true;
             // 
             // label35
             // 
@@ -1002,12 +1002,12 @@
             this.label35.TabIndex = 23;
             this.label35.Text = "是否默认";
             // 
-            // textBox13
+            // tbWifi3Stopbit
             // 
-            this.textBox13.Location = new System.Drawing.Point(106, 304);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(68, 31);
-            this.textBox13.TabIndex = 22;
+            this.tbWifi3Stopbit.Location = new System.Drawing.Point(106, 304);
+            this.tbWifi3Stopbit.Name = "tbWifi3Stopbit";
+            this.tbWifi3Stopbit.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi3Stopbit.TabIndex = 22;
             // 
             // label36
             // 
@@ -1018,12 +1018,12 @@
             this.label36.TabIndex = 21;
             this.label36.Text = "停止位";
             // 
-            // textBox14
+            // tbWifi3Checksum
             // 
-            this.textBox14.Location = new System.Drawing.Point(106, 247);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(68, 31);
-            this.textBox14.TabIndex = 20;
+            this.tbWifi3Checksum.Location = new System.Drawing.Point(106, 247);
+            this.tbWifi3Checksum.Name = "tbWifi3Checksum";
+            this.tbWifi3Checksum.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi3Checksum.TabIndex = 20;
             // 
             // label37
             // 
@@ -1034,12 +1034,12 @@
             this.label37.TabIndex = 19;
             this.label37.Text = "校验位";
             // 
-            // textBox15
+            // tbWifi3Databit
             // 
-            this.textBox15.Location = new System.Drawing.Point(106, 192);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(68, 31);
-            this.textBox15.TabIndex = 18;
+            this.tbWifi3Databit.Location = new System.Drawing.Point(106, 192);
+            this.tbWifi3Databit.Name = "tbWifi3Databit";
+            this.tbWifi3Databit.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi3Databit.TabIndex = 18;
             // 
             // label38
             // 
@@ -1050,12 +1050,12 @@
             this.label38.TabIndex = 17;
             this.label38.Text = "数据位";
             // 
-            // textBox16
+            // tbWifi3BaudRate
             // 
-            this.textBox16.Location = new System.Drawing.Point(106, 139);
-            this.textBox16.Name = "textBox16";
-            this.textBox16.Size = new System.Drawing.Size(68, 31);
-            this.textBox16.TabIndex = 16;
+            this.tbWifi3BaudRate.Location = new System.Drawing.Point(106, 139);
+            this.tbWifi3BaudRate.Name = "tbWifi3BaudRate";
+            this.tbWifi3BaudRate.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi3BaudRate.TabIndex = 16;
             // 
             // label39
             // 
@@ -1066,12 +1066,12 @@
             this.label39.TabIndex = 15;
             this.label39.Text = "波特率";
             // 
-            // textBox17
+            // tbWifi3Port
             // 
-            this.textBox17.Location = new System.Drawing.Point(106, 88);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(68, 31);
-            this.textBox17.TabIndex = 14;
+            this.tbWifi3Port.Location = new System.Drawing.Point(106, 88);
+            this.tbWifi3Port.Name = "tbWifi3Port";
+            this.tbWifi3Port.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi3Port.TabIndex = 14;
             // 
             // label40
             // 
@@ -1094,17 +1094,17 @@
             // 
             // panelCsk3
             // 
-            this.panelCsk3.Controls.Add(this.checkBox4);
+            this.panelCsk3.Controls.Add(this.cbCsk3Default);
             this.panelCsk3.Controls.Add(this.label42);
-            this.panelCsk3.Controls.Add(this.textBox18);
+            this.panelCsk3.Controls.Add(this.tbCsk3Stopbit);
             this.panelCsk3.Controls.Add(this.label43);
-            this.panelCsk3.Controls.Add(this.textBox19);
+            this.panelCsk3.Controls.Add(this.tbCsk3Checksum);
             this.panelCsk3.Controls.Add(this.label44);
-            this.panelCsk3.Controls.Add(this.textBox20);
+            this.panelCsk3.Controls.Add(this.tbCsk3Databit);
             this.panelCsk3.Controls.Add(this.label45);
-            this.panelCsk3.Controls.Add(this.textBox21);
+            this.panelCsk3.Controls.Add(this.tbCsk3BaudRate);
             this.panelCsk3.Controls.Add(this.label46);
-            this.panelCsk3.Controls.Add(this.textBox22);
+            this.panelCsk3.Controls.Add(this.tbCsk3Port);
             this.panelCsk3.Controls.Add(this.label47);
             this.panelCsk3.Controls.Add(this.label48);
             this.panelCsk3.Location = new System.Drawing.Point(17, 30);
@@ -1112,14 +1112,14 @@
             this.panelCsk3.Size = new System.Drawing.Size(204, 409);
             this.panelCsk3.TabIndex = 0;
             // 
-            // checkBox4
+            // cbCsk3Default
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(122, 362);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(22, 21);
-            this.checkBox4.TabIndex = 12;
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.cbCsk3Default.AutoSize = true;
+            this.cbCsk3Default.Location = new System.Drawing.Point(122, 362);
+            this.cbCsk3Default.Name = "cbCsk3Default";
+            this.cbCsk3Default.Size = new System.Drawing.Size(22, 21);
+            this.cbCsk3Default.TabIndex = 12;
+            this.cbCsk3Default.UseVisualStyleBackColor = true;
             // 
             // label42
             // 
@@ -1130,12 +1130,12 @@
             this.label42.TabIndex = 11;
             this.label42.Text = "是否默认";
             // 
-            // textBox18
+            // tbCsk3Stopbit
             // 
-            this.textBox18.Location = new System.Drawing.Point(102, 304);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.Size = new System.Drawing.Size(68, 31);
-            this.textBox18.TabIndex = 10;
+            this.tbCsk3Stopbit.Location = new System.Drawing.Point(102, 304);
+            this.tbCsk3Stopbit.Name = "tbCsk3Stopbit";
+            this.tbCsk3Stopbit.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk3Stopbit.TabIndex = 10;
             // 
             // label43
             // 
@@ -1146,12 +1146,12 @@
             this.label43.TabIndex = 9;
             this.label43.Text = "停止位";
             // 
-            // textBox19
+            // tbCsk3Checksum
             // 
-            this.textBox19.Location = new System.Drawing.Point(102, 247);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(68, 31);
-            this.textBox19.TabIndex = 8;
+            this.tbCsk3Checksum.Location = new System.Drawing.Point(102, 247);
+            this.tbCsk3Checksum.Name = "tbCsk3Checksum";
+            this.tbCsk3Checksum.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk3Checksum.TabIndex = 8;
             // 
             // label44
             // 
@@ -1162,12 +1162,12 @@
             this.label44.TabIndex = 7;
             this.label44.Text = "校验位";
             // 
-            // textBox20
+            // tbCsk3Databit
             // 
-            this.textBox20.Location = new System.Drawing.Point(102, 192);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(68, 31);
-            this.textBox20.TabIndex = 6;
+            this.tbCsk3Databit.Location = new System.Drawing.Point(102, 192);
+            this.tbCsk3Databit.Name = "tbCsk3Databit";
+            this.tbCsk3Databit.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk3Databit.TabIndex = 6;
             // 
             // label45
             // 
@@ -1178,12 +1178,12 @@
             this.label45.TabIndex = 5;
             this.label45.Text = "数据位";
             // 
-            // textBox21
+            // tbCsk3BaudRate
             // 
-            this.textBox21.Location = new System.Drawing.Point(102, 139);
-            this.textBox21.Name = "textBox21";
-            this.textBox21.Size = new System.Drawing.Size(68, 31);
-            this.textBox21.TabIndex = 4;
+            this.tbCsk3BaudRate.Location = new System.Drawing.Point(102, 139);
+            this.tbCsk3BaudRate.Name = "tbCsk3BaudRate";
+            this.tbCsk3BaudRate.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk3BaudRate.TabIndex = 4;
             // 
             // label46
             // 
@@ -1194,12 +1194,12 @@
             this.label46.TabIndex = 3;
             this.label46.Text = "波特率";
             // 
-            // textBox22
+            // tbCsk3Port
             // 
-            this.textBox22.Location = new System.Drawing.Point(102, 88);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new System.Drawing.Size(68, 31);
-            this.textBox22.TabIndex = 2;
+            this.tbCsk3Port.Location = new System.Drawing.Point(102, 88);
+            this.tbCsk3Port.Name = "tbCsk3Port";
+            this.tbCsk3Port.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk3Port.TabIndex = 2;
             // 
             // label47
             // 
@@ -1234,21 +1234,21 @@
             // 
             // panel11
             // 
-            this.panel11.Controls.Add(this.button3);
+            this.panel11.Controls.Add(this.tbCsk4Result);
             this.panel11.Controls.Add(this.label49);
             this.panel11.Location = new System.Drawing.Point(17, 509);
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(414, 65);
             this.panel11.TabIndex = 3;
             // 
-            // button3
+            // tbCsk4Result
             // 
-            this.button3.Location = new System.Drawing.Point(172, 14);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(188, 34);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Pass/Fail";
-            this.button3.UseVisualStyleBackColor = true;
+            this.tbCsk4Result.Location = new System.Drawing.Point(172, 14);
+            this.tbCsk4Result.Name = "tbCsk4Result";
+            this.tbCsk4Result.Size = new System.Drawing.Size(188, 34);
+            this.tbCsk4Result.TabIndex = 1;
+            this.tbCsk4Result.Text = "Pass/Fail";
+            this.tbCsk4Result.UseVisualStyleBackColor = true;
             // 
             // label49
             // 
@@ -1262,19 +1262,19 @@
             // 
             // panel12
             // 
-            this.panel12.Controls.Add(this.textBox23);
+            this.panel12.Controls.Add(this.tbCsk4Serial);
             this.panel12.Controls.Add(this.label50);
             this.panel12.Location = new System.Drawing.Point(17, 445);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(414, 58);
             this.panel12.TabIndex = 2;
             // 
-            // textBox23
+            // tbCsk4Serial
             // 
-            this.textBox23.Location = new System.Drawing.Point(141, 13);
-            this.textBox23.Name = "textBox23";
-            this.textBox23.Size = new System.Drawing.Size(219, 31);
-            this.textBox23.TabIndex = 6;
+            this.tbCsk4Serial.Location = new System.Drawing.Point(141, 13);
+            this.tbCsk4Serial.Name = "tbCsk4Serial";
+            this.tbCsk4Serial.Size = new System.Drawing.Size(219, 31);
+            this.tbCsk4Serial.TabIndex = 6;
             // 
             // label50
             // 
@@ -1288,17 +1288,17 @@
             // 
             // panelWifi4
             // 
-            this.panelWifi4.Controls.Add(this.checkBox5);
+            this.panelWifi4.Controls.Add(this.cbWifi4Default);
             this.panelWifi4.Controls.Add(this.label51);
-            this.panelWifi4.Controls.Add(this.textBox24);
+            this.panelWifi4.Controls.Add(this.tbWifi4Stopbit);
             this.panelWifi4.Controls.Add(this.label52);
-            this.panelWifi4.Controls.Add(this.textBox25);
+            this.panelWifi4.Controls.Add(this.tbWifi4Checksum);
             this.panelWifi4.Controls.Add(this.label53);
-            this.panelWifi4.Controls.Add(this.textBox26);
+            this.panelWifi4.Controls.Add(this.tbWifi4Databit);
             this.panelWifi4.Controls.Add(this.label54);
-            this.panelWifi4.Controls.Add(this.textBox27);
+            this.panelWifi4.Controls.Add(this.tbWifi4BaudRate);
             this.panelWifi4.Controls.Add(this.label55);
-            this.panelWifi4.Controls.Add(this.textBox28);
+            this.panelWifi4.Controls.Add(this.tbWifi4Port);
             this.panelWifi4.Controls.Add(this.label56);
             this.panelWifi4.Controls.Add(this.label57);
             this.panelWifi4.Location = new System.Drawing.Point(227, 30);
@@ -1306,14 +1306,14 @@
             this.panelWifi4.Size = new System.Drawing.Size(204, 409);
             this.panelWifi4.TabIndex = 1;
             // 
-            // checkBox5
+            // cbWifi4Default
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(128, 362);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(22, 21);
-            this.checkBox5.TabIndex = 24;
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.cbWifi4Default.AutoSize = true;
+            this.cbWifi4Default.Location = new System.Drawing.Point(128, 362);
+            this.cbWifi4Default.Name = "cbWifi4Default";
+            this.cbWifi4Default.Size = new System.Drawing.Size(22, 21);
+            this.cbWifi4Default.TabIndex = 24;
+            this.cbWifi4Default.UseVisualStyleBackColor = true;
             // 
             // label51
             // 
@@ -1324,12 +1324,12 @@
             this.label51.TabIndex = 23;
             this.label51.Text = "是否默认";
             // 
-            // textBox24
+            // tbWifi4Stopbit
             // 
-            this.textBox24.Location = new System.Drawing.Point(106, 304);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(68, 31);
-            this.textBox24.TabIndex = 22;
+            this.tbWifi4Stopbit.Location = new System.Drawing.Point(106, 304);
+            this.tbWifi4Stopbit.Name = "tbWifi4Stopbit";
+            this.tbWifi4Stopbit.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi4Stopbit.TabIndex = 22;
             // 
             // label52
             // 
@@ -1340,12 +1340,12 @@
             this.label52.TabIndex = 21;
             this.label52.Text = "停止位";
             // 
-            // textBox25
+            // tbWifi4Checksum
             // 
-            this.textBox25.Location = new System.Drawing.Point(106, 247);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(68, 31);
-            this.textBox25.TabIndex = 20;
+            this.tbWifi4Checksum.Location = new System.Drawing.Point(106, 247);
+            this.tbWifi4Checksum.Name = "tbWifi4Checksum";
+            this.tbWifi4Checksum.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi4Checksum.TabIndex = 20;
             // 
             // label53
             // 
@@ -1356,12 +1356,12 @@
             this.label53.TabIndex = 19;
             this.label53.Text = "校验位";
             // 
-            // textBox26
+            // tbWifi4Databit
             // 
-            this.textBox26.Location = new System.Drawing.Point(106, 192);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(68, 31);
-            this.textBox26.TabIndex = 18;
+            this.tbWifi4Databit.Location = new System.Drawing.Point(106, 192);
+            this.tbWifi4Databit.Name = "tbWifi4Databit";
+            this.tbWifi4Databit.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi4Databit.TabIndex = 18;
             // 
             // label54
             // 
@@ -1372,12 +1372,12 @@
             this.label54.TabIndex = 17;
             this.label54.Text = "数据位";
             // 
-            // textBox27
+            // tbWifi4BaudRate
             // 
-            this.textBox27.Location = new System.Drawing.Point(106, 139);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(68, 31);
-            this.textBox27.TabIndex = 16;
+            this.tbWifi4BaudRate.Location = new System.Drawing.Point(106, 139);
+            this.tbWifi4BaudRate.Name = "tbWifi4BaudRate";
+            this.tbWifi4BaudRate.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi4BaudRate.TabIndex = 16;
             // 
             // label55
             // 
@@ -1388,12 +1388,12 @@
             this.label55.TabIndex = 15;
             this.label55.Text = "波特率";
             // 
-            // textBox28
+            // tbWifi4Port
             // 
-            this.textBox28.Location = new System.Drawing.Point(106, 88);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(68, 31);
-            this.textBox28.TabIndex = 14;
+            this.tbWifi4Port.Location = new System.Drawing.Point(106, 88);
+            this.tbWifi4Port.Name = "tbWifi4Port";
+            this.tbWifi4Port.Size = new System.Drawing.Size(68, 31);
+            this.tbWifi4Port.TabIndex = 14;
             // 
             // label56
             // 
@@ -1416,17 +1416,17 @@
             // 
             // panelCsk4
             // 
-            this.panelCsk4.Controls.Add(this.checkBox6);
+            this.panelCsk4.Controls.Add(this.cbCsk4Default);
             this.panelCsk4.Controls.Add(this.label58);
-            this.panelCsk4.Controls.Add(this.textBox29);
+            this.panelCsk4.Controls.Add(this.tbCsk4Stopbit);
             this.panelCsk4.Controls.Add(this.label59);
-            this.panelCsk4.Controls.Add(this.textBox30);
+            this.panelCsk4.Controls.Add(this.tbCsk4Checksum);
             this.panelCsk4.Controls.Add(this.label60);
-            this.panelCsk4.Controls.Add(this.textBox31);
+            this.panelCsk4.Controls.Add(this.tbCsk4Databit);
             this.panelCsk4.Controls.Add(this.label61);
-            this.panelCsk4.Controls.Add(this.textBox32);
+            this.panelCsk4.Controls.Add(this.tbCsk4BaudRate);
             this.panelCsk4.Controls.Add(this.label62);
-            this.panelCsk4.Controls.Add(this.textBox33);
+            this.panelCsk4.Controls.Add(this.tbCsk4Port);
             this.panelCsk4.Controls.Add(this.label63);
             this.panelCsk4.Controls.Add(this.label64);
             this.panelCsk4.Location = new System.Drawing.Point(17, 30);
@@ -1434,14 +1434,14 @@
             this.panelCsk4.Size = new System.Drawing.Size(204, 409);
             this.panelCsk4.TabIndex = 0;
             // 
-            // checkBox6
+            // cbCsk4Default
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(122, 362);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(22, 21);
-            this.checkBox6.TabIndex = 12;
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.cbCsk4Default.AutoSize = true;
+            this.cbCsk4Default.Location = new System.Drawing.Point(122, 362);
+            this.cbCsk4Default.Name = "cbCsk4Default";
+            this.cbCsk4Default.Size = new System.Drawing.Size(22, 21);
+            this.cbCsk4Default.TabIndex = 12;
+            this.cbCsk4Default.UseVisualStyleBackColor = true;
             // 
             // label58
             // 
@@ -1452,12 +1452,12 @@
             this.label58.TabIndex = 11;
             this.label58.Text = "是否默认";
             // 
-            // textBox29
+            // tbCsk4Stopbit
             // 
-            this.textBox29.Location = new System.Drawing.Point(102, 304);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(68, 31);
-            this.textBox29.TabIndex = 10;
+            this.tbCsk4Stopbit.Location = new System.Drawing.Point(102, 304);
+            this.tbCsk4Stopbit.Name = "tbCsk4Stopbit";
+            this.tbCsk4Stopbit.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk4Stopbit.TabIndex = 10;
             // 
             // label59
             // 
@@ -1468,12 +1468,12 @@
             this.label59.TabIndex = 9;
             this.label59.Text = "停止位";
             // 
-            // textBox30
+            // tbCsk4Checksum
             // 
-            this.textBox30.Location = new System.Drawing.Point(102, 247);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(68, 31);
-            this.textBox30.TabIndex = 8;
+            this.tbCsk4Checksum.Location = new System.Drawing.Point(102, 247);
+            this.tbCsk4Checksum.Name = "tbCsk4Checksum";
+            this.tbCsk4Checksum.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk4Checksum.TabIndex = 8;
             // 
             // label60
             // 
@@ -1484,12 +1484,12 @@
             this.label60.TabIndex = 7;
             this.label60.Text = "校验位";
             // 
-            // textBox31
+            // tbCsk4Databit
             // 
-            this.textBox31.Location = new System.Drawing.Point(102, 192);
-            this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(68, 31);
-            this.textBox31.TabIndex = 6;
+            this.tbCsk4Databit.Location = new System.Drawing.Point(102, 192);
+            this.tbCsk4Databit.Name = "tbCsk4Databit";
+            this.tbCsk4Databit.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk4Databit.TabIndex = 6;
             // 
             // label61
             // 
@@ -1500,12 +1500,12 @@
             this.label61.TabIndex = 5;
             this.label61.Text = "数据位";
             // 
-            // textBox32
+            // tbCsk4BaudRate
             // 
-            this.textBox32.Location = new System.Drawing.Point(102, 139);
-            this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(68, 31);
-            this.textBox32.TabIndex = 4;
+            this.tbCsk4BaudRate.Location = new System.Drawing.Point(102, 139);
+            this.tbCsk4BaudRate.Name = "tbCsk4BaudRate";
+            this.tbCsk4BaudRate.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk4BaudRate.TabIndex = 4;
             // 
             // label62
             // 
@@ -1516,12 +1516,12 @@
             this.label62.TabIndex = 3;
             this.label62.Text = "波特率";
             // 
-            // textBox33
+            // tbCsk4Port
             // 
-            this.textBox33.Location = new System.Drawing.Point(102, 88);
-            this.textBox33.Name = "textBox33";
-            this.textBox33.Size = new System.Drawing.Size(68, 31);
-            this.textBox33.TabIndex = 2;
+            this.tbCsk4Port.Location = new System.Drawing.Point(102, 88);
+            this.tbCsk4Port.Name = "tbCsk4Port";
+            this.tbCsk4Port.Size = new System.Drawing.Size(68, 31);
+            this.tbCsk4Port.TabIndex = 2;
             // 
             // label63
             // 
@@ -1647,107 +1647,107 @@
         private Button tbCsk1Result;
         private GroupBox groupBox1;
         private Panel panel3;
-        private Button button1;
+        private Button tbCsk2Result;
         private Label label17;
         private Panel panel4;
-        private TextBox textBox1;
+        private TextBox tbCsk2Serial;
         private Label label18;
         private Panel panelWifi2;
-        private CheckBox checkBox1;
+        private CheckBox cbWifi2Default;
         private Label label19;
-        private TextBox textBox2;
+        private TextBox tbWifi2Stopbit;
         private Label label20;
-        private TextBox textBox3;
+        private TextBox tbWifi2Checksum;
         private Label label21;
-        private TextBox textBox4;
+        private TextBox tbWifi2Databit;
         private Label label22;
-        private TextBox textBox5;
+        private TextBox tbWifi2BaudRate;
         private Label label23;
-        private TextBox textBox6;
+        private TextBox tbWifi2Port;
         private Label label24;
         private Label label25;
         private Panel panelCsk2;
-        private CheckBox checkBox2;
+        private CheckBox cbCsk2Default;
         private Label label26;
-        private TextBox textBox7;
+        private TextBox tbCsk2Stopbit;
         private Label label27;
-        private TextBox textBox8;
+        private TextBox tbCsk2Checksum;
         private Label label28;
-        private TextBox textBox9;
+        private TextBox tbCsk2Databit;
         private Label label29;
-        private TextBox textBox10;
+        private TextBox tbCsk2BaudRate;
         private Label label30;
-        private TextBox textBox11;
+        private TextBox tbCsk2Port;
         private Label label31;
         private Label label32;
         private GroupBox groupBox2;
         private Panel panel7;
-        private Button button2;
+        private Button tbCsk3Result;
         private Label label33;
         private Panel panel8;
-        private TextBox textBox12;
+        private TextBox tbCsk3Serial;
         private Label label34;
         private Panel panelWifi3;
-        private CheckBox checkBox3;
+        private CheckBox cbWifi3Default;
         private Label label35;
-        private TextBox textBox13;
+        private TextBox tbWifi3Stopbit;
         private Label label36;
-        private TextBox textBox14;
+        private TextBox tbWifi3Checksum;
         private Label label37;
-        private TextBox textBox15;
+        private TextBox tbWifi3Databit;
         private Label label38;
-        private TextBox textBox16;
+        private TextBox tbWifi3BaudRate;
         private Label label39;
-        private TextBox textBox17;
+        private TextBox tbWifi3Port;
         private Label label40;
         private Label label41;
         private Panel panelCsk3;
-        private CheckBox checkBox4;
+        private CheckBox cbCsk3Default;
         private Label label42;
-        private TextBox textBox18;
+        private TextBox tbCsk3Stopbit;
         private Label label43;
-        private TextBox textBox19;
+        private TextBox tbCsk3Checksum;
         private Label label44;
-        private TextBox textBox20;
+        private TextBox tbCsk3Databit;
         private Label label45;
-        private TextBox textBox21;
+        private TextBox tbCsk3BaudRate;
         private Label label46;
-        private TextBox textBox22;
+        private TextBox tbCsk3Port;
         private Label label47;
         private Label label48;
         private GroupBox groupBox3;
         private Panel panel11;
-        private Button button3;
+        private Button tbCsk4Result;
         private Label label49;
         private Panel panel12;
-        private TextBox textBox23;
+        private TextBox tbCsk4Serial;
         private Label label50;
         private Panel panelWifi4;
-        private CheckBox checkBox5;
+        private CheckBox cbWifi4Default;
         private Label label51;
-        private TextBox textBox24;
+        private TextBox tbWifi4Stopbit;
         private Label label52;
-        private TextBox textBox25;
+        private TextBox tbWifi4Checksum;
         private Label label53;
-        private TextBox textBox26;
+        private TextBox tbWifi4Databit;
         private Label label54;
-        private TextBox textBox27;
+        private TextBox tbWifi4BaudRate;
         private Label label55;
-        private TextBox textBox28;
+        private TextBox tbWifi4Port;
         private Label label56;
         private Label label57;
         private Panel panelCsk4;
-        private CheckBox checkBox6;
+        private CheckBox cbCsk4Default;
         private Label label58;
-        private TextBox textBox29;
+        private TextBox tbCsk4Stopbit;
         private Label label59;
-        private TextBox textBox30;
+        private TextBox tbCsk4Checksum;
         private Label label60;
-        private TextBox textBox31;
+        private TextBox tbCsk4Databit;
         private Label label61;
-        private TextBox textBox32;
+        private TextBox tbCsk4BaudRate;
         private Label label62;
-        private TextBox textBox33;
+        private TextBox tbCsk4Port;
         private Label label63;
         private Label label64;
     }
