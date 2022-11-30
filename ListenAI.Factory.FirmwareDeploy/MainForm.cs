@@ -54,24 +54,38 @@
         }
 
         private void btnFlash_Click(object sender, EventArgs e) {
+            btnFlash.BackColor = SystemColors.Control;
+
             if (!File.Exists(Global.SelectedFirmwarePath)) {
                 Global.SelectedFirmwarePath = "";
                 tsslCurrentFirmware.Text = $"当前固件: (未选择)";
                 btnFwSelect.BackColor = Constants.ColorBlock;
+                btnFlash.BackColor = Constants.ColorBlock;
                 MessageBox.Show("请浏览并导入正确的固件包后再点击烧录。", "错误");
                 return;
             }
 
-            var checkCskPortResult = LineWorker.CheckComPorts(Constants.GroupType.Csk);
-            //var checkWifiPortResult = LineWorker.CheckComPorts(Constants.GroupType.Wifi);
-            var checkWifiPortResult = true;
-            if (!checkCskPortResult || !checkWifiPortResult) {
+            var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
+            var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
+            var availableGroups = new List<int>();
+
+            foreach (var groupId in checkCskPortResult) {
+                if (checkWifiPortResult.Contains(groupId)) {
+                    availableGroups.Add(groupId);
+                    var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                    if (serialControl.Text.Length == 0) {
+                        serialControl.Text = Utils.GetSerialNumberWithDate();
+                    }
+                    Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
+                }
+            }
+            if (availableGroups.Count == 0) {
                 btnFlash.BackColor = Constants.ColorBlock;
                 MessageBox.Show("请正确配置烧录串口后再点击烧录。", "错误");
                 return;
             }
 
-            btnFlash.BackColor = Constants.ColorProcceed;
+            btnFlash.BackColor = Constants.ColorProcessing;
         }
     }
 }

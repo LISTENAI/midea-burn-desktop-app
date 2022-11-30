@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="tools\Uart_Burn_Tool.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="tools\Uart_Burn_Tool.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
   </ItemGroup>
 

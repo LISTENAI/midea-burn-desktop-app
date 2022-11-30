@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.IO.Ports;
 using System.Reflection;
 
 namespace ListenAI.Factory.FirmwareDeploy {
@@ -60,7 +61,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
                             //init pass/fail button backColor to be red
                             if (newName == $"btnCsk{id}Result") {
-                                ctrl.BackColor = Color.Red;
+                                ctrl.BackColor = SystemColors.Control;
                             }
                             break;
                         default:
@@ -103,6 +104,78 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 .Replace("9", "九");
 
             return result;
+        }
+
+        public static string GetSerialNumberWithDate() {
+            var today = DateTime.UtcNow.AddHours(8).ToString("yyyyMMdd");
+            var serial = ++Global.NextSerialNumber;
+
+            return $"{today}{serial:00000}";
+        }
+        /// <summary>
+        /// Check if COM port(s) is/are available before everything starts.
+        /// </summary>
+        /// <returns></returns>
+        public static HashSet<int> CheckComPorts(Constants.GroupType groupType) {
+            var allPorts = SerialPort.GetPortNames().ToHashSet();
+            var result = new HashSet<int>();
+
+            for (int i = 1; i <= Global.GroupCount; i++) {
+                var targetCskControl = Constants.GetControl(i, groupType, Constants.GroupConfigType.Port);
+                if (string.IsNullOrWhiteSpace(targetCskControl.Text)) {
+                    continue;
+                }
+
+                if (!targetCskControl.Text.StartsWith("COM") || !allPorts.Contains(targetCskControl.Text)) {
+                    MessageBox.Show($"模组{ConvertToChineseChars(i)}串口设置错误", "错误");
+                    continue;
+                }
+
+                try {
+                    var comPort = targetCskControl.Text;
+                    var baudRate = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.BaudRate).Text);
+                    var dataBits = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.Databits).Text);
+                    var parity = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.Parity).Text);
+                    var stopBits = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.Stopbits).Text);
+
+                    var portOpenResult = IsComPortWorking(comPort, baudRate, dataBits, parity, stopBits);
+                    if (!portOpenResult) {
+                        MessageBox.Show($"模组{ConvertToChineseChars(i)}串口无法打开", "错误");
+                        continue;
+                    }
+                }
+                catch {
+                    MessageBox.Show($"模组{ConvertToChineseChars(i)}串口无法打开", "错误");
+                    continue;
+                }
+
+                result.Add(i);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// [INTERNAL USE ONLY] Check if com port could be opened
+        /// </summary>
+        /// <param name="comPort">com port</param>
+        /// <param name="baudRate">baud rate</param>
+        /// <param name="databits">data bits</param>
+        /// <param name="parity">parity</param>
+        /// <param name="stopBits">stop bits</param>
+        /// <returns></returns>
+        private static bool IsComPortWorking(string comPort, int baudRate, int databits, int parity, int stopBits) {
+            try {
+                var port = new SerialPort(comPort, baudRate, (Parity)parity, databits, (StopBits)stopBits);
+
+                port.Open();
+                port.Close();
+
+                return true;
+            }
+            catch {
+                return false;
+            }
         }
     }
 }
