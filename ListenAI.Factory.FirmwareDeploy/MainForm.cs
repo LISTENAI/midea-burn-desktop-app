@@ -85,6 +85,9 @@
                 return;
             }
 
+            var test1 = new LineWorker(1, Constants.GroupType.Csk);
+            test1.Flash();
+
             btnFlash.BackColor = Constants.ColorProcessing;
         }
     }

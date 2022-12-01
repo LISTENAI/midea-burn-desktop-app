@@ -14,6 +14,7 @@
         public static Color ColorProcessing = Color.Yellow;
         public static Color ColorCsk6PanelBackground = Color.FromArgb(247, 252, 254);
         public static Color ColorWifiPanelBackground = Color.FromArgb(253, 245, 234);
+        public static string BurnToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool.exe");
 
         public static string GetControlName(int groupId, GroupType groupType, GroupConfigType configType) {
             string result;
@@ -66,6 +67,13 @@
             Result = 6,
             Serial = 7,
             Progress = 8
+        }
+
+        public enum WorkerState {
+            Idle = 0,
+            Processing = 1,
+            Success = 2,
+            Error = 3
         }
     }
 }
