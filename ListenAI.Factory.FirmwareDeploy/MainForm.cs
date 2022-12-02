@@ -1,4 +1,6 @@
-﻿namespace ListenAI.Factory.FirmwareDeploy {
+﻿using System.Reflection.Metadata;
+
+namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
         public MainForm() {
             InitializeComponent();
@@ -57,9 +59,16 @@
         private void btnFlash_Click(object sender, EventArgs e) {
             btnFlash.BackColor = SystemColors.Control;
 
+            if (Global.MesRecord == null) {
+                MessageBox.Show("请完全填写MES记录需要的数据后再点击烧录。", "错误");
+                btnMES.BackColor = Constants.ColorBlock;
+                btnFlash.BackColor = Constants.ColorBlock;
+                return;
+            }
+
             if (!File.Exists(Global.SelectedFirmwarePath)) {
                 Global.SelectedFirmwarePath = "";
-                tsslCurrentFirmware.Text = $"当前固件: (未选择)";
+                tsslCurrentFirmware.Text = "当前固件: (未选择)";
                 btnFwSelect.BackColor = Constants.ColorBlock;
                 btnFlash.BackColor = Constants.ColorBlock;
                 MessageBox.Show("请浏览并导入正确的固件包后再点击烧录。", "错误");
@@ -93,8 +102,12 @@
         }
 
         private void btnMES_Click(object sender, EventArgs e) {
-            var mesForm = new MesSettingsForm();
-            mesForm.Show();
+            using (var mesForm = new MesSettingsForm()) {
+                var result = mesForm.ShowDialog();
+                if (result == DialogResult.OK && Global.MesRecord != null) {
+                    btnMES.BackColor = Constants.ColorProcceed;
+                }
+            }
         }
     }
 }

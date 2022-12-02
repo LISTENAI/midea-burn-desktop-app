@@ -27,7 +27,7 @@
             this.btnConfirm = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnShowDbConfig = new System.Windows.Forms.Button();
-            this.tbOptMachineId = new System.Windows.Forms.TextBox();
+            this.tbFlashMachineId = new System.Windows.Forms.TextBox();
             this.tbFlashToolName = new System.Windows.Forms.TextBox();
             this.tbFlashOpter = new System.Windows.Forms.TextBox();
             this.tbProdModel = new System.Windows.Forms.TextBox();
@@ -63,7 +63,7 @@
             this.groupBox1.Controls.Add(this.btnConfirm);
             this.groupBox1.Controls.Add(this.btnReset);
             this.groupBox1.Controls.Add(this.btnShowDbConfig);
-            this.groupBox1.Controls.Add(this.tbOptMachineId);
+            this.groupBox1.Controls.Add(this.tbFlashMachineId);
             this.groupBox1.Controls.Add(this.tbFlashToolName);
             this.groupBox1.Controls.Add(this.tbFlashOpter);
             this.groupBox1.Controls.Add(this.tbProdModel);
@@ -91,6 +91,7 @@
             this.btnConfirm.TabIndex = 16;
             this.btnConfirm.Text = "确认";
             this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // btnReset
             // 
@@ -112,12 +113,12 @@
             this.btnShowDbConfig.UseVisualStyleBackColor = true;
             this.btnShowDbConfig.Click += new System.EventHandler(this.btnShowDbConfig_Click);
             // 
-            // tbOptMachineId
+            // tbFlashMachineId
             // 
-            this.tbOptMachineId.Location = new System.Drawing.Point(148, 313);
-            this.tbOptMachineId.Name = "tbOptMachineId";
-            this.tbOptMachineId.Size = new System.Drawing.Size(141, 23);
-            this.tbOptMachineId.TabIndex = 13;
+            this.tbFlashMachineId.Location = new System.Drawing.Point(148, 313);
+            this.tbFlashMachineId.Name = "tbFlashMachineId";
+            this.tbFlashMachineId.Size = new System.Drawing.Size(141, 23);
+            this.tbFlashMachineId.TabIndex = 13;
             // 
             // tbFlashToolName
             // 
@@ -377,7 +378,7 @@
         private Label label7;
         private Label label6;
         private Label label5;
-        private TextBox tbOptMachineId;
+        private TextBox tbFlashMachineId;
         private TextBox tbFlashToolName;
         private TextBox tbFlashOpter;
         private TextBox tbProdModel;
