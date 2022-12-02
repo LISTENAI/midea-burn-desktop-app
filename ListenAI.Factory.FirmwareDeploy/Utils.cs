@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.IO.Ports;
 using System.Reflection;
+using Microsoft.Data.SqlClient;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public class Utils {
@@ -176,6 +177,29 @@ namespace ListenAI.Factory.FirmwareDeploy {
             catch {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Create a connection to mssql server
+        /// </summary>
+        /// <param name="server">server ip/domain</param>
+        /// <param name="username">username</param>
+        /// <param name="password">password</param>
+        /// <param name="initCatalog">assigned database</param>
+        /// <returns></returns>
+        public static SqlConnection? CreateMsSqlConnection(string server, string username, string password, string initCatalog) {
+            var connStrBuilder = new SqlConnectionStringBuilder {
+                DataSource = server,
+                UserID = username,
+                Password = password,
+                InitialCatalog = initCatalog,
+                TrustServerCertificate = true
+            };
+
+            var conn = new SqlConnection(connStrBuilder.ConnectionString);
+            conn.Open();
+
+            return conn;
         }
     }
 }

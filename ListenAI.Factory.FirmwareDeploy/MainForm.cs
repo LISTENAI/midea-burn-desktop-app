@@ -91,5 +91,10 @@
 
             btnFlash.BackColor = Constants.ColorProcessing;
         }
+
+        private void btnMES_Click(object sender, EventArgs e) {
+            var mesForm = new MesSettingsForm();
+            mesForm.Show();
+        }
     }
 }
