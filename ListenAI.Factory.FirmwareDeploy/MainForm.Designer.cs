@@ -115,14 +115,15 @@
             // 
             // btnMES
             // 
-            this.btnMES.Enabled = false;
+            this.btnMES.BackColor = System.Drawing.Color.Red;
             this.btnMES.Location = new System.Drawing.Point(57, 27);
             this.btnMES.Margin = new System.Windows.Forms.Padding(2);
             this.btnMES.Name = "btnMES";
             this.btnMES.Size = new System.Drawing.Size(277, 41);
             this.btnMES.TabIndex = 0;
             this.btnMES.Text = "MES记录";
-            this.btnMES.UseVisualStyleBackColor = true;
+            this.btnMES.UseVisualStyleBackColor = false;
+            this.btnMES.Click += new System.EventHandler(this.btnMES_Click);
             // 
             // statusStrip1
             // 
