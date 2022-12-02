@@ -12,6 +12,7 @@
         public static Color ColorProcceed = Color.FromArgb(0, 192, 0);
         public static Color ColorBlock = Color.FromArgb(255, 0, 0);
         public static Color ColorProcessing = Color.Yellow;
+        public static Color ColorPreprocessing = Color.Blue;
         public static Color ColorCsk6PanelBackground = Color.FromArgb(247, 252, 254);
         public static Color ColorWifiPanelBackground = Color.FromArgb(253, 245, 234);
         public static string BurnToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool.exe");

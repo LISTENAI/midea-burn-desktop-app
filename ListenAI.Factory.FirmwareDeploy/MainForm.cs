@@ -6,6 +6,7 @@
 
         private void MainForm_Load(object sender, EventArgs e) {
             FormControlsInit();
+            CenterToScreen();
         }
 
         /// <summary>
@@ -76,7 +77,7 @@
                     if (serialControl.Text.Length == 0) {
                         serialControl.Text = Utils.GetSerialNumberWithDate();
                     }
-                    Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
+                    Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorPreprocessing;
                 }
             }
             if (availableGroups.Count == 0) {
