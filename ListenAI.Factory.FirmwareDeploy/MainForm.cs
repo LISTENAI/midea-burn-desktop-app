@@ -6,6 +6,7 @@
 
         private void MainForm_Load(object sender, EventArgs e) {
             FormControlsInit();
+            CenterToScreen();
         }
 
         /// <summary>
@@ -76,7 +77,7 @@
                     if (serialControl.Text.Length == 0) {
                         serialControl.Text = Utils.GetSerialNumberWithDate();
                     }
-                    Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
+                    Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorPreprocessing;
                 }
             }
             if (availableGroups.Count == 0) {
@@ -84,6 +85,9 @@
                 MessageBox.Show("请正确配置烧录串口后再点击烧录。", "错误");
                 return;
             }
+
+            var test1 = new LineWorker(1, Constants.GroupType.Csk);
+            test1.Flash();
 
             btnFlash.BackColor = Constants.ColorProcessing;
         }
