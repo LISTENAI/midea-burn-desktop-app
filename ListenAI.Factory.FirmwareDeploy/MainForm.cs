@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-using ListenAI.Factory.FirmwareDeploy.models;
-using Newtonsoft.Json;
+﻿using ListenAI.Factory.FirmwareDeploy.models;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
