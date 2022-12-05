@@ -23,8 +23,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             var baudRate = GetControl(_groupId, _groupType, GroupConfigType.BaudRate).Text;
             var port = GetControl(_groupId, _groupType, GroupConfigType.Port).Text;
-            var file = Global.SelectedFirmwarePath;
-            var burnArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{file}\" -c -m -d -a 0x0 -s";
+            var fwPackPath = Global.SelectedFirmware.FullPath;
+            var fwFile = Global.SelectedFirmware.GetFirmware(GroupType.Csk);
+            if (fwFile == null) {
+                return;
+            }
+            var burnArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
             var timeoutCount = 0;
             var colorChangedToProcessing = false;
             StartProcess(BurnToolPath, burnArgs, (sender, args) => {
