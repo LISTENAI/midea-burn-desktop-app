@@ -34,7 +34,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var clonedGrpbox = Utils.CloneControl(gbMod1);
                 clonedGrpbox = Utils.CtrlPropModify(clonedGrpbox, Global.GroupCount);
                 var locX = gbMod1.Location.X + 454 * (Global.GroupCount - 1);
-                clonedGrpbox.Location = new Point(locX, gbMod1.Location.Y);
+                clonedGrpbox.Location = gbMod1.Location with { X = locX };
                 this.Controls.Add(clonedGrpbox);
             }
         }
@@ -134,8 +134,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
-            var test1 = new LineWorker(1, Constants.GroupType.Csk);
-            test1.Flash();
+            var test1 = new LineWorker(1);
+            test1.Start();
 
             btnFlash.BackColor = Constants.ColorProcessing;
         }

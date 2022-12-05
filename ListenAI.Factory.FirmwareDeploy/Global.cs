@@ -19,6 +19,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static Color ColorCsk6PanelBackground = Color.FromArgb(247, 252, 254);
         public static Color ColorWifiPanelBackground = Color.FromArgb(253, 245, 234);
         public static string BurnToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool.exe");
+        public static string ASRToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "ASR_downloader_V1.0.6.exe");
 
         public static string GetControlName(int groupId, GroupType groupType, GroupConfigType configType) {
             string result;

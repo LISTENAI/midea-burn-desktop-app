@@ -1,25 +1,53 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using static ListenAI.Factory.FirmwareDeploy.Constants;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public class LineWorker {
         private int _groupId;
-        private GroupType _groupType;
-        private WorkerState _state;
+        private WorkerState _cskState;
+        private WorkerState _wifiState;
         private Process _process;
 
-        public WorkerState State => _state;
+        private BackgroundWorker _cskWorker;
+        private BackgroundWorker _wifiWorker;
 
-        public LineWorker(int groupId, GroupType groupType) { 
+        public WorkerState CskState => _cskState;
+        public WorkerState WifiState => _wifiState;
+
+        public LineWorker(int groupId) { 
             _groupId = groupId;
-            _groupType = groupType;
         }
 
-        public void Flash() {
-            if (_state == WorkerState.Processing) {
+        public void Start() {
+            _cskWorker = new BackgroundWorker();
+            _cskWorker.WorkerReportsProgress = true;
+            _cskWorker.WorkerSupportsCancellation = true;
+            _cskWorker.DoWork += CskFlash_Work;
+            _cskWorker.ProgressChanged += CskFlash_ProgressChanged;
+            _cskWorker.RunWorkerCompleted += CskFlash_RunWorkerCompleted;
+
+            _wifiWorker = new BackgroundWorker();
+            _wifiWorker.WorkerReportsProgress = true;
+            _wifiWorker.WorkerSupportsCancellation = true;
+            _wifiWorker.DoWork += WifiFlash_Work;
+            _wifiWorker.ProgressChanged += WifiFlash_ProgressChanged;
+            _wifiWorker.RunWorkerCompleted += WifiFlash_RunWorkerCompleted;
+
+            _cskWorker.RunWorkerAsync();
+            _wifiWorker.RunWorkerAsync();
+        }
+
+        public void Stop() {
+
+        }
+
+        private void CskFlash_Work(object? sender, DoWorkEventArgs e) {
+            if (_cskState == WorkerState.Processing) {
                 return;
             }
-            _state = WorkerState.Processing;
+            _cskState = WorkerState.Processing;
+            var _groupType = GroupType.Csk;
 
             var baudRate = GetControl(_groupId, _groupType, GroupConfigType.BaudRate).Text;
             var port = GetControl(_groupId, _groupType, GroupConfigType.Port).Text;
@@ -28,66 +56,95 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (fwFile == null) {
                 return;
             }
-            var burnArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
+            var flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
             var timeoutCount = 0;
-            var colorChangedToProcessing = false;
-            StartProcess(BurnToolPath, burnArgs, (sender, args) => {
+
+            StartProcess(BurnToolPath, flashArgs, (o, args) => {
                 if (args.Data == null) {
                     return;
+                }
+                if (e.Cancel) {
+                    _process.Kill();
+                    throw new Exception("Operation cancelled!");
                 }
                 //data handler
                 Debug.WriteLine(args.Data);
                 if (args.Data.StartsWith("FLASH DATA SEND PROGESS:")) {
                     try {
                         var prog = int.Parse(args.Data.Replace("FLASH DATA SEND PROGESS:", "").Replace("%", "").Trim());
-                        var progCtrl = (ProgressBar)GetControl(_groupId, _groupType, GroupConfigType.Progress);
-                        progCtrl.Invoke(() => { progCtrl.Value = prog; });
                         timeoutCount = 0;
-
-                        if (!colorChangedToProcessing) {
-                            var resultCtrl = GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
-                            resultCtrl.Invoke(() => { resultCtrl.BackColor = ColorProcessing; });
-                            colorChangedToProcessing = true;
-                        }
+                        _cskWorker.ReportProgress(prog);
                     }
                     catch {
                         timeoutCount++;
                     }
-                } else if (args.Data.StartsWith("FLASH DOWNLOAD SUCCESS")) {
-                    var resultCtrl = GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
-                    resultCtrl.Invoke(() => {
-                        resultCtrl.BackColor = ColorProcceed;
-                    });
-                } else if (args.Data.StartsWith("RECEIVE OVERTIME") ||
+                }
+                else if (args.Data.StartsWith("FLASH DOWNLOAD SUCCESS")) {
+                    _cskWorker.ReportProgress(100);
+                }
+                else if (args.Data.StartsWith("RECEIVE OVERTIME") ||
                            args.Data.StartsWith("CONNECT CHIP OVERTIME")) {
                     timeoutCount++;
                     if (timeoutCount >= 10) {
                         _process.Kill();
-                        _state = WorkerState.Error;
                         Debug.WriteLine("Too many timeout exception, flash aborted!");
+                        throw new Exception("Too many timeout exception, flash aborted!");
                     }
-                } else if (args.Data.StartsWith("SERILA PORT NUMBER ERROR") ||
+                }
+                else if (args.Data.StartsWith("SERILA PORT NUMBER ERROR") ||
                            args.Data.StartsWith("SYNC FORMAT ERROR") ||
                            args.Data.StartsWith("MD5 CHECK ERROR")) {
                     _process.Kill();
-                    _state = WorkerState.Error;
-                    Debug.WriteLine("Too many timeout exception, flash aborted!");
+                    Debug.WriteLine($"Critical error, flash aborted! Msg = {args.Data}");
+                    throw new Exception($"Critical error, flash aborted! Msg = {args.Data}");
                 }
-            }, (sender, args) => {
-                //exit handler
-                _state = _process.ExitCode == 0 ? WorkerState.Success : WorkerState.Error;
+            }, (o, args) => {
                 Debug.WriteLine($"Burn-tools exited with code {_process.ExitCode}");
-                if (_state == WorkerState.Error) {
-                    var resultCtrl = GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
-                    resultCtrl.Invoke(() => { resultCtrl.BackColor = ColorBlock; });
+                if (_process.ExitCode != 0) {
+                    throw new Exception($"Burn-tools exited with code {_process.ExitCode}");
                 }
             });
         }
 
-        public void AbortFlash() {
-            _state = WorkerState.Idle;
-            _process.Kill();
-            Debug.WriteLine("Too many timeout exception, flash aborted!");
+        private void CskFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
+            var ctrlPb = (ProgressBar) GetControl(_groupId, GroupType.Csk, GroupConfigType.Progress);
+            if (ctrlPb == null) {
+                return;
+            }
+
+            if (ctrlPb.InvokeRequired) {
+                ctrlPb.Invoke(() => {
+                    ctrlPb.Value = e.ProgressPercentage;
+                });
+            }
+            else {
+                ctrlPb.Value = e.ProgressPercentage;
+            }
+        }
+
+        private void CskFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
+            if (e.Error != null) {
+                _cskState = WorkerState.Error;
+                _wifiWorker.CancelAsync();
+            }
+            else {
+                _cskState = WorkerState.Success;
+            }
+        }
+
+        private void WifiFlash_Work(object? sender, DoWorkEventArgs e) {
+            if (_wifiState == WorkerState.Processing) {
+                return;
+            }
+            _wifiState = WorkerState.Processing;
+        }
+
+        private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
+
+        }
+
+        private void WifiFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
+
         }
 
         private void StartProcess(string file, string args, DataReceivedEventHandler dataHandler, EventHandler exitHandler) {
