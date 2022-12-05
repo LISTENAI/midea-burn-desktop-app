@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.IO.Ports;
 using System.Reflection;
+using System.Security.Cryptography;
 using Microsoft.Data.SqlClient;
 
 namespace ListenAI.Factory.FirmwareDeploy {
@@ -200,6 +201,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
             conn.Open();
 
             return conn;
+        }
+
+        public static string GetMd5Hash(string path) {
+            using (var md5 = MD5.Create()) {
+                using (var stream = File.OpenRead(path)) {
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
         }
     }
 }

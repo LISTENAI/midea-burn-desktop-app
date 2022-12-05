@@ -1,4 +1,6 @@
 ﻿using System.Reflection.Metadata;
+using ListenAI.Factory.FirmwareDeploy.models;
+using Newtonsoft.Json;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
@@ -41,18 +43,66 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void btnFwSelect_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog();
-            ofd.Filter = "固件文件 (*.bin)|*.bin|所有文件 (*.*)|*.*";
+            ofd.Filter = "固件包配置文件 (*.json)|*.json|所有文件 (*.*)|*.*";
             ofd.Multiselect = false;
             var result = ofd.ShowDialog();
 
-            if (result == DialogResult.OK) {
-                Global.SelectedFirmwarePath = ofd.FileName;
-                tsslCurrentFirmware.Text = $"当前固件: {Global.SelectedFirmwarePath}";
+            if (result != DialogResult.OK) {
+                return;
+            }
+
+            var fwPackConfigPath = ofd.FileName;
+            var fwPackDirPath = Path.GetDirectoryName(ofd.FileName);
+
+            var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
+            var fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
+            if (fwCfg == null) {
+                MessageBox.Show("请浏览并导入正确的固件包后再点击烧录。", "错误");
+                return;
+            }
+
+            if (fwCfg.Files.Count != 2) {
+                MessageBox.Show("固件包格式不正确！01", "错误");
+                return;
+            }
+
+            foreach (var file in fwCfg.Files) {
+                if (file.Id != 0 && file.Id != 1) {
+                    MessageBox.Show("固件包格式不正确！02", "错误");
+                    return;
+                }
+
+                var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
+                if (!File.Exists(fwPackFilePath)) {
+                    MessageBox.Show($"固件 {file.Name} 不存在！", "错误");
+                    return;
+                }
+
+                var fi = new FileInfo(fwPackFilePath);
+                if (fi.Length != file.Size) {
+                    MessageBox.Show($"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}", "错误");
+                    return;
+                }
+
+                var hash = Utils.GetMd5Hash(fwPackFilePath);
+                if (hash != file.Checksum) {
+                    MessageBox.Show($"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}", "错误");
+                    return;
+                }
+            }
+
+            try {
                 btnFwSelect.BackColor = Constants.ColorProcceed;
-            } else {
-                Global.SelectedFirmwarePath = "";
-                tsslCurrentFirmware.Text = $"当前固件: (未选择)";
-                btnFwSelect.BackColor = Constants.ColorBlock;
+                fwCfg.FullPath = fwPackDirPath;
+                var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
+                var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
+                tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
+                                           $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
+                                           $"固件包路径: {fwCfg.FullPath}";
+                Global.SelectedFirmware = fwCfg;
+            }
+            catch (Exception ex) {
+                MessageBox.Show($"固件包格式不正确！03\n{ex}", "错误");
             }
         }
 
@@ -63,15 +113,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 MessageBox.Show("请完全填写MES记录需要的数据后再点击烧录。", "错误");
                 btnMES.BackColor = Constants.ColorBlock;
                 btnFlash.BackColor = Constants.ColorBlock;
-                return;
-            }
-
-            if (!File.Exists(Global.SelectedFirmwarePath)) {
-                Global.SelectedFirmwarePath = "";
-                tsslCurrentFirmware.Text = "当前固件: (未选择)";
-                btnFwSelect.BackColor = Constants.ColorBlock;
-                btnFlash.BackColor = Constants.ColorBlock;
-                MessageBox.Show("请浏览并导入正确的固件包后再点击烧录。", "错误");
                 return;
             }
 
