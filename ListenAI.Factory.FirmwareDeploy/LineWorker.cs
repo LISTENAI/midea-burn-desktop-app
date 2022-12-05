@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using ListenAI.Factory.FirmwareDeploy.models;
 using static ListenAI.Factory.FirmwareDeploy.Constants;
 
 namespace ListenAI.Factory.FirmwareDeploy {
@@ -59,7 +60,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
             var timeoutCount = 0;
 
-            StartProcess(BurnToolPath, flashArgs, (o, args) => {
+            StartProcessAsync(BurnToolPath, flashArgs, (o, args) => {
                 if (args.Data == null) {
                     return;
                 }
@@ -130,6 +131,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             else {
                 _cskState = WorkerState.Success;
             }
+
+            Thread.Sleep(new Random().Next(3000, 6000));
+            if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
+                ReportResultToUi();
+            }
         }
 
         private void WifiFlash_Work(object? sender, DoWorkEventArgs e) {
@@ -137,17 +143,92 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
             _wifiState = WorkerState.Processing;
+            var _groupType = GroupType.Wifi;
+
+            var port = GetControl(_groupId, _groupType, GroupConfigType.Port).Text;
+
+            //step 1 - Check for device
+            var args = $"dl --port {port} --chip 2";
+            var runAsr = StartProcessSync(ASRToolPath, args);
+            if (runAsr.ExitCode == 0) {
+                _wifiWorker.ReportProgress(20);
+            }
+            else {
+                throw new Exception($"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
+            }
+
+            //step 2 - flash firmware
+            var fwInfo = Global.SelectedFirmware.GetFirmware(GroupType.Wifi);
+            args = $"burn --port {port} --chip 2 --path {Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)} --multi";
+            runAsr = StartProcessSync(ASRToolPath, args);
+            if (runAsr.ExitCode == 0) {
+                _wifiWorker.ReportProgress(80);
+            }
+            else {
+                throw new Exception($"烧录失败。Code = {runAsr.ExitCode}");
+            }
+
+            //step 3 - verify firmware flashed
+            args = $"verify --port {port} --chip 2 --path {Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)} --multi";
+            runAsr = StartProcessSync(ASRToolPath, args);
+            if (runAsr.ExitCode == 0) {
+                _wifiWorker.ReportProgress(100);
+            }
+            else {
+                throw new Exception($"校验失败。Code = {runAsr.ExitCode}");
+            }
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
+            var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Wifi, GroupConfigType.Progress);
+            if (ctrlPb == null) {
+                return;
+            }
 
+            if (ctrlPb.InvokeRequired) {
+                ctrlPb.Invoke(() => {
+                    ctrlPb.Value = e.ProgressPercentage;
+                });
+            }
+            else {
+                ctrlPb.Value = e.ProgressPercentage;
+            }
         }
 
         private void WifiFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
+            if (e.Error != null) {
+                _wifiState = WorkerState.Error;
+                _cskWorker.CancelAsync();
+            }
+            else {
+                _wifiState = WorkerState.Success;
+            }
 
+            Thread.Sleep(new Random().Next(3000, 6000));
+            if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
+                ReportResultToUi();
+            }
         }
 
-        private void StartProcess(string file, string args, DataReceivedEventHandler dataHandler, EventHandler exitHandler) {
+        private void ReportResultToUi() {
+            var passFailIndicator = (Button) GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
+            if (passFailIndicator == null) {
+                return;
+            }
+            var bgc = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? 
+                ColorProcceed : ColorBlock;
+
+            if (passFailIndicator.InvokeRequired) {
+                passFailIndicator.Invoke(() => {
+                    passFailIndicator.BackColor = bgc;
+                });
+            }
+            else {
+                passFailIndicator.BackColor = bgc;
+            }
+        }
+
+        private void StartProcessAsync(string file, string args, DataReceivedEventHandler dataHandler, EventHandler exitHandler) {
             var startInfo = new ProcessStartInfo(file, args) {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -161,6 +242,25 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _process.StartInfo = startInfo;
             _process.Start();
             _process.BeginOutputReadLine();
+        }
+
+        private ProcessExitInfo StartProcessSync(string file, string args) {
+            var startInfo = new ProcessStartInfo(file, args) {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            _process = new Process();
+            _process.StartInfo = startInfo;
+            _process.Start();
+
+            _process.WaitForExit();
+
+            return new ProcessExitInfo() {
+                ExitCode = _process.ExitCode,
+                StdErr = _process.StandardError.ReadToEnd(),
+                StdOut = _process.StandardOutput.ReadToEnd()
+            };
         }
     }
 }

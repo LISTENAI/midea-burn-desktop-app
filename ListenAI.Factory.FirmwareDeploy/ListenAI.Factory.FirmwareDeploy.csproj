@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="tools\ASR_downloader_V1.0.6.exe" />
     <None Remove="tools\Uart_Burn_Tool.exe" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="tools\ASR_downloader_V1.0.6.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="tools\Uart_Burn_Tool.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
