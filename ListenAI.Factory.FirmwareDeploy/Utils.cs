@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.IO.Compression;
 using System.IO.Ports;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -209,6 +210,21 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     var hash = md5.ComputeHash(stream);
                     return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
                 }
+            }
+        }
+
+        public static bool Unzip(string zipFile, string destPath) {
+            try {
+                if (Directory.Exists(destPath)) {
+                    Directory.Delete(destPath, true);
+                }
+
+                Directory.CreateDirectory(destPath);
+                ZipFile.ExtractToDirectory(zipFile, destPath, true);
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
             }
         }
     }
