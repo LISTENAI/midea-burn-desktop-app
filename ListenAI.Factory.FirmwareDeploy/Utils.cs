@@ -133,26 +133,20 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 }
 
                 if (!targetCskControl.Text.StartsWith("COM") || !allPorts.Contains(targetCskControl.Text)) {
-                    MessageBox.Show($"模组{ConvertToChineseChars(i)}串口设置错误", "错误");
-                    continue;
+                    throw new ListenAiException(302, $"模组{ConvertToChineseChars(i)}串口设置错误", "");
                 }
 
                 try {
                     var comPort = targetCskControl.Text;
                     var baudRate = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.BaudRate).Text);
-                    var dataBits = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.Databits).Text);
-                    var parity = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.Parity).Text);
-                    var stopBits = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.Stopbits).Text);
 
-                    var portOpenResult = IsComPortWorking(comPort, baudRate, dataBits, parity, stopBits);
+                    var portOpenResult = IsComPortWorking(comPort, baudRate);
                     if (!portOpenResult) {
-                        MessageBox.Show($"模组{ConvertToChineseChars(i)}串口无法打开", "错误");
-                        continue;
+                        throw new ListenAiException(303, $"模组{ConvertToChineseChars(i)}串口无法打开", "", 1);
                     }
                 }
-                catch {
-                    MessageBox.Show($"模组{ConvertToChineseChars(i)}串口无法打开", "错误");
-                    continue;
+                catch (Exception ex) when (!(ex is ListenAiException)) {
+                    throw new ListenAiException(303, $"模组{ConvertToChineseChars(i)}串口无法打开", ex.Message, 2);
                 }
 
                 result.Add(i);
@@ -170,9 +164,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="parity">parity</param>
         /// <param name="stopBits">stop bits</param>
         /// <returns></returns>
-        private static bool IsComPortWorking(string comPort, int baudRate, int databits, int parity, int stopBits) {
+        private static bool IsComPortWorking(string comPort, int baudRate) {
             try {
-                var port = new SerialPort(comPort, baudRate, (Parity)parity, databits, (StopBits)stopBits);
+                var port = new SerialPort(comPort, baudRate, Parity.None, 8, StopBits.One);
 
                 port.Open();
                 port.Close();
