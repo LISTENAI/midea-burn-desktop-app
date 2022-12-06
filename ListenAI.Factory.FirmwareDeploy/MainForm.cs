@@ -47,6 +47,57 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 clonedGrpbox.Location = gbMod1.Location with { X = locX };
                 this.Controls.Add(clonedGrpbox);
             }
+
+            //assign event code for all default checkbox
+            for (var i = 1; i <= Global.GroupCount; i++) {
+                var groupId = i;
+                for (var t = 0; t <= 1; t++) {
+                    var groupType = (Constants.GroupType)t;
+                    var defaultCheckbox = (CheckBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.IsDefault);
+                    defaultCheckbox.CheckStateChanged += (_, _) => {
+                        ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.Port))
+                            .ReadOnly = defaultCheckbox.Checked;
+                        ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.BaudRate))
+                            .ReadOnly = defaultCheckbox.Checked;
+                        Utils.SaveUiConfig();
+                    };
+                }
+            }
+
+            //load ui config from file if exists
+            var savedUiConfig = Utils.LoadUiConfig();
+            if (savedUiConfig != null) {
+                foreach (var portConfig in savedUiConfig.PortConfig) {
+                    try {
+                        if (!portConfig.Port.StartsWith("COM") || portConfig.GroupId < 1 ||
+                            portConfig.GroupId > Global.GroupCount) {
+                            continue;
+                        }
+
+                        var ctrlPort = (TextBox)Constants.GetControl(portConfig.GroupId,
+                            (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.Port);
+                        if (ctrlPort == null) {
+                            continue;
+                        }
+                        ctrlPort.Text = portConfig.Port;
+
+                        var ctrlBaudRate = (TextBox)Constants.GetControl(portConfig.GroupId,
+                            (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.BaudRate);
+                        if (ctrlBaudRate == null) {
+                            continue;
+                        }
+                        ctrlBaudRate.Text = portConfig.BaudRate.ToString();
+
+                        var ctrlIsDefault = (CheckBox)Constants.GetControl(portConfig.GroupId,
+                            (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.IsDefault);
+                        if (ctrlIsDefault == null) {
+                            continue;
+                        }
+                        ctrlIsDefault.Checked = true;
+                    }
+                    catch { }
+                }
+            }
         }
 
         private void btnFwSelect_Click(object sender, EventArgs e) {

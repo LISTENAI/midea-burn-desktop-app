@@ -38,7 +38,7 @@
             this.tbCommon1Serial = new System.Windows.Forms.TextBox();
             this.lbCommon1TitleSn = new System.Windows.Forms.Label();
             this.panelWifi1 = new System.Windows.Forms.Panel();
-            this.cbWifi1Default = new System.Windows.Forms.CheckBox();
+            this.cbWifi1IsDefault = new System.Windows.Forms.CheckBox();
             this.lbWifi1TitleDefault = new System.Windows.Forms.Label();
             this.tbWifi1Stopbits = new System.Windows.Forms.TextBox();
             this.lbWifi1TitleStopbit = new System.Windows.Forms.Label();
@@ -52,7 +52,7 @@
             this.lbWifi1TitlePort = new System.Windows.Forms.Label();
             this.lbWifi1Title = new System.Windows.Forms.Label();
             this.panelCsk1 = new System.Windows.Forms.Panel();
-            this.cbCsk1Default = new System.Windows.Forms.CheckBox();
+            this.cbCsk1IsDefault = new System.Windows.Forms.CheckBox();
             this.lbCsk1TitleDefault = new System.Windows.Forms.Label();
             this.tbCsk1Stopbits = new System.Windows.Forms.TextBox();
             this.lbCsk1TitleStopbit = new System.Windows.Forms.Label();
@@ -80,9 +80,9 @@
             this.gbSettings.Controls.Add(this.btnFwSelect);
             this.gbSettings.Controls.Add(this.btnMES);
             this.gbSettings.Location = new System.Drawing.Point(8, 7);
-            this.gbSettings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbSettings.Margin = new System.Windows.Forms.Padding(2);
             this.gbSettings.Name = "gbSettings";
-            this.gbSettings.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbSettings.Padding = new System.Windows.Forms.Padding(2);
             this.gbSettings.Size = new System.Drawing.Size(1267, 83);
             this.gbSettings.TabIndex = 2;
             this.gbSettings.TabStop = false;
@@ -92,7 +92,7 @@
             // 
             this.btnFlash.BackColor = System.Drawing.SystemColors.Control;
             this.btnFlash.Location = new System.Drawing.Point(898, 27);
-            this.btnFlash.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnFlash.Margin = new System.Windows.Forms.Padding(2);
             this.btnFlash.Name = "btnFlash";
             this.btnFlash.Size = new System.Drawing.Size(277, 41);
             this.btnFlash.TabIndex = 2;
@@ -104,7 +104,7 @@
             // 
             this.btnFwSelect.BackColor = System.Drawing.Color.Blue;
             this.btnFwSelect.Location = new System.Drawing.Point(477, 27);
-            this.btnFwSelect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnFwSelect.Margin = new System.Windows.Forms.Padding(2);
             this.btnFwSelect.Name = "btnFwSelect";
             this.btnFwSelect.Size = new System.Drawing.Size(277, 41);
             this.btnFwSelect.TabIndex = 1;
@@ -116,7 +116,7 @@
             // 
             this.btnMES.BackColor = System.Drawing.Color.Blue;
             this.btnMES.Location = new System.Drawing.Point(57, 27);
-            this.btnMES.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnMES.Margin = new System.Windows.Forms.Padding(2);
             this.btnMES.Name = "btnMES";
             this.btnMES.Size = new System.Drawing.Size(277, 41);
             this.btnMES.TabIndex = 0;
@@ -149,9 +149,9 @@
             this.gbMod1.Controls.Add(this.panelWifi1);
             this.gbMod1.Controls.Add(this.panelCsk1);
             this.gbMod1.Location = new System.Drawing.Point(8, 94);
-            this.gbMod1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbMod1.Margin = new System.Windows.Forms.Padding(2);
             this.gbMod1.Name = "gbMod1";
-            this.gbMod1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbMod1.Padding = new System.Windows.Forms.Padding(2);
             this.gbMod1.Size = new System.Drawing.Size(314, 374);
             this.gbMod1.TabIndex = 4;
             this.gbMod1.TabStop = false;
@@ -162,7 +162,7 @@
             this.panelResult1.Controls.Add(this.btnCommon1Result);
             this.panelResult1.Controls.Add(this.lbCommon1Title);
             this.panelResult1.Location = new System.Drawing.Point(12, 304);
-            this.panelResult1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelResult1.Margin = new System.Windows.Forms.Padding(2);
             this.panelResult1.Name = "panelResult1";
             this.panelResult1.Size = new System.Drawing.Size(290, 61);
             this.panelResult1.TabIndex = 3;
@@ -170,7 +170,7 @@
             // pbCsk1Progress
             // 
             this.pbCsk1Progress.Location = new System.Drawing.Point(25, 7);
-            this.pbCsk1Progress.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbCsk1Progress.Margin = new System.Windows.Forms.Padding(2);
             this.pbCsk1Progress.Name = "pbCsk1Progress";
             this.pbCsk1Progress.Size = new System.Drawing.Size(226, 19);
             this.pbCsk1Progress.Step = 1;
@@ -182,7 +182,7 @@
             this.btnCommon1Result.BackColor = System.Drawing.SystemColors.Control;
             this.btnCommon1Result.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnCommon1Result.Location = new System.Drawing.Point(119, 32);
-            this.btnCommon1Result.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCommon1Result.Margin = new System.Windows.Forms.Padding(2);
             this.btnCommon1Result.Name = "btnCommon1Result";
             this.btnCommon1Result.Size = new System.Drawing.Size(132, 20);
             this.btnCommon1Result.TabIndex = 1;
@@ -206,7 +206,7 @@
             this.panelSn1.Controls.Add(this.tbCommon1Serial);
             this.panelSn1.Controls.Add(this.lbCommon1TitleSn);
             this.panelSn1.Location = new System.Drawing.Point(12, 266);
-            this.panelSn1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelSn1.Margin = new System.Windows.Forms.Padding(2);
             this.panelSn1.Name = "panelSn1";
             this.panelSn1.Size = new System.Drawing.Size(290, 35);
             this.panelSn1.TabIndex = 2;
@@ -214,7 +214,7 @@
             // tbCommon1Serial
             // 
             this.tbCommon1Serial.Location = new System.Drawing.Point(98, 7);
-            this.tbCommon1Serial.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCommon1Serial.Margin = new System.Windows.Forms.Padding(2);
             this.tbCommon1Serial.MaxLength = 13;
             this.tbCommon1Serial.Name = "tbCommon1Serial";
             this.tbCommon1Serial.Size = new System.Drawing.Size(154, 23);
@@ -233,7 +233,7 @@
             // 
             // panelWifi1
             // 
-            this.panelWifi1.Controls.Add(this.cbWifi1Default);
+            this.panelWifi1.Controls.Add(this.cbWifi1IsDefault);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleDefault);
             this.panelWifi1.Controls.Add(this.tbWifi1Stopbits);
             this.panelWifi1.Controls.Add(this.lbWifi1TitleStopbit);
@@ -247,20 +247,20 @@
             this.panelWifi1.Controls.Add(this.lbWifi1TitlePort);
             this.panelWifi1.Controls.Add(this.lbWifi1Title);
             this.panelWifi1.Location = new System.Drawing.Point(159, 18);
-            this.panelWifi1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelWifi1.Margin = new System.Windows.Forms.Padding(2);
             this.panelWifi1.Name = "panelWifi1";
             this.panelWifi1.Size = new System.Drawing.Size(143, 242);
             this.panelWifi1.TabIndex = 1;
             // 
-            // cbWifi1Default
+            // cbWifi1IsDefault
             // 
-            this.cbWifi1Default.AutoSize = true;
-            this.cbWifi1Default.Location = new System.Drawing.Point(90, 217);
-            this.cbWifi1Default.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.cbWifi1Default.Name = "cbWifi1Default";
-            this.cbWifi1Default.Size = new System.Drawing.Size(15, 14);
-            this.cbWifi1Default.TabIndex = 24;
-            this.cbWifi1Default.UseVisualStyleBackColor = true;
+            this.cbWifi1IsDefault.AutoSize = true;
+            this.cbWifi1IsDefault.Location = new System.Drawing.Point(90, 217);
+            this.cbWifi1IsDefault.Margin = new System.Windows.Forms.Padding(2);
+            this.cbWifi1IsDefault.Name = "cbWifi1IsDefault";
+            this.cbWifi1IsDefault.Size = new System.Drawing.Size(15, 14);
+            this.cbWifi1IsDefault.TabIndex = 24;
+            this.cbWifi1IsDefault.UseVisualStyleBackColor = true;
             // 
             // lbWifi1TitleDefault
             // 
@@ -275,7 +275,7 @@
             // tbWifi1Stopbits
             // 
             this.tbWifi1Stopbits.Location = new System.Drawing.Point(74, 182);
-            this.tbWifi1Stopbits.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbWifi1Stopbits.Margin = new System.Windows.Forms.Padding(2);
             this.tbWifi1Stopbits.MaxLength = 1;
             this.tbWifi1Stopbits.Name = "tbWifi1Stopbits";
             this.tbWifi1Stopbits.ReadOnly = true;
@@ -296,7 +296,7 @@
             // tbWifi1Parity
             // 
             this.tbWifi1Parity.Location = new System.Drawing.Point(74, 148);
-            this.tbWifi1Parity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbWifi1Parity.Margin = new System.Windows.Forms.Padding(2);
             this.tbWifi1Parity.MaxLength = 1;
             this.tbWifi1Parity.Name = "tbWifi1Parity";
             this.tbWifi1Parity.ReadOnly = true;
@@ -317,7 +317,7 @@
             // tbWifi1Databits
             // 
             this.tbWifi1Databits.Location = new System.Drawing.Point(74, 115);
-            this.tbWifi1Databits.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbWifi1Databits.Margin = new System.Windows.Forms.Padding(2);
             this.tbWifi1Databits.MaxLength = 1;
             this.tbWifi1Databits.Name = "tbWifi1Databits";
             this.tbWifi1Databits.ReadOnly = true;
@@ -338,7 +338,7 @@
             // tbWifi1BaudRate
             // 
             this.tbWifi1BaudRate.Location = new System.Drawing.Point(74, 83);
-            this.tbWifi1BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbWifi1BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.tbWifi1BaudRate.MaxLength = 7;
             this.tbWifi1BaudRate.Name = "tbWifi1BaudRate";
             this.tbWifi1BaudRate.Size = new System.Drawing.Size(57, 23);
@@ -358,7 +358,7 @@
             // tbWifi1Port
             // 
             this.tbWifi1Port.Location = new System.Drawing.Point(74, 53);
-            this.tbWifi1Port.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbWifi1Port.Margin = new System.Windows.Forms.Padding(2);
             this.tbWifi1Port.MaxLength = 6;
             this.tbWifi1Port.Name = "tbWifi1Port";
             this.tbWifi1Port.Size = new System.Drawing.Size(57, 23);
@@ -388,7 +388,7 @@
             // 
             // panelCsk1
             // 
-            this.panelCsk1.Controls.Add(this.cbCsk1Default);
+            this.panelCsk1.Controls.Add(this.cbCsk1IsDefault);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleDefault);
             this.panelCsk1.Controls.Add(this.tbCsk1Stopbits);
             this.panelCsk1.Controls.Add(this.lbCsk1TitleStopbit);
@@ -402,20 +402,20 @@
             this.panelCsk1.Controls.Add(this.lbCsk1TitlePort);
             this.panelCsk1.Controls.Add(this.lbCsk1Title);
             this.panelCsk1.Location = new System.Drawing.Point(12, 18);
-            this.panelCsk1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelCsk1.Margin = new System.Windows.Forms.Padding(2);
             this.panelCsk1.Name = "panelCsk1";
             this.panelCsk1.Size = new System.Drawing.Size(143, 242);
             this.panelCsk1.TabIndex = 0;
             // 
-            // cbCsk1Default
+            // cbCsk1IsDefault
             // 
-            this.cbCsk1Default.AutoSize = true;
-            this.cbCsk1Default.Location = new System.Drawing.Point(85, 217);
-            this.cbCsk1Default.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.cbCsk1Default.Name = "cbCsk1Default";
-            this.cbCsk1Default.Size = new System.Drawing.Size(15, 14);
-            this.cbCsk1Default.TabIndex = 12;
-            this.cbCsk1Default.UseVisualStyleBackColor = true;
+            this.cbCsk1IsDefault.AutoSize = true;
+            this.cbCsk1IsDefault.Location = new System.Drawing.Point(85, 217);
+            this.cbCsk1IsDefault.Margin = new System.Windows.Forms.Padding(2);
+            this.cbCsk1IsDefault.Name = "cbCsk1IsDefault";
+            this.cbCsk1IsDefault.Size = new System.Drawing.Size(15, 14);
+            this.cbCsk1IsDefault.TabIndex = 12;
+            this.cbCsk1IsDefault.UseVisualStyleBackColor = true;
             // 
             // lbCsk1TitleDefault
             // 
@@ -430,7 +430,7 @@
             // tbCsk1Stopbits
             // 
             this.tbCsk1Stopbits.Location = new System.Drawing.Point(71, 182);
-            this.tbCsk1Stopbits.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCsk1Stopbits.Margin = new System.Windows.Forms.Padding(2);
             this.tbCsk1Stopbits.MaxLength = 1;
             this.tbCsk1Stopbits.Name = "tbCsk1Stopbits";
             this.tbCsk1Stopbits.ReadOnly = true;
@@ -451,7 +451,7 @@
             // tbCsk1Parity
             // 
             this.tbCsk1Parity.Location = new System.Drawing.Point(71, 148);
-            this.tbCsk1Parity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCsk1Parity.Margin = new System.Windows.Forms.Padding(2);
             this.tbCsk1Parity.MaxLength = 1;
             this.tbCsk1Parity.Name = "tbCsk1Parity";
             this.tbCsk1Parity.ReadOnly = true;
@@ -472,7 +472,7 @@
             // tbCsk1Databits
             // 
             this.tbCsk1Databits.Location = new System.Drawing.Point(71, 115);
-            this.tbCsk1Databits.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCsk1Databits.Margin = new System.Windows.Forms.Padding(2);
             this.tbCsk1Databits.MaxLength = 1;
             this.tbCsk1Databits.Name = "tbCsk1Databits";
             this.tbCsk1Databits.ReadOnly = true;
@@ -493,7 +493,7 @@
             // tbCsk1BaudRate
             // 
             this.tbCsk1BaudRate.Location = new System.Drawing.Point(71, 83);
-            this.tbCsk1BaudRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCsk1BaudRate.Margin = new System.Windows.Forms.Padding(2);
             this.tbCsk1BaudRate.MaxLength = 7;
             this.tbCsk1BaudRate.Name = "tbCsk1BaudRate";
             this.tbCsk1BaudRate.Size = new System.Drawing.Size(57, 23);
@@ -513,7 +513,7 @@
             // tbCsk1Port
             // 
             this.tbCsk1Port.Location = new System.Drawing.Point(71, 53);
-            this.tbCsk1Port.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCsk1Port.Margin = new System.Windows.Forms.Padding(2);
             this.tbCsk1Port.MaxLength = 6;
             this.tbCsk1Port.Name = "tbCsk1Port";
             this.tbCsk1Port.Size = new System.Drawing.Size(57, 23);
@@ -550,7 +550,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.gbSettings);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -600,7 +600,7 @@
         private TextBox tbCsk1BaudRate;
         private Label lbCsk1TitleBaudRate;
         private Label lbCsk1TitleDefault;
-        private CheckBox cbWifi1Default;
+        private CheckBox cbWifi1IsDefault;
         private Label lbWifi1TitleDefault;
         private TextBox tbWifi1Stopbits;
         private Label lbWifi1TitleStopbit;
@@ -612,7 +612,7 @@
         private Label lbWifi1TitleBaudRate;
         private TextBox tbWifi1Port;
         private Label lbWifi1TitlePort;
-        private CheckBox cbCsk1Default;
+        private CheckBox cbCsk1IsDefault;
         private TextBox tbCommon1Serial;
         private Label lbCommon1TitleSn;
         private Panel panelResult1;

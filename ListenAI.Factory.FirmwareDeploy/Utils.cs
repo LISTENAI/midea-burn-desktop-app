@@ -3,6 +3,8 @@ using System.IO.Compression;
 using System.IO.Ports;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
+using ListenAI.Factory.FirmwareDeploy.Models;
 using Microsoft.Data.SqlClient;
 
 namespace ListenAI.Factory.FirmwareDeploy {
@@ -88,7 +90,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             if (!Global.ControlGroups[groupId].ContainsKey(name)) {
                 Global.ControlGroups[groupId].Add(name, control);
-            } else {
+            }
+            else {
                 Global.ControlGroups[groupId][name] = control;
             }
         }
@@ -223,8 +226,52 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 ZipFile.ExtractToDirectory(zipFile, destPath, true);
                 return true;
             }
-            catch (Exception ex) {
+            catch {
                 return false;
+            }
+        }
+
+        public static UiConfig? SaveUiConfig() {
+            var result = new UiConfig();
+
+            try {
+                for (var i = 1; i <= Global.GroupCount; i++) {
+                    var groupId = i;
+                    for (var t = 0; t <= 1; t++) {
+                        var defaultCheckbox = (CheckBox)Constants.GetControl(groupId, (Constants.GroupType)t,
+                            Constants.GroupConfigType.IsDefault);
+                        if (defaultCheckbox.Checked) {
+                            result.PortConfig.Add(new PortConfig() {
+                                GroupId = groupId,
+                                Type = (PortConfigType)t,
+                                Port = Constants.GetControl(groupId, (Constants.GroupType)t,
+                                    Constants.GroupConfigType.Port).Text,
+                                BaudRate = long.Parse(Constants.GetControl(groupId, (Constants.GroupType)t,
+                                    Constants.GroupConfigType.BaudRate).Text)
+                            });
+                        }
+                    }
+                }
+
+                File.WriteAllText(Constants.UiConfigPath, result.ToString());
+                return result;
+            }
+            catch {
+                return null;
+            }
+        }
+
+        public static UiConfig? LoadUiConfig() {
+            if (!File.Exists(Constants.UiConfigPath)) {
+                return null;
+            }
+
+            try {
+                var result = UiConfig.FromJson(File.ReadAllText(Constants.UiConfigPath, Encoding.UTF8));
+                return result;
+            }
+            catch {
+                return null;
             }
         }
     }
