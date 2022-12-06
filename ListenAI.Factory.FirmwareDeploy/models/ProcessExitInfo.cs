@@ -1,4 +1,4 @@
-﻿namespace ListenAI.Factory.FirmwareDeploy.models {
+﻿namespace ListenAI.Factory.FirmwareDeploy.Models {
     public class ProcessExitInfo {
         public int ExitCode { get; set; }
 

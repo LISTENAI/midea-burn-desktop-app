@@ -1,4 +1,4 @@
-﻿using ListenAI.Factory.FirmwareDeploy.models;
+﻿using ListenAI.Factory.FirmwareDeploy.Models;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
@@ -9,6 +9,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void MainForm_Load(object sender, EventArgs e) {
             FormControlsInit();
             CenterToScreen();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            if (MessageBox.Show("确定要关闭？", "关闭前确定", MessageBoxButtons.YesNo) == DialogResult.No) {
+                e.Cancel = true;
+            }
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
+            Application.Exit();
         }
 
         /// <summary>

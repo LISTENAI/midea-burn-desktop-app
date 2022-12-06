@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using ListenAI.Factory.FirmwareDeploy.models;
+using ListenAI.Factory.FirmwareDeploy.Models;
 using static ListenAI.Factory.FirmwareDeploy.Constants;
 
 namespace ListenAI.Factory.FirmwareDeploy {
@@ -108,7 +108,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void CskFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
-            var ctrlPb = (ProgressBar) GetControl(_groupId, GroupType.Csk, GroupConfigType.Progress);
+            var ctrlPb = (ProgressBar) GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
             if (ctrlPb == null) {
                 return;
             }
@@ -180,19 +180,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
-            var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Wifi, GroupConfigType.Progress);
-            if (ctrlPb == null) {
-                return;
-            }
-
-            if (ctrlPb.InvokeRequired) {
-                ctrlPb.Invoke(() => {
-                    ctrlPb.Value = e.ProgressPercentage;
-                });
-            }
-            else {
-                ctrlPb.Value = e.ProgressPercentage;
-            }
+            
         }
 
         private void WifiFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {

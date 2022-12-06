@@ -1,4 +1,4 @@
-﻿using ListenAI.Factory.FirmwareDeploy.models;
+﻿using ListenAI.Factory.FirmwareDeploy.Models;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public static class Global {
