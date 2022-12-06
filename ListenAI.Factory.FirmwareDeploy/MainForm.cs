@@ -100,7 +100,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
 
             try {
-                btnFwSelect.BackColor = Constants.ColorProcceed;
+                btnFwSelect.BackColor = SystemColors.Control;
                 fwCfg.FullPath = fwPackDirPath;
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
                 var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
@@ -154,7 +154,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             using (var mesForm = new MesSettingsForm()) {
                 var result = mesForm.ShowDialog();
                 if (result == DialogResult.OK && Global.MesRecord != null) {
-                    btnMES.BackColor = Constants.ColorProcceed;
+                    btnMES.BackColor = SystemColors.Control;
                 }
             }
         }
