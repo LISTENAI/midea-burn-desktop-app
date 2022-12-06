@@ -12,7 +12,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if (MessageBox.Show("确定要关闭？", "关闭前确定", MessageBoxButtons.YesNo) == DialogResult.No) {
+            if (MessageBox.Show("确定要退出？", "退出前确定", MessageBoxButtons.YesNo) == DialogResult.No) {
                 e.Cancel = true;
             }
         }
@@ -51,7 +51,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void btnFwSelect_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog();
-            ofd.Filter = "固件包配置文件 (*.json)|*.json|所有文件 (*.*)|*.*";
+            ofd.Filter = "固件包 (*.zip)|*.zip";
             ofd.Multiselect = false;
             var result = ofd.ShowDialog();
 
@@ -59,58 +59,79 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
-            var fwPackConfigPath = ofd.FileName;
-            var fwPackDirPath = Path.GetDirectoryName(ofd.FileName);
-
-            var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
-            var fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
-            if (fwCfg == null) {
-                MessageBox.Show("请浏览并导入正确的固件包后再点击烧录。", "错误");
-                return;
-            }
-
-            if (fwCfg.Files.Count != 2) {
-                MessageBox.Show("固件包格式不正确！01", "错误");
-                return;
-            }
-
-            foreach (var file in fwCfg.Files) {
-                if (file.Id != 0 && file.Id != 1) {
-                    MessageBox.Show("固件包格式不正确！02", "错误");
-                    return;
-                }
-
-                var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
-                if (!File.Exists(fwPackFilePath)) {
-                    MessageBox.Show($"固件 {file.Name} 不存在！", "错误");
-                    return;
-                }
-
-                var fi = new FileInfo(fwPackFilePath);
-                if (fi.Length != file.Size) {
-                    MessageBox.Show($"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}", "错误");
-                    return;
-                }
-
-                var hash = Utils.GetMd5Hash(fwPackFilePath);
-                if (hash != file.Checksum) {
-                    MessageBox.Show($"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}", "错误");
-                    return;
-                }
-            }
+            EnableFirmwareButton(false);
 
             try {
+                var unzipResult = Utils.Unzip(ofd.FileName, Path.Combine(Environment.CurrentDirectory, "firmware"));
+                if (!unzipResult) {
+                    EnableFirmwareButton(true);
+                    throw new ListenAiException(101, "", "固件包无法解压");
+                }
+
+                var fwPackConfigPath = Path.Combine(Environment.CurrentDirectory, "firmware", "config.json");
+                var fwPackDirPath = Path.GetDirectoryName(fwPackConfigPath);
+
+                var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
+                var fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
+                if (fwCfg == null) {
+                    throw new ListenAiException(102, "", "配置文件无法解析");
+                }
+
+                if (fwCfg.Files.Count != 2) {
+                    throw new ListenAiException(102, "", "配置文件无法解析", 1);
+                }
+
+                foreach (var file in fwCfg.Files) {
+                    if (file.Id != 0 && file.Id != 1) {
+                        throw new ListenAiException(102, "", "配置文件无法解析", 2);
+                    }
+
+                    var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
+                    if (!File.Exists(fwPackFilePath)) {
+                        throw new ListenAiException(103, "", $"固件 {file.Name} 不存在！");
+                    }
+
+                    var fi = new FileInfo(fwPackFilePath);
+                    if (fi.Length != file.Size) {
+                        throw new ListenAiException(104, "", $"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}");
+                    }
+
+                    var hash = Utils.GetMd5Hash(fwPackFilePath);
+                    if (hash != file.Checksum) {
+                        throw new ListenAiException(105, "", $"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}");
+                    }
+                }
+
                 btnFwSelect.BackColor = SystemColors.Control;
                 fwCfg.FullPath = fwPackDirPath;
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
                 var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
+                if (fwCskInfo == null || fwWifiInfo == null) {
+                    throw new ListenAiException(102, "", "配置文件无法解析", 3);
+                }
                 tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
                                            $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
                                            $"固件包路径: {fwCfg.FullPath}";
                 Global.SelectedFirmware = fwCfg;
+                EnableFirmwareButton(true, false);
             }
-            catch (Exception ex) {
-                MessageBox.Show($"固件包格式不正确！03\n{ex}", "错误");
+            catch (ListenAiException lex) {
+                EnableFirmwareButton(true);
+                var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
+                MessageBox.Show($"[{exCode}] 请浏览并导入正确的固件包后再点击烧录。\n{lex.Details}", "错误");
+            }
+        }
+
+        private void EnableFirmwareButton(bool enable, bool isUsingDefaultColor = true) {
+            if (enable) {
+                btnFwSelect.BackColor = isUsingDefaultColor ? Constants.ColorAbleToSelect : SystemColors.Control;
+                btnFwSelect.Text = "浏览";
+                btnFwSelect.Enabled = true;
+            }
+            else {
+                btnFwSelect.Enabled = false;
+                btnFwSelect.BackColor = Constants.ColorProcessing;
+                btnFwSelect.Text = "正在解压...";
             }
         }
 
@@ -135,7 +156,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     if (serialControl.Text.Length == 0) {
                         serialControl.Text = Utils.GetSerialNumberWithDate();
                     }
-                    Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorPreprocessing;
+                    //Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorPreprocessing;
                 }
             }
             if (availableGroups.Count == 0) {
