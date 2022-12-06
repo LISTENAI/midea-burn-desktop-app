@@ -1,4 +1,4 @@
-﻿namespace ListenAI.Factory.FirmwareDeploy.models {
+﻿namespace ListenAI.Factory.FirmwareDeploy.Models {
     public class MesRecord {
         public string MesCmdId { get; set; }
 

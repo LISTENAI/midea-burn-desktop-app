@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-using ListenAI.Factory.FirmwareDeploy.models;
+using ListenAI.Factory.FirmwareDeploy.Models;
 using Microsoft.Data.SqlClient;
 
 namespace ListenAI.Factory.FirmwareDeploy {

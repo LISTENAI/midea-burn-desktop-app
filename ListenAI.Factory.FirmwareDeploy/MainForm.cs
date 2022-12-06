@@ -1,4 +1,4 @@
-﻿using ListenAI.Factory.FirmwareDeploy.models;
+﻿using ListenAI.Factory.FirmwareDeploy.Models;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
@@ -9,6 +9,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void MainForm_Load(object sender, EventArgs e) {
             FormControlsInit();
             CenterToScreen();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            if (MessageBox.Show("确定要关闭？", "关闭前确定", MessageBoxButtons.YesNo) == DialogResult.No) {
+                e.Cancel = true;
+            }
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
+            Application.Exit();
         }
 
         /// <summary>
@@ -34,7 +44,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var clonedGrpbox = Utils.CloneControl(gbMod1);
                 clonedGrpbox = Utils.CtrlPropModify(clonedGrpbox, Global.GroupCount);
                 var locX = gbMod1.Location.X + 454 * (Global.GroupCount - 1);
-                clonedGrpbox.Location = new Point(locX, gbMod1.Location.Y);
+                clonedGrpbox.Location = gbMod1.Location with { X = locX };
                 this.Controls.Add(clonedGrpbox);
             }
         }
@@ -90,7 +100,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
 
             try {
-                btnFwSelect.BackColor = Constants.ColorProcceed;
+                btnFwSelect.BackColor = SystemColors.Control;
                 fwCfg.FullPath = fwPackDirPath;
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
                 var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
@@ -134,8 +144,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
-            var test1 = new LineWorker(1, Constants.GroupType.Csk);
-            test1.Flash();
+            var test1 = new LineWorker(1);
+            test1.Start();
 
             btnFlash.BackColor = Constants.ColorProcessing;
         }
@@ -144,7 +154,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             using (var mesForm = new MesSettingsForm()) {
                 var result = mesForm.ShowDialog();
                 if (result == DialogResult.OK && Global.MesRecord != null) {
-                    btnMES.BackColor = Constants.ColorProcceed;
+                    btnMES.BackColor = SystemColors.Control;
                 }
             }
         }

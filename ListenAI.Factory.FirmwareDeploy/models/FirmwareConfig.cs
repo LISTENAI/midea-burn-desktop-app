@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using static ListenAI.Factory.FirmwareDeploy.Constants;
 
-namespace ListenAI.Factory.FirmwareDeploy.models {
+namespace ListenAI.Factory.FirmwareDeploy.Models {
     public class FirmwareConfig {
         public string FullPath { get; set; }
 
