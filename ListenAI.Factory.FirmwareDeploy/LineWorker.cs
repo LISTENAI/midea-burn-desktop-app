@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Text;
 using ListenAI.Factory.FirmwareDeploy.Models;
 using static ListenAI.Factory.FirmwareDeploy.Constants;
 
@@ -9,6 +10,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private WorkerState _cskState;
         private WorkerState _wifiState;
         private Process _process;
+        private DateTime _startAt;
+        private DateTime _endAt;
 
         private BackgroundWorker _cskWorker;
         private BackgroundWorker _wifiWorker;
@@ -35,12 +38,19 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _wifiWorker.ProgressChanged += WifiFlash_ProgressChanged;
             _wifiWorker.RunWorkerCompleted += WifiFlash_RunWorkerCompleted;
 
+            _startAt = DateTime.UtcNow.AddHours(8);
             _cskWorker.RunWorkerAsync();
             _wifiWorker.RunWorkerAsync();
         }
 
         public void Stop() {
+            if (_cskState == WorkerState.Processing) {
+                _cskWorker.CancelAsync();
+            }
 
+            if (_wifiState == WorkerState.Processing) {
+                _wifiWorker.CancelAsync();
+            }
         }
 
         private void CskFlash_Work(object? sender, DoWorkEventArgs e) {
@@ -213,6 +223,32 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
             else {
                 passFailIndicator.BackColor = bgc;
+            }
+
+            SaveLog();
+        }
+
+        private void SaveLog() {
+            _endAt = DateTime.UtcNow.AddHours(8);
+
+            lock (Global.LogOperationLock) {
+                if (!Directory.Exists(LogDirPath)) {
+                    Directory.CreateDirectory(LogDirPath);
+                }
+
+                var logPath = Path.Combine(LogDirPath, $"{DateTime.UtcNow.AddHours(8):YYYY'-'MM'-'dd}.txt");
+                var encoding = new UTF8Encoding(false);
+
+                if (!File.Exists(logPath)) {
+                    File.WriteAllText(logPath, "mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧如结果,产品序列号（按年月日5位流水码）\r\n", encoding);
+                }
+
+                var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
+                var isSuccess = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "OK" : "NG";
+
+                File.WriteAllText(logPath, $"{Global.MesRecord.MesCmdId},{Global.MesRecord.ProductId},{Global.MesRecord.ProductName},{Global.MesRecord.ProductModel}," +
+                                           $"{_startAt},{_endAt},{Global.MesRecord.FlashOperator},{Global.MesRecord.FlashToolName},{Global.MesRecord.FlashMachineId}," +
+                                           $"{isSuccess},{sn}\r\n");
             }
         }
 
