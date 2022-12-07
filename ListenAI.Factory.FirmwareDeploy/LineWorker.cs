@@ -9,15 +9,25 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private int _groupId;
         private WorkerState _cskState;
         private WorkerState _wifiState;
-        private Process _process;
-        private DateTime _startAt;
-        private DateTime _endAt;
+        private Process _cskProcess;
+        private Process _wifiProcess;
+        private DateTime? _startAt;
+        private DateTime? _endAt;
 
         private BackgroundWorker _cskWorker;
         private BackgroundWorker _wifiWorker;
 
-        public WorkerState CskState => _cskState;
-        public WorkerState WifiState => _wifiState;
+        public WorkerState State {
+            get {
+                if (_cskState == WorkerState.Error || _wifiState == WorkerState.Error) {
+                    return WorkerState.Error;
+                }
+                if (_cskState == WorkerState.Success && _wifiState == WorkerState.Success) {
+                    return WorkerState.Success;
+                }
+                return WorkerState.Processing;
+            }
+        }
 
         public LineWorker(int groupId) { 
             _groupId = groupId;
@@ -70,12 +80,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
             var timeoutCount = 0;
 
-            StartProcessAsync(BurnToolPath, flashArgs, (o, args) => {
+            StartProcessAsync(BurnToolPath, flashArgs, (_, args) => {
                 if (args.Data == null) {
                     return;
                 }
-                if (e.Cancel) {
-                    _process.Kill();
+                if ((sender as BackgroundWorker).CancellationPending) {
+                    _cskProcess.Kill();
                     throw new Exception("Operation cancelled!");
                 }
                 //data handler
@@ -84,42 +94,46 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     try {
                         var prog = int.Parse(args.Data.Replace("FLASH DATA SEND PROGESS:", "").Replace("%", "").Trim());
                         timeoutCount = 0;
-                        _cskWorker.ReportProgress(prog);
+                        (sender as BackgroundWorker).ReportProgress(prog, null);
                     }
                     catch {
                         timeoutCount++;
                     }
                 }
                 else if (args.Data.StartsWith("FLASH DOWNLOAD SUCCESS")) {
-                    _cskWorker.ReportProgress(100);
+                    (sender as BackgroundWorker).ReportProgress(100, null);
                 }
                 else if (args.Data.StartsWith("RECEIVE OVERTIME") ||
                            args.Data.StartsWith("CONNECT CHIP OVERTIME")) {
                     timeoutCount++;
                     if (timeoutCount >= 10) {
-                        _process.Kill();
+                        _cskProcess.Kill();
                         Debug.WriteLine("Too many timeout exception, flash aborted!");
-                        throw new Exception("Too many timeout exception, flash aborted!");
+                        (sender as BackgroundWorker).ReportProgress(-1, "Too many timeout exception, flash aborted!");
                     }
                 }
                 else if (args.Data.StartsWith("SERILA PORT NUMBER ERROR") ||
                            args.Data.StartsWith("SYNC FORMAT ERROR") ||
                            args.Data.StartsWith("MD5 CHECK ERROR")) {
-                    _process.Kill();
+                    _cskProcess.Kill();
                     Debug.WriteLine($"Critical error, flash aborted! Msg = {args.Data}");
-                    throw new Exception($"Critical error, flash aborted! Msg = {args.Data}");
+                    (sender as BackgroundWorker).ReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
                 }
-            }, (o, args) => {
-                Debug.WriteLine($"Burn-tools exited with code {_process.ExitCode}");
-                if (_process.ExitCode != 0) {
-                    throw new Exception($"Burn-tools exited with code {_process.ExitCode}");
+            }, (_, _) => {
+                Debug.WriteLine($"Burn-tools exited with code {_cskProcess.ExitCode}");
+                if (_cskProcess.ExitCode != 0) {
+                    (sender as BackgroundWorker).ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
                 }
             });
+
+            while (!_cskProcess.HasExited) {
+                Thread.Sleep(1000);
+            }
         }
 
         private void CskFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
             var ctrlPb = (ProgressBar) GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
-            if (ctrlPb == null) {
+            if (ctrlPb == null || e.ProgressPercentage < 0) {
                 return;
             }
 
@@ -134,15 +148,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void CskFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
-            if (e.Error != null) {
+            if (e.Error != null || !string.IsNullOrWhiteSpace(e.UserState?.ToString())) {
                 _cskState = WorkerState.Error;
                 _wifiWorker.CancelAsync();
+                _wifiProcess.Kill();
+                _wifiState = WorkerState.Error;
             }
             else {
                 _cskState = WorkerState.Success;
             }
 
-            Thread.Sleep(new Random().Next(3000, 6000));
+            Thread.Sleep(new Random().Next(1000, 3000));
             if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
                 ReportResultToUi();
             }
@@ -158,35 +174,40 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var port = GetControl(_groupId, _groupType, GroupConfigType.Port).Text;
 
             //step 1 - Check for device
+            Debug.WriteLine("[ASR] step 1...");
             var args = $"dl --port {port} --chip 2";
             var runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
-                _wifiWorker.ReportProgress(20);
+                (sender as BackgroundWorker).ReportProgress(20);
             }
             else {
                 throw new Exception($"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
             }
 
             //step 2 - flash firmware
+            Debug.WriteLine("[ASR] step 2...");
             var fwInfo = Global.SelectedFirmware.GetFirmware(GroupType.Wifi);
-            args = $"burn --port {port} --chip 2 --path {Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)} --multi";
+            args = $"burn --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
-                _wifiWorker.ReportProgress(80);
+                (sender as BackgroundWorker).ReportProgress(80);
             }
             else {
                 throw new Exception($"烧录失败。Code = {runAsr.ExitCode}");
             }
 
             //step 3 - verify firmware flashed
-            args = $"verify --port {port} --chip 2 --path {Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)} --multi";
+            Debug.WriteLine("[ASR] step 3...");
+            args = $"verify --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
-                _wifiWorker.ReportProgress(100);
+                (sender as BackgroundWorker).ReportProgress(100);
             }
             else {
                 throw new Exception($"校验失败。Code = {runAsr.ExitCode}");
             }
+
+            Debug.WriteLine("[ASR] Completed!");
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
@@ -197,12 +218,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (e.Error != null) {
                 _wifiState = WorkerState.Error;
                 _cskWorker.CancelAsync();
+                _cskProcess.Kill();
+                _cskState = WorkerState.Error;
             }
             else {
                 _wifiState = WorkerState.Success;
             }
 
-            Thread.Sleep(new Random().Next(3000, 6000));
+            Thread.Sleep(new Random().Next(1000, 3000));
             if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
                 ReportResultToUi();
             }
@@ -229,14 +252,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void SaveLog() {
-            _endAt = DateTime.UtcNow.AddHours(8);
-
             lock (Global.LogOperationLock) {
+                if (_endAt.HasValue) {
+                    return;
+                }
+                _endAt = DateTime.UtcNow.AddHours(8);
+
                 if (!Directory.Exists(LogDirPath)) {
                     Directory.CreateDirectory(LogDirPath);
                 }
 
-                var logPath = Path.Combine(LogDirPath, $"{DateTime.UtcNow.AddHours(8):YYYY'-'MM'-'dd}.txt");
+                var logPath = Path.Combine(LogDirPath, $"{DateTime.UtcNow.AddHours(8):yyyy'-'MM'-'dd}.txt");
                 var encoding = new UTF8Encoding(false);
 
                 if (!File.Exists(logPath)) {
@@ -246,7 +272,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
                 var isSuccess = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "OK" : "NG";
 
-                File.WriteAllText(logPath, $"{Global.MesRecord.MesCmdId},{Global.MesRecord.ProductId},{Global.MesRecord.ProductName},{Global.MesRecord.ProductModel}," +
+                File.AppendAllText(logPath, $"{Global.MesRecord.MesCmdId},{Global.MesRecord.ProductId},{Global.MesRecord.ProductName},{Global.MesRecord.ProductModel}," +
                                            $"{_startAt},{_endAt},{Global.MesRecord.FlashOperator},{Global.MesRecord.FlashToolName},{Global.MesRecord.FlashMachineId}," +
                                            $"{isSuccess},{sn}\r\n");
             }
@@ -259,31 +285,33 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 CreateNoWindow = true
             };
 
-            _process = new Process();
-            _process.EnableRaisingEvents = true;
-            _process.OutputDataReceived += dataHandler;
-            _process.Exited += exitHandler;
-            _process.StartInfo = startInfo;
-            _process.Start();
-            _process.BeginOutputReadLine();
+            _cskProcess = new Process();
+            _cskProcess.EnableRaisingEvents = true;
+            _cskProcess.OutputDataReceived += dataHandler;
+            _cskProcess.Exited += exitHandler;
+            _cskProcess.StartInfo = startInfo;
+            _cskProcess.Start();
+            _cskProcess.BeginOutputReadLine();
         }
 
         private ProcessExitInfo StartProcessSync(string file, string args) {
             var startInfo = new ProcessStartInfo(file, args) {
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                //RedirectStandardOutput = true,
+                //RedirectStandardError = true
             };
 
-            _process = new Process();
-            _process.StartInfo = startInfo;
-            _process.Start();
+            _wifiProcess = new Process();
+            _wifiProcess.StartInfo = startInfo;
+            _wifiProcess.Start();
 
-            _process.WaitForExit();
+            _wifiProcess.WaitForExit();
 
             return new ProcessExitInfo() {
-                ExitCode = _process.ExitCode,
-                StdErr = _process.StandardError.ReadToEnd(),
-                StdOut = _process.StandardOutput.ReadToEnd()
+                ExitCode = _wifiProcess.ExitCode,
+                StdErr = "",//_wifiProcess.StandardError.ReadToEnd(),
+                StdOut = ""//_wifiProcess.StandardOutput.ReadToEnd()
             };
         }
     }

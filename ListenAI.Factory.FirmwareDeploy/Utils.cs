@@ -128,7 +128,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             for (int i = 1; i <= Global.GroupCount; i++) {
                 var targetCskControl = Constants.GetControl(i, groupType, Constants.GroupConfigType.Port);
-                if (string.IsNullOrWhiteSpace(targetCskControl.Text)) {
+                if (string.IsNullOrWhiteSpace(targetCskControl.Text) || targetCskControl.Text == "COM") {
                     continue;
                 }
 
