@@ -102,7 +102,7 @@
             // 
             // btnFwSelect
             // 
-            this.btnFwSelect.BackColor = System.Drawing.Color.Blue;
+            this.btnFwSelect.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnFwSelect.Location = new System.Drawing.Point(477, 27);
             this.btnFwSelect.Margin = new System.Windows.Forms.Padding(2);
             this.btnFwSelect.Name = "btnFwSelect";
@@ -114,7 +114,7 @@
             // 
             // btnMES
             // 
-            this.btnMES.BackColor = System.Drawing.Color.Blue;
+            this.btnMES.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnMES.Location = new System.Drawing.Point(57, 27);
             this.btnMES.Margin = new System.Windows.Forms.Padding(2);
             this.btnMES.Name = "btnMES";

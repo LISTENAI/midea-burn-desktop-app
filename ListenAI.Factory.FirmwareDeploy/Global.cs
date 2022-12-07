@@ -7,6 +7,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static Dictionary<int, Dictionary<string, Control>> ControlGroups = new();
         public static MesRecord? MesRecord = null;
         public static List<LineWorker> WorkersPool = new();
+        public static Dictionary<int, bool> IsCustomSnEnabled = new();
 
         public static int NextSerialNumber = 0;
     }
@@ -15,7 +16,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static Color ColorProcceed = Color.FromArgb(0, 192, 0);
         public static Color ColorBlock = Color.FromArgb(255, 0, 0);
         public static Color ColorProcessing = Color.Yellow;
-        public static Color ColorAbleToSelect = Color.Blue;
+        public static Color ColorAbleToSelect = SystemColors.Highlight;
         public static Color ColorCsk6PanelBackground = Color.FromArgb(247, 252, 254);
         public static Color ColorWifiPanelBackground = Color.FromArgb(253, 245, 234);
         public static string BurnToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool.exe");

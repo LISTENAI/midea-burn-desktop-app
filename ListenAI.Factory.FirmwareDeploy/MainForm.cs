@@ -48,10 +48,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 this.Controls.Add(clonedGrpbox);
             }
 
-            //assign event code for all default checkbox
+            //add event handlers
             for (var i = 1; i <= Global.GroupCount; i++) {
                 var groupId = i;
                 for (var t = 0; t <= 1; t++) {
+                    //assign event handler for all default checkbox
                     var groupType = (Constants.GroupType)t;
                     var defaultCheckbox = (CheckBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.IsDefault);
                     defaultCheckbox.CheckStateChanged += (_, _) => {
@@ -62,6 +63,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
                         Utils.SaveUiConfig();
                     };
                 }
+
+                //assign event handler for custom sn trigger
+                var serialTextbox = (TextBox)Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                serialTextbox.KeyPress += (_, _) => {
+                    Global.IsCustomSnEnabled[groupId] = true;
+                };
+
+                //build custom sn dict
+                Global.IsCustomSnEnabled.Add(i, false);
             }
 
             //load ui config from file if exists
@@ -190,36 +200,37 @@ namespace ListenAI.Factory.FirmwareDeploy {
             btnFlash.BackColor = SystemColors.Control;
 
             if (Global.MesRecord == null) {
-                MessageBox.Show("请完全填写MES记录需要的数据后再点击烧录。", "错误");
-                btnMES.BackColor = Constants.ColorBlock;
-                btnFlash.BackColor = Constants.ColorBlock;
+                MessageBox.Show("[301-1] 请完全填写MES记录需要的数据后再点击烧录。", "错误");
                 return;
             }
 
-            var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
-            var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
-            var availableGroups = new List<int>();
+            try {
+                var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
+                var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
+                var availableGroups = new List<int>();
 
-            foreach (var groupId in checkCskPortResult) {
-                if (checkWifiPortResult.Contains(groupId)) {
-                    availableGroups.Add(groupId);
-                    var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
-                    if (serialControl.Text.Length == 0) {
-                        serialControl.Text = Utils.GetSerialNumberWithDate();
+                foreach (var groupId in checkCskPortResult) {
+                    if (checkWifiPortResult.Contains(groupId)) {
+                        availableGroups.Add(groupId);
+                        if (!Global.IsCustomSnEnabled[groupId]) {
+                            var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                            serialControl.Text = Utils.GetSerialNumberWithDate();
+                        }
+                        Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
                     }
-                    //Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorPreprocessing;
                 }
-            }
-            if (availableGroups.Count == 0) {
-                btnFlash.BackColor = Constants.ColorBlock;
-                MessageBox.Show("请正确配置烧录串口后再点击烧录。", "错误");
-                return;
-            }
+                if (availableGroups.Count == 0) {
+                    btnFlash.BackColor = Constants.ColorBlock;
+                    MessageBox.Show("[301-2] 请正确配置烧录串口后再点击烧录。", "错误");
+                    return;
+                }
 
-            var test1 = new LineWorker(1);
-            test1.Start();
-
-            btnFlash.BackColor = Constants.ColorProcessing;
+                btnFlash.BackColor = Constants.ColorProcessing;
+            }
+            catch (ListenAiException lex) {
+                var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
+                MessageBox.Show($"[{exCode}] {lex.Message}\n{lex.Details}", "错误");
+            }
         }
 
         private void btnMES_Click(object sender, EventArgs e) {
