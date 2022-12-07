@@ -209,6 +209,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void ReportResultToUi() {
+            SaveLog();
+
             var passFailIndicator = (Button) GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
             if (passFailIndicator == null) {
                 return;
@@ -224,8 +226,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             else {
                 passFailIndicator.BackColor = bgc;
             }
-
-            SaveLog();
         }
 
         private void SaveLog() {
