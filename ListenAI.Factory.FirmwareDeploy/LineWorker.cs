@@ -35,6 +35,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _groupId = groupId;
         }
 
+        /// <summary>
+        /// Start working
+        /// </summary>
         public void Start() {
             _cskWorker = new BackgroundWorker();
             _cskWorker.WorkerReportsProgress = true;
@@ -63,6 +66,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
             });
         }
 
+        /// <summary>
+        /// Stop working
+        /// </summary>
         public void Stop() {
             if (_cskState == WorkerState.Processing) {
                 _cskWorker.CancelAsync();
@@ -77,6 +83,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Just let worker knows how to flash CSK chips
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CskFlash_Work(object? sender, DoWorkEventArgs e) {
             if (_cskState == WorkerState.Processing) {
                 return;
@@ -156,6 +167,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// CSK workers report their progress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CskFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
             _cskProgress = e.ProgressPercentage;
 

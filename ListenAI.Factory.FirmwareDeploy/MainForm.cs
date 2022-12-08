@@ -114,6 +114,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Firmware selection button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFwSelect_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog();
             ofd.Filter = "固件包 (*.zip)|*.zip";
@@ -127,6 +132,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             EnableFirmwareButton(false);
 
             try {
+                //try to unzip
                 var unzipResult = Utils.Unzip(ofd.FileName, Path.Combine(Environment.CurrentDirectory, "firmware"));
                 if (!unzipResult) {
                     EnableFirmwareButton(true);
@@ -136,6 +142,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var fwPackConfigPath = Path.Combine(Environment.CurrentDirectory, "firmware", "config.json");
                 var fwPackDirPath = Path.GetDirectoryName(fwPackConfigPath);
 
+                //parse config file
                 var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
                 var fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
                 if (fwCfg == null) {
@@ -146,6 +153,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     throw new ListenAiException(102, "", "配置文件无法解析", 1);
                 }
 
+                //check if all files mentioned in config exist
                 foreach (var file in fwCfg.Files) {
                     if (file.Id != 0 && file.Id != 1) {
                         throw new ListenAiException(102, "", "配置文件无法解析", 2);
@@ -200,6 +208,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Flash button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFlash_Click(object sender, EventArgs e) {
             btnFlash.BackColor = SystemColors.Control;
 
@@ -207,7 +220,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 MessageBox.Show("[301-1] 请完全填写MES记录需要的数据后再点击烧录。", "错误");
                 return;
             }
-
+            
             btnFlash.Enabled = false;
             if (Global.WorkersPool.Count == 0) {
                 try {
@@ -317,6 +330,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Event handler to be called on all workers completed their jobs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AllWorkersCompleted(object? sender, EventArgs e) {
             btnFlash.Enabled = false;
             EnableMainFormUi(true);
