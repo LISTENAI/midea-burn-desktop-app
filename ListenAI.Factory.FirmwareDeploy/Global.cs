@@ -6,9 +6,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static short GroupCount = 1;
         public static Dictionary<int, Dictionary<string, Control>> ControlGroups = new();
         public static MesRecord? MesRecord = null;
-        public static List<LineWorker> WorkersPool = new();
+        public static Dictionary<int, LineWorker> WorkersPool = new();
         public static Dictionary<int, bool> IsCustomSnEnabled = new();
-        public static object LogOperationLock = new object();
+        public static object LogOperationLock = new();
+        public static EventHandler AllWorkersCompleted;
 
         public static int NextSerialNumber = 0;
     }

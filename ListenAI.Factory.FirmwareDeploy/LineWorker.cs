@@ -13,6 +13,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private Process _wifiProcess;
         private DateTime? _startAt;
         private DateTime? _endAt;
+        private int _cskProgress;
+        private int _wifiProgress;
 
         private BackgroundWorker _cskWorker;
         private BackgroundWorker _wifiWorker;
@@ -51,15 +53,27 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _startAt = DateTime.UtcNow.AddHours(8);
             _cskWorker.RunWorkerAsync();
             _wifiWorker.RunWorkerAsync();
+
+            _cskProgress = 0;
+            _wifiProgress = 0;
+
+            var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
+            ctrlPb.Invoke(() => {
+                ctrlPb.Value = 0;
+            });
         }
 
         public void Stop() {
             if (_cskState == WorkerState.Processing) {
                 _cskWorker.CancelAsync();
+                _cskProcess.Kill(true);
+                _cskState = WorkerState.Error;
             }
 
             if (_wifiState == WorkerState.Processing) {
                 _wifiWorker.CancelAsync();
+                _wifiProcess.Kill(true);
+                _cskState = WorkerState.Error;
             }
         }
 
@@ -86,7 +100,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 }
                 if ((sender as BackgroundWorker).CancellationPending) {
                     _cskProcess.Kill();
-                    throw new Exception("Operation cancelled!");
+                    if ((sender as BackgroundWorker).IsBusy) {
+                        (sender as BackgroundWorker).ReportProgress(-1, "Operation cancelled!");
+                    }
+                    return;
                 }
                 //data handler
                 Debug.WriteLine(args.Data);
@@ -108,21 +125,29 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     timeoutCount++;
                     if (timeoutCount >= 10) {
                         _cskProcess.Kill();
+                        _cskState = WorkerState.Error;
                         Debug.WriteLine("Too many timeout exception, flash aborted!");
-                        (sender as BackgroundWorker).ReportProgress(-1, "Too many timeout exception, flash aborted!");
+                        if ((sender as BackgroundWorker).IsBusy) {
+                            (sender as BackgroundWorker).ReportProgress(-1, "Too many timeout exception, flash aborted!");
+                        }
                     }
                 }
                 else if (args.Data.StartsWith("SERILA PORT NUMBER ERROR") ||
                            args.Data.StartsWith("SYNC FORMAT ERROR") ||
                            args.Data.StartsWith("MD5 CHECK ERROR")) {
                     _cskProcess.Kill();
+                    _cskState = WorkerState.Error;
                     Debug.WriteLine($"Critical error, flash aborted! Msg = {args.Data}");
-                    (sender as BackgroundWorker).ReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
+                    if ((sender as BackgroundWorker).IsBusy) {
+                        (sender as BackgroundWorker).ReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
+                    }
                 }
             }, (_, _) => {
                 Debug.WriteLine($"Burn-tools exited with code {_cskProcess.ExitCode}");
                 if (_cskProcess.ExitCode != 0) {
-                    (sender as BackgroundWorker).ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
+                    if ((sender as BackgroundWorker).IsBusy) {
+                        (sender as BackgroundWorker).ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
+                    }
                 }
             });
 
@@ -132,23 +157,20 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void CskFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
+            _cskProgress = e.ProgressPercentage;
+
             var ctrlPb = (ProgressBar) GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
             if (ctrlPb == null || e.ProgressPercentage < 0) {
                 return;
             }
 
-            if (ctrlPb.InvokeRequired) {
-                ctrlPb.Invoke(() => {
-                    ctrlPb.Value = e.ProgressPercentage;
-                });
-            }
-            else {
-                ctrlPb.Value = e.ProgressPercentage;
-            }
+            ctrlPb.Invoke(() => {
+                ctrlPb.Value = _cskProgress + _wifiProgress;
+            });
         }
 
         private void CskFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
-            if (e.Error != null || !string.IsNullOrWhiteSpace(e.UserState?.ToString())) {
+            if (_cskProgress < 100 || e.Cancelled || _wifiState == WorkerState.Error) {
                 _cskState = WorkerState.Error;
                 _wifiWorker.CancelAsync();
                 _wifiProcess.Kill();
@@ -158,7 +180,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 _cskState = WorkerState.Success;
             }
 
-            Thread.Sleep(new Random().Next(1000, 3000));
+            Thread.Sleep(new Random().Next(500, 2000));
             if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
                 ReportResultToUi();
             }
@@ -181,7 +203,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 (sender as BackgroundWorker).ReportProgress(20);
             }
             else {
-                throw new Exception($"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
+                Debug.WriteLine($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
+                if ((sender as BackgroundWorker).IsBusy) {
+                    (sender as BackgroundWorker).ReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
+                }
+                return;
             }
 
             //step 2 - flash firmware
@@ -193,7 +219,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 (sender as BackgroundWorker).ReportProgress(80);
             }
             else {
-                throw new Exception($"烧录失败。Code = {runAsr.ExitCode}");
+                Debug.WriteLine($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
+                if ((sender as BackgroundWorker).IsBusy) {
+                    (sender as BackgroundWorker).ReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
+                }
+                return;
             }
 
             //step 3 - verify firmware flashed
@@ -204,18 +234,31 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 (sender as BackgroundWorker).ReportProgress(100);
             }
             else {
-                throw new Exception($"校验失败。Code = {runAsr.ExitCode}");
+                Debug.WriteLine("[ASR] 校验失败。Code = {runAsr.ExitCode}");
+                if ((sender as BackgroundWorker).IsBusy) {
+                    (sender as BackgroundWorker).ReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
+                }
+                return;
             }
 
             Debug.WriteLine("[ASR] Completed!");
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
-            
+            _wifiProgress = e.ProgressPercentage;
+
+            var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
+            if (ctrlPb == null || e.ProgressPercentage < 0) {
+                return;
+            }
+
+            ctrlPb.Invoke(() => {
+                ctrlPb.Value = _cskProgress + _wifiProgress;
+            });
         }
 
         private void WifiFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
-            if (e.Error != null) {
+            if (_wifiProgress < 100 || e.Cancelled || _cskState == WorkerState.Error) {
                 _wifiState = WorkerState.Error;
                 _cskWorker.CancelAsync();
                 _cskProcess.Kill();
@@ -225,7 +268,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 _wifiState = WorkerState.Success;
             }
 
-            Thread.Sleep(new Random().Next(1000, 3000));
+            Thread.Sleep(new Random().Next(500, 2000));
             if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
                 ReportResultToUi();
             }
@@ -233,6 +276,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void ReportResultToUi() {
             SaveLog();
+            Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
+            Utils.KillProcessByName("Uart_Burn_Tool.exe");
 
             var passFailIndicator = (Button) GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
             if (passFailIndicator == null) {
@@ -248,6 +293,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
             else {
                 passFailIndicator.BackColor = bgc;
+            }
+
+            Global.WorkersPool.Remove(_groupId);
+            if (Global.WorkersPool.Count == 0) {
+                Global.AllWorkersCompleted.Invoke(this, null);
             }
         }
 
@@ -266,7 +316,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var encoding = new UTF8Encoding(false);
 
                 if (!File.Exists(logPath)) {
-                    File.WriteAllText(logPath, "mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧如结果,产品序列号（按年月日5位流水码）\r\n", encoding);
+                    File.WriteAllText(logPath, "mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）\r\n", encoding);
                 }
 
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
@@ -277,6 +327,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
                                            $"{isSuccess},{sn}\r\n");
             }
         }
+
+        
 
         private void StartProcessAsync(string file, string args, DataReceivedEventHandler dataHandler, EventHandler exitHandler) {
             var startInfo = new ProcessStartInfo(file, args) {

@@ -119,6 +119,7 @@
             this.tbFlashMachineId.Name = "tbFlashMachineId";
             this.tbFlashMachineId.Size = new System.Drawing.Size(141, 23);
             this.tbFlashMachineId.TabIndex = 13;
+            this.tbFlashMachineId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbFlashMachineId_KeyPress);
             // 
             // tbFlashToolName
             // 
