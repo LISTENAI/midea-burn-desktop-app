@@ -9,6 +9,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void MainForm_Load(object sender, EventArgs e) {
             FormControlsInit();
+            Global.AllWorkersCompleted += AllWorkersCompleted;
             CenterToScreen();
         }
 
@@ -19,14 +20,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
-            var uartProc = Process.GetProcessesByName("ASR_downloader_V1.0.6.exe");
-            foreach (var up in uartProc) {
-                up.Kill(true);
-            }
-            var asrProc = Process.GetProcessesByName("Uart_Burn_Tool.exe");
-            foreach (var ap in asrProc) {
-                ap.Kill(true);
-            }
+            Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
+            Utils.KillProcessByName("Uart_Burn_Tool.exe");
             Application.Exit();
         }
 
@@ -213,43 +208,61 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
-            try {
-                var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
-                var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
-                var availableGroups = new List<int>();
+            btnFlash.Enabled = false;
+            if (Global.WorkersPool.Count == 0) {
+                try {
+                    var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
+                    var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
+                    var availableGroups = new List<int>();
 
-                foreach (var groupId in checkCskPortResult) {
-                    if (checkWifiPortResult.Contains(groupId)) {
-                        var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
-                        if (!Global.IsCustomSnEnabled[groupId]) {
-                            serialControl.Text = Utils.GetSerialNumberWithDate();
-                        }
-                        else {
-                            if (string.IsNullOrWhiteSpace(serialControl.Text)) {
-                                throw new ListenAiException(301, $"模组{Utils.ConvertToChineseChars(groupId)}产品序列号为空。",
-                                    "", 3);
+                    foreach (var groupId in checkCskPortResult) {
+                        if (checkWifiPortResult.Contains(groupId)) {
+                            var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                            if (!Global.IsCustomSnEnabled[groupId]) {
+                                serialControl.Text = Utils.GetSerialNumberWithDate();
                             }
+                            else {
+                                if (string.IsNullOrWhiteSpace(serialControl.Text)) {
+                                    throw new ListenAiException(301, $"模组{Utils.ConvertToChineseChars(groupId)}产品序列号为空。",
+                                        "", 3);
+                                }
+                            }
+                            availableGroups.Add(groupId);
+                            Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
                         }
-                        availableGroups.Add(groupId);
-                        Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
+                    }
+                    if (availableGroups.Count == 0) {
+                        btnFlash.BackColor = Constants.ColorBlock;
+                        throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);
+                    }
+
+                    EnableMainFormUi(false);
+                    foreach (var groupId in availableGroups) {
+                        var newWorker = new LineWorker(groupId);
+                        Global.WorkersPool.Add(groupId, newWorker);
+                        newWorker.Start();
                     }
                 }
-                if (availableGroups.Count == 0) {
-                    btnFlash.BackColor = Constants.ColorBlock;
-                    throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);
+                catch (ListenAiException lex) {
+                    var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
+                    MessageBox.Show($"[{exCode}] {lex.Message}\n{lex.Details}", "错误");
                 }
 
-                EnableMainFormUi(false);
-                foreach (var groupId in availableGroups) {
-                    var newWorker = new LineWorker(groupId);
-                    Global.WorkersPool.Add(newWorker);
-                    newWorker.Start();
-                }
+                btnFlash.Text = "停止烧录";
             }
-            catch (ListenAiException lex) {
-                var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
-                MessageBox.Show($"[{exCode}] {lex.Message}\n{lex.Details}", "错误");
+            else {
+                try {
+                    foreach (var worker in Global.WorkersPool.Values) {
+                        worker.Stop();
+                    }
+                    Thread.Sleep(2000);
+                    Global.WorkersPool.Clear();
+                    EnableMainFormUi(true);
+                } catch { }
+                btnFlash.Text = "烧录";
             }
+
+            btnFlash.Enabled = true;
         }
 
         private void EnableMainFormUi(bool isEnabled) {
@@ -259,9 +272,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
             for (var i = 1; i <= Global.GroupCount; i++) {
                 Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.Port).Enabled = isEnabled;
                 Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
+                Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
                 Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Port).Enabled = isEnabled;
                 Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
+                Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
                 Constants.GetControl(i, Constants.GroupType.Common, Constants.GroupConfigType.Serial).Enabled = isEnabled;
+                
             }
         }
 
@@ -272,6 +288,13 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     btnMES.BackColor = SystemColors.Control;
                 }
             }
+        }
+
+        private void AllWorkersCompleted(object? sender, EventArgs e) {
+            btnFlash.Enabled = false;
+            EnableMainFormUi(true);
+            btnFlash.Text = "烧录";
+            btnFlash.Enabled = true;
         }
     }
 }

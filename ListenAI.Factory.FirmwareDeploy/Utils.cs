@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.IO.Ports;
 using System.Reflection;
@@ -267,6 +268,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
             catch {
                 return null;
             }
+        }
+
+        public static void KillProcessByName(string name) {
+            try {
+                var proc = Process.GetProcessesByName(name);
+                foreach (var p in proc) {
+                    p.Kill(true);
+                }
+            } catch {}
         }
     }
 }
