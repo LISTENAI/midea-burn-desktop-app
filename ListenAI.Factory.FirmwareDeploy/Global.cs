@@ -8,6 +8,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static MesRecord? MesRecord = null;
         public static List<LineWorker> WorkersPool = new();
         public static Dictionary<int, bool> IsCustomSnEnabled = new();
+        public static object LogOperationLock = new object();
 
         public static int NextSerialNumber = 0;
     }
@@ -22,6 +23,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static string BurnToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool.exe");
         public static string ASRToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "ASR_downloader_V1.0.6.exe");
         public static string UiConfigPath = Path.Combine(Environment.CurrentDirectory, "config.json");
+        public static string LogDirPath = Path.Combine(Environment.CurrentDirectory, "logs");
 
         public static string GetControlName(int groupId, GroupType groupType, GroupConfigType configType) {
             string result;
