@@ -35,6 +35,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _groupId = groupId;
         }
 
+        /// <summary>
+        /// Start working
+        /// </summary>
         public void Start() {
             _cskWorker = new BackgroundWorker();
             _cskWorker.WorkerReportsProgress = true;
@@ -63,6 +66,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
             });
         }
 
+        /// <summary>
+        /// Stop working
+        /// </summary>
         public void Stop() {
             if (_cskState == WorkerState.Processing) {
                 _cskWorker.CancelAsync();
@@ -77,6 +83,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Just let worker knows how to flash CSK chips
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CskFlash_Work(object? sender, DoWorkEventArgs e) {
             if (_cskState == WorkerState.Processing) {
                 return;
@@ -156,6 +167,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// CSK workers report their progress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CskFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
             _cskProgress = e.ProgressPercentage;
 
@@ -169,6 +185,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             });
         }
 
+        /// <summary>
+        /// Things to do after csk flash completed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CskFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
             if (_cskProgress < 100 || e.Cancelled || _wifiState == WorkerState.Error) {
                 _cskState = WorkerState.Error;
@@ -186,6 +207,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Just let worker knows how to flash WB01 chips
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WifiFlash_Work(object? sender, DoWorkEventArgs e) {
             if (_wifiState == WorkerState.Processing) {
                 return;
@@ -274,6 +300,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Report flashing result to ui
+        /// </summary>
         private void ReportResultToUi() {
             SaveLog();
             Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
@@ -301,6 +330,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Save log of flash this time
+        /// </summary>
         private void SaveLog() {
             lock (Global.LogOperationLock) {
                 if (_endAt.HasValue) {
@@ -329,7 +361,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         
-
         private void StartProcessAsync(string file, string args, DataReceivedEventHandler dataHandler, EventHandler exitHandler) {
             var startInfo = new ProcessStartInfo(file, args) {
                 UseShellExecute = false,

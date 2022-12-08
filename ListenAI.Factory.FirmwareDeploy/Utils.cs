@@ -10,6 +10,11 @@ using Microsoft.Data.SqlClient;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public class Utils {
+        /// <summary>
+        /// Clone a control along with its child-controls
+        /// </summary>
+        /// <param name="srcCtl">the control to be cloned</param>
+        /// <returns></returns>
         public static Control CloneControl(Control srcCtl) {
             //ref: https://stackoverflow.com/questions/3473597/it-is-possible-to-copy-all-the-properties-of-a-certain-control-c-window-forms
             var cloned = Activator.CreateInstance(srcCtl.GetType()) as Control;
@@ -28,6 +33,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             return cloned;
         }
 
+        /// <summary>
+        /// [INTERNAL] Check if property of control is clonable
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         private static bool IsClonable(PropertyInfo prop) {
             if (prop.Name == "Name") {
                 return true;
@@ -84,6 +94,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
             return ctrl;
         }
 
+        /// <summary>
+        /// [INTERNAL] Add control to global directory for further usage in functions
+        /// </summary>
+        /// <param name="groupId">group id</param>
+        /// <param name="name">control name</param>
+        /// <param name="control">the control itself</param>
         private static void AddControlGroupMember(int groupId, string name, Control control) {
             if (!Global.ControlGroups.ContainsKey(groupId)) {
                 Global.ControlGroups.Add(groupId, new());
@@ -97,6 +113,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Convert numbers into chinese chars
+        /// </summary>
+        /// <param name="num">the number to be converted</param>
+        /// <returns></returns>
         public static string ConvertToChineseChars(int num) {
             var result = num.ToString();
             result = result.Replace("0", "零")
@@ -113,12 +134,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
             return result;
         }
 
+        /// <summary>
+        /// Get next product serial number (id stored in Global.NextSerialNumber)
+        /// </summary>
+        /// <returns></returns>
         public static string GetSerialNumberWithDate() {
             var today = DateTime.UtcNow.AddHours(8).ToString("yyyyMMdd");
             var serial = ++Global.NextSerialNumber;
 
             return $"{today}{serial:00000}";
         }
+
         /// <summary>
         /// Check if COM port(s) is/are available before everything starts.
         /// </summary>
@@ -202,6 +228,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             return conn;
         }
 
+        /// <summary>
+        /// Get MD5 hash of a file
+        /// </summary>
+        /// <param name="path">path to the file</param>
+        /// <returns></returns>
         public static string GetMd5Hash(string path) {
             using (var md5 = MD5.Create()) {
                 using (var stream = File.OpenRead(path)) {
@@ -211,6 +242,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Extract a zip archive
+        /// </summary>
+        /// <param name="zipFile">zip file path</param>
+        /// <param name="destPath">Path to put extracted files</param>
+        /// <returns></returns>
         public static bool Unzip(string zipFile, string destPath) {
             try {
                 if (Directory.Exists(destPath)) {
@@ -226,6 +263,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Save port+baudrate of each group to file
+        /// </summary>
+        /// <returns></returns>
         public static UiConfig? SaveUiConfig() {
             var result = new UiConfig();
 
@@ -256,6 +297,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Load saved port+baudrate from file
+        /// </summary>
+        /// <returns></returns>
         public static UiConfig? LoadUiConfig() {
             if (!File.Exists(Constants.UiConfigPath)) {
                 return null;
@@ -270,6 +315,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
+        /// <summary>
+        /// Kill process by name
+        /// </summary>
+        /// <param name="name">process name to kill</param>
         public static void KillProcessByName(string name) {
             try {
                 var proc = Process.GetProcessesByName(name);
