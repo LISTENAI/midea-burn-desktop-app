@@ -211,6 +211,27 @@ namespace ListenAI.Factory.FirmwareDeploy {
             btnFlash.Enabled = false;
             if (Global.WorkersPool.Count == 0) {
                 try {
+                    //check if there are any duplicated ports
+                    var existPorts = new HashSet<string>();
+                    for (var g = 1; g <= Global.GroupCount; g++) {
+                        for (var t = 0; t <= 1; t++) {
+                            var ctrl = Constants.GetControl(g, (Constants.GroupType)t, Constants.GroupConfigType.Port);
+                            if (ctrl == null) {
+                                continue;
+                            }
+
+                            var intendedPort = ctrl.Text;
+                            if (intendedPort.Length < 4) {
+                                continue;
+                            }
+
+                            if (existPorts.Contains(intendedPort)) {
+                                throw new ListenAiException(301, "重复的端口，", "", 4);
+                            }
+                            existPorts.Add(intendedPort);
+                        }
+                    }
+
                     var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
                     var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
                     var availableGroups = new List<int>();
@@ -237,8 +258,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     }
 
                     EnableMainFormUi(false);
+                    var r = new Random();
                     foreach (var groupId in availableGroups) {
                         var newWorker = new LineWorker(groupId);
+                        Thread.Sleep(r.Next(200, 1000));
                         Global.WorkersPool.Add(groupId, newWorker);
                         newWorker.Start();
                     }
@@ -246,6 +269,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 catch (ListenAiException lex) {
                     var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
                     MessageBox.Show($"[{exCode}] {lex.Message}\n{lex.Details}", "错误");
+                    Global.WorkersPool.Clear();
+                    EnableMainFormUi(true);
+                    btnFlash.Enabled = true;
+                    return;
                 }
 
                 btnFlash.Text = "停止烧录";
