@@ -143,20 +143,24 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var fwPackDirPath = Path.GetDirectoryName(fwPackConfigPath);
 
                 //parse config file
+                if (!File.Exists(fwPackConfigPath)) {
+                    throw new ListenAiException(102, "", "配置文件不存在！");
+                }
+
                 var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
                 var fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
                 if (fwCfg == null) {
-                    throw new ListenAiException(102, "", "配置文件无法解析");
+                    throw new ListenAiException(102, "", "配置文件无法解析", 1);
                 }
 
                 if (fwCfg.Files.Count != 2) {
-                    throw new ListenAiException(102, "", "配置文件无法解析", 1);
+                    throw new ListenAiException(102, "", "配置文件无法解析", 2);
                 }
 
                 //check if all files mentioned in config exist
                 foreach (var file in fwCfg.Files) {
                     if (file.Id != 0 && file.Id != 1) {
-                        throw new ListenAiException(102, "", "配置文件无法解析", 2);
+                        throw new ListenAiException(102, "", "配置文件无法解析", 3);
                     }
 
                     var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
@@ -166,12 +170,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
                     var fi = new FileInfo(fwPackFilePath);
                     if (fi.Length != file.Size) {
-                        throw new ListenAiException(104, "", $"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}");
+                        throw new ListenAiException(104, "",
+                            $"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}");
                     }
 
                     var hash = Utils.GetMd5Hash(fwPackFilePath);
                     if (hash != file.Checksum) {
-                        throw new ListenAiException(105, "", $"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}");
+                        throw new ListenAiException(105, "",
+                            $"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}");
                     }
                 }
 
@@ -180,8 +186,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
                 var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
                 if (fwCskInfo == null || fwWifiInfo == null) {
-                    throw new ListenAiException(102, "", "配置文件无法解析", 3);
+                    throw new ListenAiException(102, "", "配置文件无法解析", 4);
                 }
+
                 tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
                                            $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
                                            $"固件包路径: {fwCfg.FullPath}";
@@ -192,6 +199,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 EnableFirmwareButton(true);
                 var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
                 MessageBox.Show($"[{exCode}] 请浏览并导入正确的固件包后再点击烧录。\n{lex.Details}", "错误");
+            }
+            catch (Exception ex) {
+                EnableFirmwareButton(true);
+                MessageBox.Show($"[106] 解析固件包失败。\n{ex.Message}", "错误");
             }
         }
 
