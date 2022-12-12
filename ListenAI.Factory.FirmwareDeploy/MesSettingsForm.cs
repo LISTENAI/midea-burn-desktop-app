@@ -11,6 +11,27 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void MesSettingsForm_Load(object sender, EventArgs e) {
             this.Size = new Size(531, 806);
+
+            if (Global.MesRecord != null) {
+                tbMesCmdId.Text = Global.MesRecord.MesCmdId;
+                tbProdId.Text = Global.MesRecord.ProductId;
+                tbProdName.Text = Global.MesRecord.ProductName;
+                tbProdModel.Text = Global.MesRecord.ProductModel;
+                tbFlashOpter.Text = Global.MesRecord.FlashOperator;
+                tbFlashToolName.Text = Global.MesRecord.FlashToolName;
+                tbFlashMachineId.Text = Global.MesRecord.FlashMachineId;
+
+                tbDbIp.Text = Global.MesRecord.DbIp;
+                tbDbName.Text = Global.MesRecord.DbName;
+                tbDbUsername.Text = Global.MesRecord.DbUsername;
+                tbDbPassword.Text = Global.MesRecord.DbPassword;
+                tbDbTableName.Text = Global.MesRecord.DbTableName;
+
+                if (!string.IsNullOrWhiteSpace(Global.MesRecord.DbIp)) {
+                    this.Size = new Size(1061, 806);
+                    cbIsImportFromDb.Checked = true;
+                }
+            }
         }
 
         /// <summary>
@@ -167,7 +188,13 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 ProductModel = tbProdModel.Text,
                 FlashOperator = tbFlashOpter.Text,
                 FlashToolName = tbFlashToolName.Text,
-                FlashMachineId = tbFlashMachineId.Text
+                FlashMachineId = tbFlashMachineId.Text,
+
+                DbIp = tbDbIp.Text,
+                DbName = tbDbName.Text,
+                DbUsername = tbDbUsername.Text,
+                DbPassword = tbDbPassword.Text,
+                DbTableName = tbDbTableName.Text
             };
             this.DialogResult = DialogResult.OK;
             this.Close();

@@ -13,5 +13,19 @@
         public string FlashToolName { get; set; }
 
         public string FlashMachineId { get; set; }
+
+        #region Database config (for state retaining purpose only)
+
+        public string DbIp { get; set; }
+
+        public string DbName { get; set; }
+
+        public string DbUsername { get; set; }
+
+        public string DbPassword { get; set; }
+
+        public string DbTableName { get; set; }
+
+        #endregion
     }
 }
