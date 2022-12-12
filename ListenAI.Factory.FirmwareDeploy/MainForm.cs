@@ -64,6 +64,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                             .ReadOnly = defaultCheckbox.Checked;
                         ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.BaudRate))
                             .ReadOnly = defaultCheckbox.Checked;
+                        ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.Port))
+                            .BackColor = defaultCheckbox.Checked ? SystemColors.Control : SystemColors.Window;
+                        ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.BaudRate))
+                            .BackColor = defaultCheckbox.Checked ? SystemColors.Control : SystemColors.Window;
                         Utils.SaveUiConfig();
                     };
                 }
