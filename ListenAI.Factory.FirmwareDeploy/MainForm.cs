@@ -277,7 +277,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                                 }
                             }
                             availableGroups.Add(groupId);
-                            Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result).BackColor = Constants.ColorProcessing;
+                            var ctrlResult = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result);
+                            ctrlResult.BackColor = Constants.ColorProcessing;
+                            ctrlResult.Text = "准备中";
                         }
                     }
                     if (availableGroups.Count == 0) {
