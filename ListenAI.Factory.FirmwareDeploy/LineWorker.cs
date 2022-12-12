@@ -180,8 +180,18 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
+            var ctrlResult = (Button)GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
+            if (ctrlResult == null) {
+                return;
+            }
+
             ctrlPb.Invoke(() => {
                 ctrlPb.Value = _cskProgress + _wifiProgress;
+            });
+            ctrlResult.Invoke(() => {
+                var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
+                fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
+                ctrlResult.Text = fullProgress.ToString("0.0") + "%";
             });
         }
 
@@ -278,8 +288,18 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
+            var ctrlResult = (Button)GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
+            if (ctrlResult == null) {
+                return;
+            }
+
             ctrlPb.Invoke(() => {
                 ctrlPb.Value = _cskProgress + _wifiProgress;
+            });
+            ctrlResult.Invoke(() => {
+                var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
+                fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
+                ctrlResult.Text = fullProgress.ToString("0.0") + "%";
             });
         }
 
@@ -314,14 +334,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
             var bgc = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? 
                 ColorProcceed : ColorBlock;
+            var text = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "成功" : "失败";
 
             if (passFailIndicator.InvokeRequired) {
                 passFailIndicator.Invoke(() => {
                     passFailIndicator.BackColor = bgc;
+                    passFailIndicator.Text = text;
                 });
             }
             else {
                 passFailIndicator.BackColor = bgc;
+                passFailIndicator.Text = text;
             }
 
             Global.WorkersPool.Remove(_groupId);
