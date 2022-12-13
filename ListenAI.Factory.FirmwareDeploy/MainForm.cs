@@ -231,11 +231,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void btnFlash_Click(object sender, EventArgs e) {
             btnFlash.BackColor = SystemColors.Control;
 
-            if (Global.MesRecord == null) {
-                MessageBox.Show("[301-1] 请完全填写MES记录需要的数据后再点击烧录。", "错误");
+            if (Global.SelectedFirmware == null) {
+                MessageBox.Show("[301-1] 请浏览并导入正确的固件包后再点击烧录。", "错误");
                 return;
             }
-            
+
             btnFlash.Enabled = false;
             if (Global.WorkersPool.Count == 0) {
                 try {
@@ -277,14 +277,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
                                 }
                             }
                             availableGroups.Add(groupId);
-                            var ctrlResult = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Result);
-                            ctrlResult.BackColor = Constants.ColorProcessing;
-                            ctrlResult.Text = "准备中";
                         }
                     }
                     if (availableGroups.Count == 0) {
                         btnFlash.BackColor = Constants.ColorBlock;
                         throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);
+                    }
+
+                    if (Global.MesRecord == null) {
+                        throw new ListenAiException(301, "请完全填写MES记录需要的数据后再点击烧录。", "错误", 5);
                     }
 
                     EnableMainFormUi(false);
