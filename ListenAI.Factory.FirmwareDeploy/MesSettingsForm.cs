@@ -10,7 +10,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MesSettingsForm_Load(object sender, EventArgs e) {
-            this.Size = new Size(531, 806);
+            this.Size = new Size(groupBox1.Location.X + groupBox1.Size.Width + 50, 806);
 
             if (Global.MesRecord != null) {
                 tbMesCmdId.Text = Global.MesRecord.MesCmdId;
@@ -41,11 +41,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="e"></param>
         private void btnShowDbConfig_Click(object sender, EventArgs e) {
             if (cbIsImportFromDb.Checked) {
-                this.Size = new Size(531, 806);
+                this.Size = new Size(groupBox1.Location.X + groupBox1.Size.Width + 50, 806);
                 cbIsImportFromDb.Checked = false;
             }
             else {
-                this.Size = new Size(1061, 806);
+                this.Size = new Size(groupBox2.Location.X + groupBox2.Size.Width + 50, 806);
                 cbIsImportFromDb.Checked = true;
             }
         }
