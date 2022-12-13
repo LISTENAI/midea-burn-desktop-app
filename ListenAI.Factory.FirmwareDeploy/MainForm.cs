@@ -47,10 +47,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 Global.GroupCount++;
                 var clonedGrpbox = Utils.CloneControl(gbMod1);
                 clonedGrpbox = Utils.CtrlPropModify(clonedGrpbox, Global.GroupCount);
-                var locX = gbMod1.Location.X + 454 * (Global.GroupCount - 1);
+                var locX = gbMod1.Location.X + (gbMod1.Size.Width + 5) * (Global.GroupCount - 1);
                 clonedGrpbox.Location = gbMod1.Location with { X = locX };
                 this.Controls.Add(clonedGrpbox);
             }
+
+            //align settings box
+            var curH = gbSettings.Size.Height;
+            gbSettings.Size = new Size((gbMod1.Size.Width + 5) * Global.GroupCount - 5, curH);
 
             //add event handlers
             for (var i = 1; i <= Global.GroupCount; i++) {
