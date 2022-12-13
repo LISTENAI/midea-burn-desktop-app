@@ -64,6 +64,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
             ctrlPb.Invoke(() => {
                 ctrlPb.Value = 0;
             });
+
+            var ctrlResult = GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
+            ctrlResult.Invoke(() => {
+                ctrlResult.BackColor = ColorProcessing;
+                ctrlResult.Text = "准备中";
+            });
         }
 
         /// <summary>
@@ -414,7 +420,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             _wifiProcess.WaitForExit();
 
-            return new ProcessExitInfo() {
+            return new ProcessExitInfo {
                 ExitCode = _wifiProcess.ExitCode,
                 StdErr = "",//_wifiProcess.StandardError.ReadToEnd(),
                 StdOut = ""//_wifiProcess.StandardOutput.ReadToEnd()

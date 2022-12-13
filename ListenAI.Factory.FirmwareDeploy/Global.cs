@@ -2,7 +2,7 @@
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public static class Global {
-        public static FirmwareConfig SelectedFirmware;
+        public static FirmwareConfig? SelectedFirmware;
         public static short GroupCount = 1;
         public static Dictionary<int, Dictionary<string, Control>> ControlGroups = new();
         public static MesRecord? MesRecord = null;
