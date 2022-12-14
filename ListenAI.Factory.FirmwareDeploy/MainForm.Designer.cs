@@ -216,7 +216,6 @@
             // 
             this.tbCommon1Serial.Location = new System.Drawing.Point(95, 7);
             this.tbCommon1Serial.Margin = new System.Windows.Forms.Padding(2);
-            this.tbCommon1Serial.MaxLength = 13;
             this.tbCommon1Serial.Name = "tbCommon1Serial";
             this.tbCommon1Serial.Size = new System.Drawing.Size(154, 23);
             this.tbCommon1Serial.TabIndex = 6;
