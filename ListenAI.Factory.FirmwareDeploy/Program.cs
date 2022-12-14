@@ -15,10 +15,26 @@ namespace ListenAI.Factory.FirmwareDeploy {
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             if (!createdNew) {
-                MessageBox.Show("另一个实例已经在运行，本实例退出。", "重复运行");
+                MessageBox.Show("工具已打开，请勿重复打开", "重复运行");
                 return;
             }
+
+            if (!CheckTools()) {
+                MessageBox.Show("烧录工具缺失，请重新安装！", "错误");
+                return;
+            }
+
             Application.Run(new MainForm());
+        }
+
+        static bool CheckTools() {
+            var asrPath = Path.Combine(Environment.CurrentDirectory, "tools", "ASR_downloader_V1.0.6.exe");
+            var cskPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool.exe");
+            if (!File.Exists(asrPath) || !File.Exists(cskPath)) {
+                return false;
+            }
+
+            return true;
         }
     }
 }

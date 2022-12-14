@@ -284,7 +284,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                         }
                     }
                     if (availableGroups.Count == 0) {
-                        btnFlash.BackColor = Constants.ColorBlock;
                         throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);
                     }
 
