@@ -68,7 +68,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var ctrlResult = GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
             ctrlResult.Invoke(() => {
                 ctrlResult.BackColor = ColorProcessing;
-                ctrlResult.Text = "准备中";
+                ctrlResult.Text = "烧录中...0.0%";
             });
         }
 
@@ -197,7 +197,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             ctrlResult.Invoke(() => {
                 var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
                 fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
-                ctrlResult.Text = fullProgress.ToString("0.0") + "%";
+                ctrlResult.Text = $"烧录中...{fullProgress:0.0}%";
             });
         }
 
@@ -305,7 +305,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             ctrlResult.Invoke(() => {
                 var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
                 fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
-                ctrlResult.Text = fullProgress.ToString("0.0") + "%";
+                ctrlResult.Text = $"烧录中...{fullProgress:0.0}%";
             });
         }
 
@@ -340,7 +340,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
             var bgc = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? 
                 ColorProcceed : ColorBlock;
-            var text = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "成功" : "失败";
+            var text = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "烧录成功" : "烧录失败";
 
             if (passFailIndicator.InvokeRequired) {
                 passFailIndicator.Invoke(() => {
