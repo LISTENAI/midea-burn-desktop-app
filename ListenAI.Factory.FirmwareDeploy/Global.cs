@@ -11,6 +11,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static object LogOperationLock = new();
         public static EventHandler AllWorkersCompleted;
 
+        public static FileStream LogFileStream;
+
         public static int NextSerialNumber = 0;
     }
 

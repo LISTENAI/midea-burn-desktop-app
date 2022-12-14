@@ -204,12 +204,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 EnableFirmwareButton(true, false);
             }
             catch (ListenAiException lex) {
-                EnableFirmwareButton(true);
+                EnableFirmwareButton(true, Global.SelectedFirmware == null);
                 var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
                 MessageBox.Show($"[{exCode}] 请浏览并导入正确的固件包后再点击烧录。\n{lex.Details}", "错误");
             }
             catch (Exception ex) {
-                EnableFirmwareButton(true);
+                EnableFirmwareButton(true, Global.SelectedFirmware == null);
                 MessageBox.Show($"[106] 解析固件包失败。\n{ex.Message}", "错误");
             }
         }
@@ -292,6 +292,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     }
 
                     EnableMainFormUi(false);
+
+                    //open log file stream
+                    var toolLogId = DateTime.UtcNow.AddHours(8).ToString("yyyyMMddHHmmss");
+                    Global.LogFileStream = new FileStream(Path.Combine(Constants.LogDirPath, $"tool-{toolLogId}.txt"),
+                        FileMode.OpenOrCreate, FileAccess.Write);
+
                     var r = new Random();
                     foreach (var groupId in availableGroups) {
                         var newWorker = new LineWorker(groupId);
@@ -357,6 +363,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void AllWorkersCompleted(object? sender, EventArgs e) {
+            Global.LogFileStream.Flush(true);
             btnFlash.Enabled = false;
             EnableMainFormUi(true);
             btnFlash.Text = "烧录";
