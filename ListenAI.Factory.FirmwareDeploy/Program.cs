@@ -15,7 +15,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             if (!createdNew) {
-                MessageBox.Show("另一个实例已经在运行，本实例退出。", "重复运行");
+                MessageBox.Show("工具已打开，请勿重复打开", "重复运行");
                 return;
             }
             Application.Run(new MainForm());
