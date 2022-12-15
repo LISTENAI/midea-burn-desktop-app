@@ -4,13 +4,23 @@ using Microsoft.Data.SqlClient;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MesSettingsForm : Form {
+        private int _noDbWidth;
+        private int _noDbHeight;
+        private int _withDbWidth;
+        private int _withDbHeight;
 
         public MesSettingsForm() {
             InitializeComponent();
+            var _widthBleeding = 1.07m;
+            var _heightBleeding = 1.1m;
+            _noDbWidth = Convert.ToInt32((groupBox1.Location.X + groupBox1.Size.Width) * _widthBleeding);
+            _noDbHeight = Convert.ToInt32((groupBox1.Location.Y + groupBox1.Size.Height) * _heightBleeding);
+            _withDbWidth = Convert.ToInt32((groupBox2.Location.X + groupBox2.Size.Width) * _widthBleeding);
+            _withDbHeight = Convert.ToInt32((groupBox1.Location.Y + groupBox1.Size.Height) * _heightBleeding);
         }
 
         private void MesSettingsForm_Load(object sender, EventArgs e) {
-            this.Size = new Size(groupBox1.Location.X + groupBox1.Size.Width + 50, 806);
+            Size = new Size(_noDbWidth, _noDbHeight);
 
             if (Global.MesRecord != null) {
                 tbMesCmdId.Text = Global.MesRecord.MesCmdId;
@@ -28,7 +38,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 tbDbTableName.Text = Global.MesRecord.DbTableName;
 
                 if (!string.IsNullOrWhiteSpace(Global.MesRecord.DbIp)) {
-                    this.Size = new Size(1061, 806);
+                    Size = new Size(_withDbWidth, _withDbHeight);
                     cbIsImportFromDb.Checked = true;
                 }
             }
@@ -41,11 +51,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="e"></param>
         private void btnShowDbConfig_Click(object sender, EventArgs e) {
             if (cbIsImportFromDb.Checked) {
-                this.Size = new Size(groupBox1.Location.X + groupBox1.Size.Width + 50, 806);
+                Size = new Size(_noDbWidth, _noDbHeight);
                 cbIsImportFromDb.Checked = false;
             }
             else {
-                this.Size = new Size(groupBox2.Location.X + groupBox2.Size.Width + 50, 806);
+                Size = new Size(_withDbWidth, _withDbHeight);
                 cbIsImportFromDb.Checked = true;
             }
         }
@@ -64,7 +74,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             tbFlashToolName.Text = "";
             tbFlashMachineId.Text = "";
 
-            this.Size = new Size(531, 806);
+            Size = new Size(_noDbWidth, _noDbHeight);
             cbIsImportFromDb.Checked = false;
 
             tbDbIp.Text = "";
@@ -181,7 +191,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
 
-            Global.MesRecord = new MesRecord() {
+            Global.MesRecord = new MesRecord {
                 MesCmdId = tbMesCmdId.Text,
                 ProductId = tbProdId.Text,
                 ProductName = tbProdName.Text,
@@ -196,8 +206,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 DbPassword = tbDbPassword.Text,
                 DbTableName = tbDbTableName.Text
             };
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void tbFlashMachineId_KeyPress(object sender, KeyPressEventArgs e) {
