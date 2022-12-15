@@ -124,8 +124,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 }
                 //data handler
                 Debug.WriteLine(args.Data);
-                WriteToolLog(args.Data);
-
                 if (args.Data.StartsWith("FLASH DATA SEND PROGESS:")) {
                     try {
                         var prog = int.Parse(args.Data.Replace("FLASH DATA SEND PROGESS:", "").Replace("%", "").Trim());
@@ -162,10 +160,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     }
                 }
             }, (_, _) => {
-                var rawText = $"Burn-tools exited with code {_cskProcess.ExitCode}";
-                Debug.WriteLine(rawText);
-                WriteToolLog(rawText);
-
+                Debug.WriteLine($"Burn-tools exited with code {_cskProcess.ExitCode}");
                 if (_cskProcess.ExitCode != 0) {
                     if ((sender as BackgroundWorker).IsBusy) {
                         (sender as BackgroundWorker).ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
@@ -222,7 +217,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 _cskState = WorkerState.Success;
             }
 
-            Global.LogFileStream.Flush(true);
             Thread.Sleep(new Random().Next(500, 2000));
             if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
                 ReportResultToUi();
@@ -245,7 +239,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             //step 1 - Check for device
             Debug.WriteLine("[ASR] step 1...");
-            WriteToolLog("[ASR] step 1...");
             var args = $"dl --port {port} --chip 2";
             var runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
@@ -253,7 +246,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
             else {
                 Debug.WriteLine($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
-                WriteToolLog($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 if ((sender as BackgroundWorker).IsBusy) {
                     (sender as BackgroundWorker).ReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 }
@@ -262,7 +254,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             //step 2 - flash firmware
             Debug.WriteLine("[ASR] step 2...");
-            WriteToolLog("[ASR] step 2...");
             var fwInfo = Global.SelectedFirmware.GetFirmware(GroupType.Wifi);
             args = $"burn --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             runAsr = StartProcessSync(ASRToolPath, args);
@@ -271,7 +262,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
             else {
                 Debug.WriteLine($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
-                WriteToolLog($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
                 if ((sender as BackgroundWorker).IsBusy) {
                     (sender as BackgroundWorker).ReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
                 }
@@ -280,15 +270,13 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             //step 3 - verify firmware flashed
             Debug.WriteLine("[ASR] step 3...");
-            WriteToolLog("[ASR] step 3...");
             args = $"verify --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker).ReportProgress(100);
             }
             else {
-                Debug.WriteLine($"[ASR] 校验失败。Code = {runAsr.ExitCode}");
-                WriteToolLog($"[ASR] 校验失败。Code = {runAsr.ExitCode}");
+                Debug.WriteLine("[ASR] 校验失败。Code = {runAsr.ExitCode}");
                 if ((sender as BackgroundWorker).IsBusy) {
                     (sender as BackgroundWorker).ReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
                 }
@@ -296,7 +284,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
 
             Debug.WriteLine("[ASR] Completed!");
-            WriteToolLog("[ASR] Completed!");
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
@@ -333,7 +320,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 _wifiState = WorkerState.Success;
             }
 
-            Global.LogFileStream.Flush(true);
             Thread.Sleep(new Random().Next(500, 2000));
             if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
                 ReportResultToUi();
@@ -403,10 +389,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
         }
 
-        private void WriteToolLog(string log) {
-            var logBytes = Encoding.UTF8.GetBytes($"[Group {_groupId}] {log}\r\n");
-            Global.LogFileStream.Write(logBytes, 0, logBytes.Length);
-        }
         
         private void StartProcessAsync(string file, string args, DataReceivedEventHandler dataHandler, EventHandler exitHandler) {
             var startInfo = new ProcessStartInfo(file, args) {
