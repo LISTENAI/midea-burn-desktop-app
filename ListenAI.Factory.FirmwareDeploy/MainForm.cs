@@ -204,12 +204,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 EnableFirmwareButton(true, false);
             }
             catch (ListenAiException lex) {
-                EnableFirmwareButton(true);
+                EnableFirmwareButton(true, Global.SelectedFirmware == null);
                 var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
                 MessageBox.Show($"[{exCode}] 请浏览并导入正确的固件包后再点击烧录。\n{lex.Details}", "错误");
             }
             catch (Exception ex) {
-                EnableFirmwareButton(true);
+                EnableFirmwareButton(true, Global.SelectedFirmware == null);
                 MessageBox.Show($"[106] 解析固件包失败。\n{ex.Message}", "错误");
             }
         }
