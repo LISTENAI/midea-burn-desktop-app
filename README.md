@@ -2,13 +2,24 @@
 
 ### 概述
 
-本工具允许工厂产线快速烧录 Midea_CSK6_WB01_EVB_1V0 模组的 CSK6 及 WB01 的固件，配合MES系统的情况下更可以记录产线烧录状态。
+本工具允许工厂产线快速烧录 Midea_CSK6_WB01_EVB_1V0 模组的 CSK6 及 WB01 的固件，配合MES系统的情况下还可以记录产线烧录状态。
 
 ### 开发环境
 
 - Visual Studio 2022 (17.4)
 - .Net 6.0.11 (SDK 6.0.403)
 - SQL Server 2022
+
+### 最终用户系统要求及相关前置依赖包要求
+
+- 操作系统：Windows 10/11 (推荐) / Windows 7 SP1 (最低)
+- 屏幕分辨率：1920 x 1080 (推荐) / 1366 x 768 (最低)
+- 前置依赖包：
+    - .Net Desktop Runtime 6.0.12 ([64位](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.12-windows-x64-installer) | [32位](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.12-windows-x86-installer))
+    - Microsoft Visual C++ 2015-2019 Redistributable ([64位](https://aka.ms/vs/16/release/vc_redist.x64.exe) | [32位](https://aka.ms/vs/16/release/vc_redist.x86.exe))
+- 如果最终用户使用的操作系统为 **Windows 7** ，ta们还须安装以下前置依赖包：
+    - KB3063858 ([64位](https://www.microsoft.com/download/details.aspx?id=47442) | [32位](https://www.microsoft.com/download/details.aspx?id=47409))
+    - KB2999226 ([64位](https://www.microsoft.com/en-us/download/details.aspx?id=49093) | [32位](https://www.microsoft.com/en-us/download/details.aspx?id=49077))
 
 ### 错误代码
 
@@ -17,9 +28,9 @@
 | 101 | 固件选择 | 固件包无法解压 | 检查固件包是否为zip格式，并且没有损坏。|
 | 102 | 固件选择 | 配置文件无法解析 | 配置文件内容不正确，请重新下载固件包。|
 | 103 | 固件选择 | 固件xxx不存在 | 配置文件中提及的固件文件不存在，请重新下载固件包。|
-| 104 | 固件选择 | 固件xxx大小不正确 | 配置文件中提及的固件文件大小与配置文件描述的不一致（文件损坏？），请重新下载固件包。|
-| 105 | 固件选择 | 固件xxx校验失败 | 配置文件中提及的固件文件MD5值不匹配，请重新下载固件包。|
+| 104 | 固件选择 | 固件xxx大小不正确 | 配置文件中提及的固件文件大小与配置文件描述的不一致<br>（文件损坏？），请重新下载固件包。|
+| 105 | 固件选择 | 固件xxx校验失败 | 配置文件中提及的固件文件MD5值不匹配，<br>请重新下载固件包。|
 | 201 | MES配置 | 请输入MES指令单号<br>数据库连接信息不完整，请补充。<br>数据库表名不正确<br>请完全填写MES记录需要的数据后再点击确认 | 必要参数缺失，请按提示填写。|
-| 202 | MES配置 | 根据MES指令单号，没有找到任何记录。| 请检查MES指令单号是否正确，如果确实正确，请联系MES数据库管理添加数据。|
-| 203 | MES配置 | 无法连接数据库，请联系运维处理。| 请先检查网络是否正常，如果正常但依然无法连接，请联系运维处理。|
-| 204 | MES配置 | 连接数据库出现异常，请联系运维处理。| 请先检查网络是否正常，如果正常但依然无法连接，请联系运维处理。|
+| 202 | MES配置 | 根据MES指令单号，没有找到任何记录。| 请检查MES指令单号是否正确，如果确实正确，<br>请联系MES数据库管理添加数据。|
+| 203 | MES配置 | 无法连接数据库，请联系运维处理。| 请先检查网络是否正常，如果正常但依然无法连接，<br>请联系运维处理。|
+| 204 | MES配置 | 连接数据库出现异常，请联系运维处理。| 请先检查网络是否正常，如果正常但依然无法连接，<br>请联系运维处理。|
