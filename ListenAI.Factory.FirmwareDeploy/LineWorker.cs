@@ -78,13 +78,13 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public void Stop() {
             if (_cskState == WorkerState.Processing) {
                 _cskWorker.CancelAsync();
-                _cskProcess.Kill(true);
+                _cskProcess?.Kill(true);
                 _cskState = WorkerState.Error;
             }
 
             if (_wifiState == WorkerState.Processing) {
                 _wifiWorker.CancelAsync();
-                _wifiProcess.Kill(true);
+                _wifiProcess?.Kill(true);
                 _cskState = WorkerState.Error;
             }
         }
@@ -116,9 +116,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     return;
                 }
                 if ((sender as BackgroundWorker).CancellationPending) {
-                    _cskProcess.Kill();
+                    _cskProcess?.Kill();
                     if ((sender as BackgroundWorker).IsBusy) {
-                        (sender as BackgroundWorker).ReportProgress(-1, "Operation cancelled!");
+                        (sender as BackgroundWorker)?.ReportProgress(-1, "Operation cancelled!");
                     }
                     return;
                 }
@@ -141,29 +141,29 @@ namespace ListenAI.Factory.FirmwareDeploy {
                            args.Data.StartsWith("CONNECT CHIP OVERTIME")) {
                     timeoutCount++;
                     if (timeoutCount >= 10) {
-                        _cskProcess.Kill();
+                        _cskProcess?.Kill();
                         _cskState = WorkerState.Error;
                         Debug.WriteLine("Too many timeout exception, flash aborted!");
                         if ((sender as BackgroundWorker).IsBusy) {
-                            (sender as BackgroundWorker).ReportProgress(-1, "Too many timeout exception, flash aborted!");
+                            (sender as BackgroundWorker)?.ReportProgress(-1, "Too many timeout exception, flash aborted!");
                         }
                     }
                 }
                 else if (args.Data.StartsWith("SERILA PORT NUMBER ERROR") ||
                            args.Data.StartsWith("SYNC FORMAT ERROR") ||
                            args.Data.StartsWith("MD5 CHECK ERROR")) {
-                    _cskProcess.Kill();
+                    _cskProcess?.Kill();
                     _cskState = WorkerState.Error;
                     Debug.WriteLine($"Critical error, flash aborted! Msg = {args.Data}");
                     if ((sender as BackgroundWorker).IsBusy) {
-                        (sender as BackgroundWorker).ReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
+                        (sender as BackgroundWorker)?.ReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
                     }
                 }
             }, (_, _) => {
                 Debug.WriteLine($"Burn-tools exited with code {_cskProcess.ExitCode}");
                 if (_cskProcess.ExitCode != 0) {
                     if ((sender as BackgroundWorker).IsBusy) {
-                        (sender as BackgroundWorker).ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
+                        (sender as BackgroundWorker)?.ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
                     }
                 }
             });
@@ -210,7 +210,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (_cskProgress < 100 || e.Cancelled || _wifiState == WorkerState.Error) {
                 _cskState = WorkerState.Error;
                 _wifiWorker.CancelAsync();
-                _wifiProcess.Kill();
+                _wifiProcess?.Kill();
                 _wifiState = WorkerState.Error;
             }
             else {
@@ -247,7 +247,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             else {
                 Debug.WriteLine($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 if ((sender as BackgroundWorker).IsBusy) {
-                    (sender as BackgroundWorker).ReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
+                    (sender as BackgroundWorker)?.ReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 }
                 return;
             }
@@ -263,7 +263,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             else {
                 Debug.WriteLine($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
                 if ((sender as BackgroundWorker).IsBusy) {
-                    (sender as BackgroundWorker).ReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
+                    (sender as BackgroundWorker)?.ReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
                 }
                 return;
             }
@@ -278,7 +278,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             else {
                 Debug.WriteLine("[ASR] 校验失败。Code = {runAsr.ExitCode}");
                 if ((sender as BackgroundWorker).IsBusy) {
-                    (sender as BackgroundWorker).ReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
+                    (sender as BackgroundWorker)?.ReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
                 }
                 return;
             }
@@ -313,7 +313,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (_wifiProgress < 100 || e.Cancelled || _cskState == WorkerState.Error) {
                 _wifiState = WorkerState.Error;
                 _cskWorker.CancelAsync();
-                _cskProcess.Kill();
+                _cskProcess?.Kill();
                 _cskState = WorkerState.Error;
             }
             else {
