@@ -10,6 +10,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static Dictionary<int, bool> IsCustomSnEnabled = new();
         public static object LogOperationLock = new();
         public static EventHandler AllWorkersCompleted;
+        public static EventHandler FailsafeMode;
 
         public static int NextSerialNumber = 0;
     }

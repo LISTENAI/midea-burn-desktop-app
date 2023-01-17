@@ -8,9 +8,19 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
+            Global.FailsafeMode += FailsafeMode;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
             FormControlsInit();
             Global.AllWorkersCompleted += AllWorkersCompleted;
             CenterToScreen();
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) {
+            var ex = e.ExceptionObject as Exception;
+            var exMsg = ex?.ToString() ?? "没有更多技术信息";
+            Global.FailsafeMode.Invoke(sender, e);
+            MessageBox.Show($"[901] 出现了意外错误！\n工具将以安全模式继续运行。但建议用户尽快保存配置，然后重启本工具。\n以下为技术信息：\n{exMsg}");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -295,8 +305,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     var r = new Random();
                     foreach (var groupId in availableGroups) {
                         var newWorker = new LineWorker(groupId);
-                        Thread.Sleep(r.Next(200, 1000));
                         Global.WorkersPool.Add(groupId, newWorker);
+                        Thread.Sleep(r.Next(200, 2000));
                         newWorker.Start();
                     }
                 }
@@ -361,6 +371,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
             EnableMainFormUi(true);
             btnFlash.Text = "烧录";
             btnFlash.Enabled = true;
+        }
+
+        /// <summary>
+        /// Event handler to be called on unhandled exception triggered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void FailsafeMode(object? sender, EventArgs e) {
+            tsslSafeMode.Visible = true;
         }
     }
 }
