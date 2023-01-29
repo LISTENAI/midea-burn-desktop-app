@@ -9,6 +9,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void MainForm_Load(object sender, EventArgs e) {
             Global.FailsafeMode += FailsafeMode;
+            Application.ThreadException += ApplicationOnThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
             FormControlsInit();
@@ -16,11 +17,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
             CenterToScreen();
         }
 
+        private void ApplicationOnThreadException(object sender, ThreadExceptionEventArgs e) {
+            var exMsg = e.Exception?.ToString() ?? "没有更多技术信息";
+            Global.FailsafeMode.Invoke(sender, e);
+            MessageBox.Show($"[902] 出现了意外错误！\n工具将尝试以安全模式继续运行。但建议用户尽快保存配置，然后重启本工具。\n以下为技术信息：\n{exMsg}");
+        }
+
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) {
             var ex = e.ExceptionObject as Exception;
             var exMsg = ex?.ToString() ?? "没有更多技术信息";
             Global.FailsafeMode.Invoke(sender, e);
-            MessageBox.Show($"[901] 出现了意外错误！\n工具将以安全模式继续运行。但建议用户尽快保存配置，然后重启本工具。\n以下为技术信息：\n{exMsg}");
+            MessageBox.Show($"[901] 出现了意外错误！\n工具将尝试以安全模式继续运行。但建议用户尽快保存配置，然后重启本工具。\n以下为技术信息：\n{exMsg}");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {

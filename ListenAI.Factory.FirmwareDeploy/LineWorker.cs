@@ -61,9 +61,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _wifiProgress = 0;
 
             var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
-            ctrlPb.Invoke(() => {
-                ctrlPb.Value = 0;
-            });
+            ctrlPb.Invoke(() => { ctrlPb.Value = 0; });
 
             var ctrlResult = GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
             ctrlResult.Invoke(() => {
@@ -99,10 +97,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 return;
             }
             _cskState = WorkerState.Processing;
-            var _groupType = GroupType.Csk;
+            var groupType = GroupType.Csk;
 
-            var baudRate = GetControl(_groupId, _groupType, GroupConfigType.BaudRate).Text;
-            var port = GetControl(_groupId, _groupType, GroupConfigType.Port).Text;
+            var baudRate = GetControl(_groupId, groupType, GroupConfigType.BaudRate).Text;
+            var port = GetControl(_groupId, groupType, GroupConfigType.Port).Text;
             var fwPackPath = Global.SelectedFirmware.FullPath;
             var fwFile = Global.SelectedFirmware.GetFirmware(GroupType.Csk);
             if (fwFile == null) {
@@ -117,9 +115,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 }
                 if ((sender as BackgroundWorker).CancellationPending) {
                     _cskProcess?.Kill();
-                    if ((sender as BackgroundWorker).IsBusy) {
-                        (sender as BackgroundWorker)?.ReportProgress(-1, "Operation cancelled!");
-                    }
+                    (sender as BackgroundWorker)?.TryToReportProgress(-1, "Operation cancelled!");
                     return;
                 }
                 //data handler
@@ -128,14 +124,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     try {
                         var prog = int.Parse(args.Data.Replace("FLASH DATA SEND PROGESS:", "").Replace("%", "").Trim());
                         timeoutCount = 0;
-                        (sender as BackgroundWorker).ReportProgress(prog, null);
+                        (sender as BackgroundWorker)?.TryToReportProgress(prog, null);
                     }
                     catch {
                         timeoutCount++;
                     }
                 }
                 else if (args.Data.StartsWith("FLASH DOWNLOAD SUCCESS")) {
-                    (sender as BackgroundWorker).ReportProgress(100, null);
+                    (sender as BackgroundWorker)?.TryToReportProgress(100, null);
                 }
                 else if (args.Data.StartsWith("RECEIVE OVERTIME") ||
                            args.Data.StartsWith("CONNECT CHIP OVERTIME")) {
@@ -144,9 +140,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                         _cskProcess?.Kill();
                         _cskState = WorkerState.Error;
                         Debug.WriteLine("Too many timeout exception, flash aborted!");
-                        if ((sender as BackgroundWorker).IsBusy) {
-                            (sender as BackgroundWorker)?.ReportProgress(-1, "Too many timeout exception, flash aborted!");
-                        }
+                        (sender as BackgroundWorker)?.TryToReportProgress(-1, "Too many timeout exception, flash aborted!");
                     }
                 }
                 else if (args.Data.StartsWith("SERILA PORT NUMBER ERROR") ||
@@ -155,16 +149,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     _cskProcess?.Kill();
                     _cskState = WorkerState.Error;
                     Debug.WriteLine($"Critical error, flash aborted! Msg = {args.Data}");
-                    if ((sender as BackgroundWorker).IsBusy) {
-                        (sender as BackgroundWorker)?.ReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
-                    }
+                    (sender as BackgroundWorker)?.TryToReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
                 }
             }, (_, _) => {
                 Debug.WriteLine($"Burn-tools exited with code {_cskProcess.ExitCode}");
                 if (_cskProcess.ExitCode != 0) {
-                    if ((sender as BackgroundWorker).IsBusy) {
-                        (sender as BackgroundWorker)?.ReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
-                    }
+                    (sender as BackgroundWorker)?.TryToReportProgress(-1, $"Burn-tools exited with code {_cskProcess.ExitCode}");
                 }
             });
 
@@ -232,39 +222,40 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (_wifiState == WorkerState.Processing) {
                 return;
             }
+            if (Global.SelectedFirmware == null) {
+                Debug.WriteLine("[ASR] 未选择固件。");
+                (sender as BackgroundWorker)?.TryToReportProgress(-1, "未选择固件。");
+                return;
+            }
             _wifiState = WorkerState.Processing;
-            var _groupType = GroupType.Wifi;
+            var groupType = GroupType.Wifi;
 
-            var port = GetControl(_groupId, _groupType, GroupConfigType.Port).Text;
+            var port = GetControl(_groupId, groupType, GroupConfigType.Port).Text;
 
             //step 1 - Check for device
             Debug.WriteLine("[ASR] step 1...");
             var args = $"dl --port {port} --chip 2";
             var runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
-                (sender as BackgroundWorker).ReportProgress(20);
+                (sender as BackgroundWorker)?.TryToReportProgress(20);
             }
             else {
                 Debug.WriteLine($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
-                if ((sender as BackgroundWorker).IsBusy) {
-                    (sender as BackgroundWorker)?.ReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
-                }
+                (sender as BackgroundWorker)?.TryToReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 return;
             }
 
             //step 2 - flash firmware
             Debug.WriteLine("[ASR] step 2...");
-            var fwInfo = Global.SelectedFirmware.GetFirmware(GroupType.Wifi);
+            var fwInfo = Global.SelectedFirmware?.GetFirmware(GroupType.Wifi);
             args = $"burn --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
-                (sender as BackgroundWorker).ReportProgress(80);
+                (sender as BackgroundWorker)?.TryToReportProgress(80);
             }
             else {
                 Debug.WriteLine($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
-                if ((sender as BackgroundWorker).IsBusy) {
-                    (sender as BackgroundWorker)?.ReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
-                }
+                (sender as BackgroundWorker)?.TryToReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
                 return;
             }
 
@@ -273,13 +264,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             args = $"verify --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             runAsr = StartProcessSync(ASRToolPath, args);
             if (runAsr.ExitCode == 0) {
-                (sender as BackgroundWorker).ReportProgress(100);
+                (sender as BackgroundWorker)?.TryToReportProgress(100);
             }
             else {
-                Debug.WriteLine("[ASR] 校验失败。Code = {runAsr.ExitCode}");
-                if ((sender as BackgroundWorker).IsBusy) {
-                    (sender as BackgroundWorker)?.ReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
-                }
+                Debug.WriteLine($"[ASR] 校验失败。Code = {runAsr.ExitCode}");
+                (sender as BackgroundWorker)?.TryToReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
                 return;
             }
 
