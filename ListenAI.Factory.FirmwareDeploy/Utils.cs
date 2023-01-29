@@ -328,4 +328,24 @@ namespace ListenAI.Factory.FirmwareDeploy {
             } catch {}
         }
     }
+
+    public static class Extensions {
+        public static void TryToReportProgress(this BackgroundWorker bgw, int percentProgress) {
+            try {
+                bgw.ReportProgress(percentProgress, null);
+            }
+            catch (Exception) {
+                // ignored
+            }
+        }
+
+        public static void TryToReportProgress(this BackgroundWorker bgw, int percentProgress, object? userState) {
+            try {
+                bgw.ReportProgress(percentProgress, userState);
+            }
+            catch (Exception) {
+                // ignored
+            }
+        }
+    }
 }
