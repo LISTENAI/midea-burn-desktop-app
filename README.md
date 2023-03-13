@@ -1,5 +1,7 @@
 ## 聆思模组烧录工具
 
+[![test](https://github.com/LISTENAI/midea-burn-desktop-app/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/LISTENAI/midea-burn-desktop-app/actions/workflows/build.yml)
+
 ### 概述
 
 本工具允许工厂产线快速烧录 Midea_CSK6_WB01_EVB_1V0 模组的 CSK6 及 WB01 的固件，配合MES系统的情况下还可以记录产线烧录状态。
