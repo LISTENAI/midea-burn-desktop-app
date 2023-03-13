@@ -304,10 +304,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                         throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);
                     }
 
-                    if (Global.MesRecord == null) {
-                        throw new ListenAiException(301, "请完全填写MES记录需要的数据后再点击烧录。", "错误", 5);
-                    }
-
                     EnableMainFormUi(false);
                     var r = new Random();
                     foreach (var groupId in availableGroups) {

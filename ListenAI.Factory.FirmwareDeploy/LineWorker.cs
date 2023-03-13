@@ -372,8 +372,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
                 var isSuccess = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "OK" : "NG";
 
-                File.AppendAllText(logPath, $"{Global.MesRecord.MesCmdId},{Global.MesRecord.ProductId},{Global.MesRecord.ProductName},{Global.MesRecord.ProductModel}," +
-                                           $"{_startAt},{_endAt},{Global.MesRecord.FlashOperator},{Global.MesRecord.FlashToolName},{Global.MesRecord.FlashMachineId}," +
+                var mesRecord = Global.MesRecord ?? new MesRecord();
+                File.AppendAllText(logPath, $"{mesRecord.MesCmdId},{mesRecord.ProductId},{mesRecord.ProductName},{mesRecord.ProductModel}," +
+                                           $"{_startAt},{_endAt},{mesRecord.FlashOperator},{mesRecord.FlashToolName},{mesRecord.FlashMachineId}," +
                                            $"{isSuccess},{sn}\r\n");
             }
         }
