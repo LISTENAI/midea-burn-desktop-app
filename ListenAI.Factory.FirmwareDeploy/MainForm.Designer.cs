@@ -101,6 +101,7 @@
             btnPack.TabIndex = 3;
             btnPack.Text = "打包";
             btnPack.UseVisualStyleBackColor = false;
+            btnPack.Click += btnPack_Click;
             // 
             // btnFlash
             // 

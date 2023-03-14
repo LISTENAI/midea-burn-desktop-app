@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.IO.Ports;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using ListenAI.Factory.FirmwareDeploy.Models;
 using Microsoft.Data.SqlClient;
@@ -243,6 +244,28 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         /// <summary>
+        /// Create a zip archive
+        /// </summary>
+        /// <param name="sourceDir">source directory to files to be included in ZIP</param>
+        /// <param name="destZipFile">where to put the created zip</param>
+        /// <returns></returns>
+        public static bool Zip(string sourceDir, string destZipFile) {
+            try {
+                if (!Directory.Exists(sourceDir)) {
+                    return false;
+                }
+
+                if (File.Exists(destZipFile)) {
+                    File.Delete(destZipFile);
+                }
+
+                ZipFile.CreateFromDirectory(sourceDir, destZipFile, CompressionLevel.Optimal, false, Encoding.UTF8);
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /// <summary>
         /// Extract a zip archive
         /// </summary>
         /// <param name="zipFile">zip file path</param>
@@ -326,6 +349,49 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     p.Kill(true);
                 }
             } catch {}
+        }
+
+        /// <summary>
+        /// Check if firmware file is valid by checking header
+        /// </summary>
+        /// <param name="path">intended firmware header</param>
+        /// <param name="type">firmware type</param>
+        /// <returns>true or false</returns>
+        public static bool IsValidFirmware(string path, Constants.FirmwareType type) {
+            if (!File.Exists(path)) {
+                return false;
+            }
+
+            try {
+                var fw = File.ReadAllBytes(path);
+                switch (type) {
+                    case Constants.FirmwareType.Csk:
+                        return fw[0] == 0x0;
+                    case Constants.FirmwareType.Asr:
+                        var header = fw.Take(8).ToArray();
+                        return header.SequenceEqual(Constants.ValidAsrFirmwareHeader);
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception) {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Get MD5 hash of a file
+        /// </summary>
+        /// <param name="path">file path</param>
+        /// <returns>MD5 hash</returns>
+        public static string GetFileMd5Hash(string path) {
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(path);
+            return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+        }
+
+        public static long GetFileSize(string path) {
+            return new FileInfo(path).Length;
         }
     }
 

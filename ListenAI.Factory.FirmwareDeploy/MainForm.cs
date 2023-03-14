@@ -387,5 +387,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void FailsafeMode(object? sender, EventArgs e) {
             tsslSafeMode.Visible = true;
         }
+
+        private void btnPack_Click(object sender, EventArgs e) {
+            var fwPackForm = new FirmwarePackingForm();
+            fwPackForm.Show();
+        }
     }
 }
