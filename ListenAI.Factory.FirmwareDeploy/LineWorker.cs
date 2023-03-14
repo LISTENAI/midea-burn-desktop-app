@@ -321,7 +321,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void ReportResultToUi() {
             SaveLog();
             Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
-            Utils.KillProcessByName("Uart_Burn_Tool.exe");
+            Utils.KillProcessByName("Uart_Burn_Tool_v2.exe");
 
             var passFailIndicator = (Button) GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
             if (passFailIndicator == null) {

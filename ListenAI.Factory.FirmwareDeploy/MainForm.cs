@@ -38,7 +38,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
             Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
-            Utils.KillProcessByName("Uart_Burn_Tool.exe");
+            Utils.KillProcessByName("Uart_Burn_Tool_v2.exe");
             Application.Exit();
         }
 
@@ -332,7 +332,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     Thread.Sleep(2000);
                     Global.WorkersPool.Clear();
                     EnableMainFormUi(true);
-                } catch { }
+                }
+                catch { }
                 btnFlash.Text = "烧录";
             }
 
@@ -342,6 +343,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void EnableMainFormUi(bool isEnabled) {
             btnMES.Enabled = isEnabled;
             btnFwSelect.Enabled = isEnabled;
+            btnPack.Enabled = isEnabled;
 
             for (var i = 1; i <= Global.GroupCount; i++) {
                 Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.Port).Enabled = isEnabled;
@@ -351,7 +353,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
                 Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
                 Constants.GetControl(i, Constants.GroupType.Common, Constants.GroupConfigType.Serial).Enabled = isEnabled;
-                
+
             }
         }
 
