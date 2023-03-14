@@ -23,567 +23,578 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.gbSettings = new System.Windows.Forms.GroupBox();
-            this.btnFlash = new System.Windows.Forms.Button();
-            this.btnFwSelect = new System.Windows.Forms.Button();
-            this.btnMES = new System.Windows.Forms.Button();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tsslSafeMode = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tsslCurrentFirmware = new System.Windows.Forms.ToolStripStatusLabel();
-            this.gbMod1 = new System.Windows.Forms.GroupBox();
-            this.panelResult1 = new System.Windows.Forms.Panel();
-            this.pbCommon1Progress = new System.Windows.Forms.ProgressBar();
-            this.btnCommon1Result = new System.Windows.Forms.Button();
-            this.lbCommon1Title = new System.Windows.Forms.Label();
-            this.panelSn1 = new System.Windows.Forms.Panel();
-            this.tbCommon1Serial = new System.Windows.Forms.TextBox();
-            this.lbCommon1TitleSn = new System.Windows.Forms.Label();
-            this.panelWifi1 = new System.Windows.Forms.Panel();
-            this.cbWifi1IsDefault = new System.Windows.Forms.CheckBox();
-            this.lbWifi1TitleDefault = new System.Windows.Forms.Label();
-            this.tbWifi1Stopbits = new System.Windows.Forms.TextBox();
-            this.lbWifi1TitleStopbit = new System.Windows.Forms.Label();
-            this.tbWifi1Parity = new System.Windows.Forms.TextBox();
-            this.lbWifi1TitleChecksum = new System.Windows.Forms.Label();
-            this.tbWifi1Databits = new System.Windows.Forms.TextBox();
-            this.lbWifi1TitleDatabit = new System.Windows.Forms.Label();
-            this.tbWifi1BaudRate = new System.Windows.Forms.TextBox();
-            this.lbWifi1TitleBaudRate = new System.Windows.Forms.Label();
-            this.tbWifi1Port = new System.Windows.Forms.TextBox();
-            this.lbWifi1TitlePort = new System.Windows.Forms.Label();
-            this.lbWifi1Title = new System.Windows.Forms.Label();
-            this.panelCsk1 = new System.Windows.Forms.Panel();
-            this.cbCsk1IsDefault = new System.Windows.Forms.CheckBox();
-            this.lbCsk1TitleDefault = new System.Windows.Forms.Label();
-            this.tbCsk1Stopbits = new System.Windows.Forms.TextBox();
-            this.lbCsk1TitleStopbit = new System.Windows.Forms.Label();
-            this.tbCsk1Parity = new System.Windows.Forms.TextBox();
-            this.lbCsk1TitleChecksum = new System.Windows.Forms.Label();
-            this.tbCsk1Databits = new System.Windows.Forms.TextBox();
-            this.lbCsk1TitleDatabit = new System.Windows.Forms.Label();
-            this.tbCsk1BaudRate = new System.Windows.Forms.TextBox();
-            this.lbCsk1TitleBaudRate = new System.Windows.Forms.Label();
-            this.tbCsk1Port = new System.Windows.Forms.TextBox();
-            this.lbCsk1TitlePort = new System.Windows.Forms.Label();
-            this.lbCsk1Title = new System.Windows.Forms.Label();
-            this.gbSettings.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            this.gbMod1.SuspendLayout();
-            this.panelResult1.SuspendLayout();
-            this.panelSn1.SuspendLayout();
-            this.panelWifi1.SuspendLayout();
-            this.panelCsk1.SuspendLayout();
-            this.SuspendLayout();
+            gbSettings = new GroupBox();
+            btnPack = new Button();
+            btnFlash = new Button();
+            btnFwSelect = new Button();
+            btnMES = new Button();
+            statusStrip1 = new StatusStrip();
+            tsslSafeMode = new ToolStripStatusLabel();
+            tsslCurrentFirmware = new ToolStripStatusLabel();
+            gbMod1 = new GroupBox();
+            panelResult1 = new Panel();
+            pbCommon1Progress = new ProgressBar();
+            btnCommon1Result = new Button();
+            lbCommon1Title = new Label();
+            panelSn1 = new Panel();
+            tbCommon1Serial = new TextBox();
+            lbCommon1TitleSn = new Label();
+            panelWifi1 = new Panel();
+            cbWifi1IsDefault = new CheckBox();
+            lbWifi1TitleDefault = new Label();
+            tbWifi1Stopbits = new TextBox();
+            lbWifi1TitleStopbit = new Label();
+            tbWifi1Parity = new TextBox();
+            lbWifi1TitleChecksum = new Label();
+            tbWifi1Databits = new TextBox();
+            lbWifi1TitleDatabit = new Label();
+            tbWifi1BaudRate = new TextBox();
+            lbWifi1TitleBaudRate = new Label();
+            tbWifi1Port = new TextBox();
+            lbWifi1TitlePort = new Label();
+            lbWifi1Title = new Label();
+            panelCsk1 = new Panel();
+            cbCsk1IsDefault = new CheckBox();
+            lbCsk1TitleDefault = new Label();
+            tbCsk1Stopbits = new TextBox();
+            lbCsk1TitleStopbit = new Label();
+            tbCsk1Parity = new TextBox();
+            lbCsk1TitleChecksum = new Label();
+            tbCsk1Databits = new TextBox();
+            lbCsk1TitleDatabit = new Label();
+            tbCsk1BaudRate = new TextBox();
+            lbCsk1TitleBaudRate = new Label();
+            tbCsk1Port = new TextBox();
+            lbCsk1TitlePort = new Label();
+            lbCsk1Title = new Label();
+            gbSettings.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            gbMod1.SuspendLayout();
+            panelResult1.SuspendLayout();
+            panelSn1.SuspendLayout();
+            panelWifi1.SuspendLayout();
+            panelCsk1.SuspendLayout();
+            SuspendLayout();
             // 
             // gbSettings
             // 
-            this.gbSettings.Controls.Add(this.btnFlash);
-            this.gbSettings.Controls.Add(this.btnFwSelect);
-            this.gbSettings.Controls.Add(this.btnMES);
-            this.gbSettings.Location = new System.Drawing.Point(9, 9);
-            this.gbSettings.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.gbSettings.Name = "gbSettings";
-            this.gbSettings.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.gbSettings.Size = new System.Drawing.Size(1327, 111);
-            this.gbSettings.TabIndex = 2;
-            this.gbSettings.TabStop = false;
-            this.gbSettings.Text = "烧录设置";
+            gbSettings.Controls.Add(btnPack);
+            gbSettings.Controls.Add(btnFlash);
+            gbSettings.Controls.Add(btnFwSelect);
+            gbSettings.Controls.Add(btnMES);
+            gbSettings.Location = new Point(9, 9);
+            gbSettings.Margin = new Padding(2, 3, 2, 3);
+            gbSettings.Name = "gbSettings";
+            gbSettings.Padding = new Padding(2, 3, 2, 3);
+            gbSettings.Size = new Size(1327, 111);
+            gbSettings.TabIndex = 2;
+            gbSettings.TabStop = false;
+            gbSettings.Text = "烧录设置";
+            // 
+            // btnPack
+            // 
+            btnPack.BackColor = SystemColors.Control;
+            btnPack.Location = new Point(1074, 36);
+            btnPack.Margin = new Padding(2, 3, 2, 3);
+            btnPack.Name = "btnPack";
+            btnPack.Size = new Size(228, 55);
+            btnPack.TabIndex = 3;
+            btnPack.Text = "打包";
+            btnPack.UseVisualStyleBackColor = false;
+            btnPack.Click += btnPack_Click;
             // 
             // btnFlash
             // 
-            this.btnFlash.BackColor = System.Drawing.SystemColors.Control;
-            this.btnFlash.Location = new System.Drawing.Point(965, 36);
-            this.btnFlash.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnFlash.Name = "btnFlash";
-            this.btnFlash.Size = new System.Drawing.Size(317, 55);
-            this.btnFlash.TabIndex = 2;
-            this.btnFlash.Text = "烧录";
-            this.btnFlash.UseVisualStyleBackColor = false;
-            this.btnFlash.Click += new System.EventHandler(this.btnFlash_Click);
+            btnFlash.BackColor = SystemColors.Control;
+            btnFlash.Location = new Point(725, 36);
+            btnFlash.Margin = new Padding(2, 3, 2, 3);
+            btnFlash.Name = "btnFlash";
+            btnFlash.Size = new Size(228, 55);
+            btnFlash.TabIndex = 2;
+            btnFlash.Text = "烧录";
+            btnFlash.UseVisualStyleBackColor = false;
+            btnFlash.Click += btnFlash_Click;
             // 
             // btnFwSelect
             // 
-            this.btnFwSelect.BackColor = System.Drawing.SystemColors.Highlight;
-            this.btnFwSelect.Location = new System.Drawing.Point(522, 36);
-            this.btnFwSelect.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnFwSelect.Name = "btnFwSelect";
-            this.btnFwSelect.Size = new System.Drawing.Size(317, 55);
-            this.btnFwSelect.TabIndex = 1;
-            this.btnFwSelect.Text = "浏览";
-            this.btnFwSelect.UseVisualStyleBackColor = false;
-            this.btnFwSelect.Click += new System.EventHandler(this.btnFwSelect_Click);
+            btnFwSelect.BackColor = SystemColors.Highlight;
+            btnFwSelect.Location = new Point(376, 36);
+            btnFwSelect.Margin = new Padding(2, 3, 2, 3);
+            btnFwSelect.Name = "btnFwSelect";
+            btnFwSelect.Size = new Size(228, 55);
+            btnFwSelect.TabIndex = 1;
+            btnFwSelect.Text = "浏览";
+            btnFwSelect.UseVisualStyleBackColor = false;
+            btnFwSelect.Click += btnFwSelect_Click;
             // 
             // btnMES
             // 
-            this.btnMES.BackColor = System.Drawing.SystemColors.Highlight;
-            this.btnMES.Location = new System.Drawing.Point(38, 36);
-            this.btnMES.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnMES.Name = "btnMES";
-            this.btnMES.Size = new System.Drawing.Size(317, 55);
-            this.btnMES.TabIndex = 0;
-            this.btnMES.Text = "MES记录";
-            this.btnMES.UseVisualStyleBackColor = false;
-            this.btnMES.Click += new System.EventHandler(this.btnMES_Click);
+            btnMES.BackColor = SystemColors.Highlight;
+            btnMES.Location = new Point(27, 36);
+            btnMES.Margin = new Padding(2, 3, 2, 3);
+            btnMES.Name = "btnMES";
+            btnMES.Size = new Size(228, 55);
+            btnMES.TabIndex = 0;
+            btnMES.Text = "MES记录";
+            btnMES.UseVisualStyleBackColor = false;
+            btnMES.Click += btnMES_Click;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslSafeMode,
-            this.tsslCurrentFirmware});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 637);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 11, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1347, 26);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.ImageScalingSize = new Size(24, 24);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { tsslSafeMode, tsslCurrentFirmware });
+            statusStrip1.Location = new Point(0, 637);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new Padding(1, 0, 11, 0);
+            statusStrip1.Size = new Size(1347, 26);
+            statusStrip1.TabIndex = 3;
+            statusStrip1.Text = "statusStrip1";
             // 
             // tsslSafeMode
             // 
-            this.tsslSafeMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tsslSafeMode.ForeColor = System.Drawing.Color.Red;
-            this.tsslSafeMode.Name = "tsslSafeMode";
-            this.tsslSafeMode.Size = new System.Drawing.Size(196, 20);
-            this.tsslSafeMode.Text = "安全模式，请尽快重启！";
-            this.tsslSafeMode.Visible = false;
+            tsslSafeMode.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            tsslSafeMode.ForeColor = Color.Red;
+            tsslSafeMode.Name = "tsslSafeMode";
+            tsslSafeMode.Size = new Size(196, 20);
+            tsslSafeMode.Text = "安全模式，请尽快重启！";
+            tsslSafeMode.Visible = false;
             // 
             // tsslCurrentFirmware
             // 
-            this.tsslCurrentFirmware.Name = "tsslCurrentFirmware";
-            this.tsslCurrentFirmware.Size = new System.Drawing.Size(138, 20);
-            this.tsslCurrentFirmware.Text = "当前固件: (未选定)";
+            tsslCurrentFirmware.Name = "tsslCurrentFirmware";
+            tsslCurrentFirmware.Size = new Size(138, 20);
+            tsslCurrentFirmware.Text = "当前固件: (未选定)";
             // 
             // gbMod1
             // 
-            this.gbMod1.Controls.Add(this.panelResult1);
-            this.gbMod1.Controls.Add(this.panelSn1);
-            this.gbMod1.Controls.Add(this.panelWifi1);
-            this.gbMod1.Controls.Add(this.panelCsk1);
-            this.gbMod1.Location = new System.Drawing.Point(9, 125);
-            this.gbMod1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.gbMod1.Name = "gbMod1";
-            this.gbMod1.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.gbMod1.Size = new System.Drawing.Size(327, 499);
-            this.gbMod1.TabIndex = 4;
-            this.gbMod1.TabStop = false;
+            gbMod1.Controls.Add(panelResult1);
+            gbMod1.Controls.Add(panelSn1);
+            gbMod1.Controls.Add(panelWifi1);
+            gbMod1.Controls.Add(panelCsk1);
+            gbMod1.Location = new Point(9, 125);
+            gbMod1.Margin = new Padding(2, 3, 2, 3);
+            gbMod1.Name = "gbMod1";
+            gbMod1.Padding = new Padding(2, 3, 2, 3);
+            gbMod1.Size = new Size(327, 499);
+            gbMod1.TabIndex = 4;
+            gbMod1.TabStop = false;
             // 
             // panelResult1
             // 
-            this.panelResult1.Controls.Add(this.pbCommon1Progress);
-            this.panelResult1.Controls.Add(this.btnCommon1Result);
-            this.panelResult1.Controls.Add(this.lbCommon1Title);
-            this.panelResult1.Location = new System.Drawing.Point(14, 405);
-            this.panelResult1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.panelResult1.Name = "panelResult1";
-            this.panelResult1.Size = new System.Drawing.Size(299, 81);
-            this.panelResult1.TabIndex = 3;
+            panelResult1.Controls.Add(pbCommon1Progress);
+            panelResult1.Controls.Add(btnCommon1Result);
+            panelResult1.Controls.Add(lbCommon1Title);
+            panelResult1.Location = new Point(14, 405);
+            panelResult1.Margin = new Padding(2, 3, 2, 3);
+            panelResult1.Name = "panelResult1";
+            panelResult1.Size = new Size(299, 81);
+            panelResult1.TabIndex = 3;
             // 
             // pbCommon1Progress
             // 
-            this.pbCommon1Progress.Location = new System.Drawing.Point(23, 9);
-            this.pbCommon1Progress.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.pbCommon1Progress.Maximum = 200;
-            this.pbCommon1Progress.Name = "pbCommon1Progress";
-            this.pbCommon1Progress.Size = new System.Drawing.Size(258, 25);
-            this.pbCommon1Progress.Step = 1;
-            this.pbCommon1Progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.pbCommon1Progress.TabIndex = 5;
+            pbCommon1Progress.Location = new Point(23, 9);
+            pbCommon1Progress.Margin = new Padding(2, 3, 2, 3);
+            pbCommon1Progress.Maximum = 200;
+            pbCommon1Progress.Name = "pbCommon1Progress";
+            pbCommon1Progress.Size = new Size(258, 25);
+            pbCommon1Progress.Step = 1;
+            pbCommon1Progress.Style = ProgressBarStyle.Continuous;
+            pbCommon1Progress.TabIndex = 5;
             // 
             // btnCommon1Result
             // 
-            this.btnCommon1Result.BackColor = System.Drawing.SystemColors.Control;
-            this.btnCommon1Result.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnCommon1Result.Location = new System.Drawing.Point(130, 43);
-            this.btnCommon1Result.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnCommon1Result.Name = "btnCommon1Result";
-            this.btnCommon1Result.Size = new System.Drawing.Size(151, 27);
-            this.btnCommon1Result.TabIndex = 1;
-            this.btnCommon1Result.Text = "Pass/Fail";
-            this.btnCommon1Result.UseVisualStyleBackColor = false;
+            btnCommon1Result.BackColor = SystemColors.Control;
+            btnCommon1Result.ForeColor = SystemColors.ControlText;
+            btnCommon1Result.Location = new Point(130, 43);
+            btnCommon1Result.Margin = new Padding(2, 3, 2, 3);
+            btnCommon1Result.Name = "btnCommon1Result";
+            btnCommon1Result.Size = new Size(151, 27);
+            btnCommon1Result.TabIndex = 1;
+            btnCommon1Result.Text = "Pass/Fail";
+            btnCommon1Result.UseVisualStyleBackColor = false;
             // 
             // lbCommon1Title
             // 
-            this.lbCommon1Title.AutoSize = true;
-            this.lbCommon1Title.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbCommon1Title.Location = new System.Drawing.Point(22, 47);
-            this.lbCommon1Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCommon1Title.Name = "lbCommon1Title";
-            this.lbCommon1Title.Size = new System.Drawing.Size(75, 28);
-            this.lbCommon1Title.TabIndex = 0;
-            this.lbCommon1Title.Text = "模组一";
-            this.lbCommon1Title.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            lbCommon1Title.AutoSize = true;
+            lbCommon1Title.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            lbCommon1Title.Location = new Point(22, 47);
+            lbCommon1Title.Margin = new Padding(2, 0, 2, 0);
+            lbCommon1Title.Name = "lbCommon1Title";
+            lbCommon1Title.Size = new Size(75, 28);
+            lbCommon1Title.TabIndex = 0;
+            lbCommon1Title.Text = "模组一";
+            lbCommon1Title.TextAlign = ContentAlignment.TopRight;
             // 
             // panelSn1
             // 
-            this.panelSn1.Controls.Add(this.tbCommon1Serial);
-            this.panelSn1.Controls.Add(this.lbCommon1TitleSn);
-            this.panelSn1.Location = new System.Drawing.Point(14, 355);
-            this.panelSn1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.panelSn1.Name = "panelSn1";
-            this.panelSn1.Size = new System.Drawing.Size(299, 47);
-            this.panelSn1.TabIndex = 2;
+            panelSn1.Controls.Add(tbCommon1Serial);
+            panelSn1.Controls.Add(lbCommon1TitleSn);
+            panelSn1.Location = new Point(14, 355);
+            panelSn1.Margin = new Padding(2, 3, 2, 3);
+            panelSn1.Name = "panelSn1";
+            panelSn1.Size = new Size(299, 47);
+            panelSn1.TabIndex = 2;
             // 
             // tbCommon1Serial
             // 
-            this.tbCommon1Serial.Location = new System.Drawing.Point(109, 9);
-            this.tbCommon1Serial.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbCommon1Serial.Name = "tbCommon1Serial";
-            this.tbCommon1Serial.Size = new System.Drawing.Size(175, 27);
-            this.tbCommon1Serial.TabIndex = 6;
+            tbCommon1Serial.Location = new Point(109, 9);
+            tbCommon1Serial.Margin = new Padding(2, 3, 2, 3);
+            tbCommon1Serial.Name = "tbCommon1Serial";
+            tbCommon1Serial.Size = new Size(175, 27);
+            tbCommon1Serial.TabIndex = 6;
             // 
             // lbCommon1TitleSn
             // 
-            this.lbCommon1TitleSn.AutoSize = true;
-            this.lbCommon1TitleSn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbCommon1TitleSn.Location = new System.Drawing.Point(10, 13);
-            this.lbCommon1TitleSn.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCommon1TitleSn.Name = "lbCommon1TitleSn";
-            this.lbCommon1TitleSn.Size = new System.Drawing.Size(94, 20);
-            this.lbCommon1TitleSn.TabIndex = 5;
-            this.lbCommon1TitleSn.Text = "产品序列号";
+            lbCommon1TitleSn.AutoSize = true;
+            lbCommon1TitleSn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lbCommon1TitleSn.Location = new Point(10, 13);
+            lbCommon1TitleSn.Margin = new Padding(2, 0, 2, 0);
+            lbCommon1TitleSn.Name = "lbCommon1TitleSn";
+            lbCommon1TitleSn.Size = new Size(94, 20);
+            lbCommon1TitleSn.TabIndex = 5;
+            lbCommon1TitleSn.Text = "产品序列号";
             // 
             // panelWifi1
             // 
-            this.panelWifi1.Controls.Add(this.cbWifi1IsDefault);
-            this.panelWifi1.Controls.Add(this.lbWifi1TitleDefault);
-            this.panelWifi1.Controls.Add(this.tbWifi1Stopbits);
-            this.panelWifi1.Controls.Add(this.lbWifi1TitleStopbit);
-            this.panelWifi1.Controls.Add(this.tbWifi1Parity);
-            this.panelWifi1.Controls.Add(this.lbWifi1TitleChecksum);
-            this.panelWifi1.Controls.Add(this.tbWifi1Databits);
-            this.panelWifi1.Controls.Add(this.lbWifi1TitleDatabit);
-            this.panelWifi1.Controls.Add(this.tbWifi1BaudRate);
-            this.panelWifi1.Controls.Add(this.lbWifi1TitleBaudRate);
-            this.panelWifi1.Controls.Add(this.tbWifi1Port);
-            this.panelWifi1.Controls.Add(this.lbWifi1TitlePort);
-            this.panelWifi1.Controls.Add(this.lbWifi1Title);
-            this.panelWifi1.Location = new System.Drawing.Point(166, 24);
-            this.panelWifi1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.panelWifi1.Name = "panelWifi1";
-            this.panelWifi1.Size = new System.Drawing.Size(147, 323);
-            this.panelWifi1.TabIndex = 1;
+            panelWifi1.Controls.Add(cbWifi1IsDefault);
+            panelWifi1.Controls.Add(lbWifi1TitleDefault);
+            panelWifi1.Controls.Add(tbWifi1Stopbits);
+            panelWifi1.Controls.Add(lbWifi1TitleStopbit);
+            panelWifi1.Controls.Add(tbWifi1Parity);
+            panelWifi1.Controls.Add(lbWifi1TitleChecksum);
+            panelWifi1.Controls.Add(tbWifi1Databits);
+            panelWifi1.Controls.Add(lbWifi1TitleDatabit);
+            panelWifi1.Controls.Add(tbWifi1BaudRate);
+            panelWifi1.Controls.Add(lbWifi1TitleBaudRate);
+            panelWifi1.Controls.Add(tbWifi1Port);
+            panelWifi1.Controls.Add(lbWifi1TitlePort);
+            panelWifi1.Controls.Add(lbWifi1Title);
+            panelWifi1.Location = new Point(166, 24);
+            panelWifi1.Margin = new Padding(2, 3, 2, 3);
+            panelWifi1.Name = "panelWifi1";
+            panelWifi1.Size = new Size(147, 323);
+            panelWifi1.TabIndex = 1;
             // 
             // cbWifi1IsDefault
             // 
-            this.cbWifi1IsDefault.AutoSize = true;
-            this.cbWifi1IsDefault.Location = new System.Drawing.Point(97, 289);
-            this.cbWifi1IsDefault.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.cbWifi1IsDefault.Name = "cbWifi1IsDefault";
-            this.cbWifi1IsDefault.Size = new System.Drawing.Size(18, 17);
-            this.cbWifi1IsDefault.TabIndex = 24;
-            this.cbWifi1IsDefault.UseVisualStyleBackColor = true;
+            cbWifi1IsDefault.AutoSize = true;
+            cbWifi1IsDefault.Location = new Point(97, 289);
+            cbWifi1IsDefault.Margin = new Padding(2, 3, 2, 3);
+            cbWifi1IsDefault.Name = "cbWifi1IsDefault";
+            cbWifi1IsDefault.Size = new Size(18, 17);
+            cbWifi1IsDefault.TabIndex = 24;
+            cbWifi1IsDefault.UseVisualStyleBackColor = true;
             // 
             // lbWifi1TitleDefault
             // 
-            this.lbWifi1TitleDefault.AutoSize = true;
-            this.lbWifi1TitleDefault.Location = new System.Drawing.Point(11, 287);
-            this.lbWifi1TitleDefault.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1TitleDefault.Name = "lbWifi1TitleDefault";
-            this.lbWifi1TitleDefault.Size = new System.Drawing.Size(73, 20);
-            this.lbWifi1TitleDefault.TabIndex = 23;
-            this.lbWifi1TitleDefault.Text = "是否默认";
+            lbWifi1TitleDefault.AutoSize = true;
+            lbWifi1TitleDefault.Location = new Point(11, 287);
+            lbWifi1TitleDefault.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1TitleDefault.Name = "lbWifi1TitleDefault";
+            lbWifi1TitleDefault.Size = new Size(73, 20);
+            lbWifi1TitleDefault.TabIndex = 23;
+            lbWifi1TitleDefault.Text = "是否默认";
             // 
             // tbWifi1Stopbits
             // 
-            this.tbWifi1Stopbits.Location = new System.Drawing.Point(74, 243);
-            this.tbWifi1Stopbits.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbWifi1Stopbits.MaxLength = 1;
-            this.tbWifi1Stopbits.Name = "tbWifi1Stopbits";
-            this.tbWifi1Stopbits.ReadOnly = true;
-            this.tbWifi1Stopbits.Size = new System.Drawing.Size(65, 27);
-            this.tbWifi1Stopbits.TabIndex = 22;
-            this.tbWifi1Stopbits.Text = "1";
+            tbWifi1Stopbits.Location = new Point(74, 243);
+            tbWifi1Stopbits.Margin = new Padding(2, 3, 2, 3);
+            tbWifi1Stopbits.MaxLength = 1;
+            tbWifi1Stopbits.Name = "tbWifi1Stopbits";
+            tbWifi1Stopbits.ReadOnly = true;
+            tbWifi1Stopbits.Size = new Size(65, 27);
+            tbWifi1Stopbits.TabIndex = 22;
+            tbWifi1Stopbits.Text = "1";
             // 
             // lbWifi1TitleStopbit
             // 
-            this.lbWifi1TitleStopbit.AutoSize = true;
-            this.lbWifi1TitleStopbit.Location = new System.Drawing.Point(11, 243);
-            this.lbWifi1TitleStopbit.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1TitleStopbit.Name = "lbWifi1TitleStopbit";
-            this.lbWifi1TitleStopbit.Size = new System.Drawing.Size(57, 20);
-            this.lbWifi1TitleStopbit.TabIndex = 21;
-            this.lbWifi1TitleStopbit.Text = "停止位";
+            lbWifi1TitleStopbit.AutoSize = true;
+            lbWifi1TitleStopbit.Location = new Point(11, 243);
+            lbWifi1TitleStopbit.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1TitleStopbit.Name = "lbWifi1TitleStopbit";
+            lbWifi1TitleStopbit.Size = new Size(57, 20);
+            lbWifi1TitleStopbit.TabIndex = 21;
+            lbWifi1TitleStopbit.Text = "停止位";
             // 
             // tbWifi1Parity
             // 
-            this.tbWifi1Parity.Location = new System.Drawing.Point(74, 197);
-            this.tbWifi1Parity.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbWifi1Parity.MaxLength = 1;
-            this.tbWifi1Parity.Name = "tbWifi1Parity";
-            this.tbWifi1Parity.ReadOnly = true;
-            this.tbWifi1Parity.Size = new System.Drawing.Size(65, 27);
-            this.tbWifi1Parity.TabIndex = 20;
-            this.tbWifi1Parity.Text = "0";
+            tbWifi1Parity.Location = new Point(74, 197);
+            tbWifi1Parity.Margin = new Padding(2, 3, 2, 3);
+            tbWifi1Parity.MaxLength = 1;
+            tbWifi1Parity.Name = "tbWifi1Parity";
+            tbWifi1Parity.ReadOnly = true;
+            tbWifi1Parity.Size = new Size(65, 27);
+            tbWifi1Parity.TabIndex = 20;
+            tbWifi1Parity.Text = "0";
             // 
             // lbWifi1TitleChecksum
             // 
-            this.lbWifi1TitleChecksum.AutoSize = true;
-            this.lbWifi1TitleChecksum.Location = new System.Drawing.Point(11, 197);
-            this.lbWifi1TitleChecksum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1TitleChecksum.Name = "lbWifi1TitleChecksum";
-            this.lbWifi1TitleChecksum.Size = new System.Drawing.Size(57, 20);
-            this.lbWifi1TitleChecksum.TabIndex = 19;
-            this.lbWifi1TitleChecksum.Text = "校验位";
+            lbWifi1TitleChecksum.AutoSize = true;
+            lbWifi1TitleChecksum.Location = new Point(11, 197);
+            lbWifi1TitleChecksum.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1TitleChecksum.Name = "lbWifi1TitleChecksum";
+            lbWifi1TitleChecksum.Size = new Size(57, 20);
+            lbWifi1TitleChecksum.TabIndex = 19;
+            lbWifi1TitleChecksum.Text = "校验位";
             // 
             // tbWifi1Databits
             // 
-            this.tbWifi1Databits.Location = new System.Drawing.Point(74, 153);
-            this.tbWifi1Databits.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbWifi1Databits.MaxLength = 1;
-            this.tbWifi1Databits.Name = "tbWifi1Databits";
-            this.tbWifi1Databits.ReadOnly = true;
-            this.tbWifi1Databits.Size = new System.Drawing.Size(65, 27);
-            this.tbWifi1Databits.TabIndex = 18;
-            this.tbWifi1Databits.Text = "8";
+            tbWifi1Databits.Location = new Point(74, 153);
+            tbWifi1Databits.Margin = new Padding(2, 3, 2, 3);
+            tbWifi1Databits.MaxLength = 1;
+            tbWifi1Databits.Name = "tbWifi1Databits";
+            tbWifi1Databits.ReadOnly = true;
+            tbWifi1Databits.Size = new Size(65, 27);
+            tbWifi1Databits.TabIndex = 18;
+            tbWifi1Databits.Text = "8";
             // 
             // lbWifi1TitleDatabit
             // 
-            this.lbWifi1TitleDatabit.AutoSize = true;
-            this.lbWifi1TitleDatabit.Location = new System.Drawing.Point(11, 156);
-            this.lbWifi1TitleDatabit.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1TitleDatabit.Name = "lbWifi1TitleDatabit";
-            this.lbWifi1TitleDatabit.Size = new System.Drawing.Size(57, 20);
-            this.lbWifi1TitleDatabit.TabIndex = 17;
-            this.lbWifi1TitleDatabit.Text = "数据位";
+            lbWifi1TitleDatabit.AutoSize = true;
+            lbWifi1TitleDatabit.Location = new Point(11, 156);
+            lbWifi1TitleDatabit.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1TitleDatabit.Name = "lbWifi1TitleDatabit";
+            lbWifi1TitleDatabit.Size = new Size(57, 20);
+            lbWifi1TitleDatabit.TabIndex = 17;
+            lbWifi1TitleDatabit.Text = "数据位";
             // 
             // tbWifi1BaudRate
             // 
-            this.tbWifi1BaudRate.Location = new System.Drawing.Point(74, 111);
-            this.tbWifi1BaudRate.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbWifi1BaudRate.MaxLength = 7;
-            this.tbWifi1BaudRate.Name = "tbWifi1BaudRate";
-            this.tbWifi1BaudRate.Size = new System.Drawing.Size(65, 27);
-            this.tbWifi1BaudRate.TabIndex = 16;
-            this.tbWifi1BaudRate.Text = "1000000";
+            tbWifi1BaudRate.Location = new Point(74, 111);
+            tbWifi1BaudRate.Margin = new Padding(2, 3, 2, 3);
+            tbWifi1BaudRate.MaxLength = 7;
+            tbWifi1BaudRate.Name = "tbWifi1BaudRate";
+            tbWifi1BaudRate.Size = new Size(65, 27);
+            tbWifi1BaudRate.TabIndex = 16;
+            tbWifi1BaudRate.Text = "1000000";
             // 
             // lbWifi1TitleBaudRate
             // 
-            this.lbWifi1TitleBaudRate.AutoSize = true;
-            this.lbWifi1TitleBaudRate.Location = new System.Drawing.Point(11, 116);
-            this.lbWifi1TitleBaudRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1TitleBaudRate.Name = "lbWifi1TitleBaudRate";
-            this.lbWifi1TitleBaudRate.Size = new System.Drawing.Size(57, 20);
-            this.lbWifi1TitleBaudRate.TabIndex = 15;
-            this.lbWifi1TitleBaudRate.Text = "波特率";
+            lbWifi1TitleBaudRate.AutoSize = true;
+            lbWifi1TitleBaudRate.Location = new Point(11, 116);
+            lbWifi1TitleBaudRate.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1TitleBaudRate.Name = "lbWifi1TitleBaudRate";
+            lbWifi1TitleBaudRate.Size = new Size(57, 20);
+            lbWifi1TitleBaudRate.TabIndex = 15;
+            lbWifi1TitleBaudRate.Text = "波特率";
             // 
             // tbWifi1Port
             // 
-            this.tbWifi1Port.Location = new System.Drawing.Point(74, 71);
-            this.tbWifi1Port.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbWifi1Port.MaxLength = 6;
-            this.tbWifi1Port.Name = "tbWifi1Port";
-            this.tbWifi1Port.Size = new System.Drawing.Size(65, 27);
-            this.tbWifi1Port.TabIndex = 14;
-            this.tbWifi1Port.Text = "COM";
+            tbWifi1Port.Location = new Point(74, 71);
+            tbWifi1Port.Margin = new Padding(2, 3, 2, 3);
+            tbWifi1Port.MaxLength = 6;
+            tbWifi1Port.Name = "tbWifi1Port";
+            tbWifi1Port.Size = new Size(65, 27);
+            tbWifi1Port.TabIndex = 14;
+            tbWifi1Port.Text = "COM";
             // 
             // lbWifi1TitlePort
             // 
-            this.lbWifi1TitlePort.AutoSize = true;
-            this.lbWifi1TitlePort.Location = new System.Drawing.Point(26, 73);
-            this.lbWifi1TitlePort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1TitlePort.Name = "lbWifi1TitlePort";
-            this.lbWifi1TitlePort.Size = new System.Drawing.Size(41, 20);
-            this.lbWifi1TitlePort.TabIndex = 13;
-            this.lbWifi1TitlePort.Text = "串口";
+            lbWifi1TitlePort.AutoSize = true;
+            lbWifi1TitlePort.Location = new Point(26, 73);
+            lbWifi1TitlePort.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1TitlePort.Name = "lbWifi1TitlePort";
+            lbWifi1TitlePort.Size = new Size(41, 20);
+            lbWifi1TitlePort.TabIndex = 13;
+            lbWifi1TitlePort.Text = "串口";
             // 
             // lbWifi1Title
             // 
-            this.lbWifi1Title.AutoSize = true;
-            this.lbWifi1Title.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbWifi1Title.Location = new System.Drawing.Point(11, 21);
-            this.lbWifi1Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbWifi1Title.Name = "lbWifi1Title";
-            this.lbWifi1Title.Size = new System.Drawing.Size(138, 28);
-            this.lbWifi1Title.TabIndex = 0;
-            this.lbWifi1Title.Text = "WIFI串口烧录";
+            lbWifi1Title.AutoSize = true;
+            lbWifi1Title.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            lbWifi1Title.Location = new Point(11, 21);
+            lbWifi1Title.Margin = new Padding(2, 0, 2, 0);
+            lbWifi1Title.Name = "lbWifi1Title";
+            lbWifi1Title.Size = new Size(138, 28);
+            lbWifi1Title.TabIndex = 0;
+            lbWifi1Title.Text = "WIFI串口烧录";
             // 
             // panelCsk1
             // 
-            this.panelCsk1.Controls.Add(this.cbCsk1IsDefault);
-            this.panelCsk1.Controls.Add(this.lbCsk1TitleDefault);
-            this.panelCsk1.Controls.Add(this.tbCsk1Stopbits);
-            this.panelCsk1.Controls.Add(this.lbCsk1TitleStopbit);
-            this.panelCsk1.Controls.Add(this.tbCsk1Parity);
-            this.panelCsk1.Controls.Add(this.lbCsk1TitleChecksum);
-            this.panelCsk1.Controls.Add(this.tbCsk1Databits);
-            this.panelCsk1.Controls.Add(this.lbCsk1TitleDatabit);
-            this.panelCsk1.Controls.Add(this.tbCsk1BaudRate);
-            this.panelCsk1.Controls.Add(this.lbCsk1TitleBaudRate);
-            this.panelCsk1.Controls.Add(this.tbCsk1Port);
-            this.panelCsk1.Controls.Add(this.lbCsk1TitlePort);
-            this.panelCsk1.Controls.Add(this.lbCsk1Title);
-            this.panelCsk1.Location = new System.Drawing.Point(14, 24);
-            this.panelCsk1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.panelCsk1.Name = "panelCsk1";
-            this.panelCsk1.Size = new System.Drawing.Size(147, 323);
-            this.panelCsk1.TabIndex = 0;
+            panelCsk1.Controls.Add(cbCsk1IsDefault);
+            panelCsk1.Controls.Add(lbCsk1TitleDefault);
+            panelCsk1.Controls.Add(tbCsk1Stopbits);
+            panelCsk1.Controls.Add(lbCsk1TitleStopbit);
+            panelCsk1.Controls.Add(tbCsk1Parity);
+            panelCsk1.Controls.Add(lbCsk1TitleChecksum);
+            panelCsk1.Controls.Add(tbCsk1Databits);
+            panelCsk1.Controls.Add(lbCsk1TitleDatabit);
+            panelCsk1.Controls.Add(tbCsk1BaudRate);
+            panelCsk1.Controls.Add(lbCsk1TitleBaudRate);
+            panelCsk1.Controls.Add(tbCsk1Port);
+            panelCsk1.Controls.Add(lbCsk1TitlePort);
+            panelCsk1.Controls.Add(lbCsk1Title);
+            panelCsk1.Location = new Point(14, 24);
+            panelCsk1.Margin = new Padding(2, 3, 2, 3);
+            panelCsk1.Name = "panelCsk1";
+            panelCsk1.Size = new Size(147, 323);
+            panelCsk1.TabIndex = 0;
             // 
             // cbCsk1IsDefault
             // 
-            this.cbCsk1IsDefault.AutoSize = true;
-            this.cbCsk1IsDefault.Location = new System.Drawing.Point(93, 289);
-            this.cbCsk1IsDefault.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.cbCsk1IsDefault.Name = "cbCsk1IsDefault";
-            this.cbCsk1IsDefault.Size = new System.Drawing.Size(18, 17);
-            this.cbCsk1IsDefault.TabIndex = 12;
-            this.cbCsk1IsDefault.UseVisualStyleBackColor = true;
+            cbCsk1IsDefault.AutoSize = true;
+            cbCsk1IsDefault.Location = new Point(93, 289);
+            cbCsk1IsDefault.Margin = new Padding(2, 3, 2, 3);
+            cbCsk1IsDefault.Name = "cbCsk1IsDefault";
+            cbCsk1IsDefault.Size = new Size(18, 17);
+            cbCsk1IsDefault.TabIndex = 12;
+            cbCsk1IsDefault.UseVisualStyleBackColor = true;
             // 
             // lbCsk1TitleDefault
             // 
-            this.lbCsk1TitleDefault.AutoSize = true;
-            this.lbCsk1TitleDefault.Location = new System.Drawing.Point(9, 287);
-            this.lbCsk1TitleDefault.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1TitleDefault.Name = "lbCsk1TitleDefault";
-            this.lbCsk1TitleDefault.Size = new System.Drawing.Size(73, 20);
-            this.lbCsk1TitleDefault.TabIndex = 11;
-            this.lbCsk1TitleDefault.Text = "是否默认";
+            lbCsk1TitleDefault.AutoSize = true;
+            lbCsk1TitleDefault.Location = new Point(9, 287);
+            lbCsk1TitleDefault.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1TitleDefault.Name = "lbCsk1TitleDefault";
+            lbCsk1TitleDefault.Size = new Size(73, 20);
+            lbCsk1TitleDefault.TabIndex = 11;
+            lbCsk1TitleDefault.Text = "是否默认";
             // 
             // tbCsk1Stopbits
             // 
-            this.tbCsk1Stopbits.Location = new System.Drawing.Point(71, 243);
-            this.tbCsk1Stopbits.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbCsk1Stopbits.MaxLength = 1;
-            this.tbCsk1Stopbits.Name = "tbCsk1Stopbits";
-            this.tbCsk1Stopbits.ReadOnly = true;
-            this.tbCsk1Stopbits.Size = new System.Drawing.Size(65, 27);
-            this.tbCsk1Stopbits.TabIndex = 10;
-            this.tbCsk1Stopbits.Text = "1";
+            tbCsk1Stopbits.Location = new Point(71, 243);
+            tbCsk1Stopbits.Margin = new Padding(2, 3, 2, 3);
+            tbCsk1Stopbits.MaxLength = 1;
+            tbCsk1Stopbits.Name = "tbCsk1Stopbits";
+            tbCsk1Stopbits.ReadOnly = true;
+            tbCsk1Stopbits.Size = new Size(65, 27);
+            tbCsk1Stopbits.TabIndex = 10;
+            tbCsk1Stopbits.Text = "1";
             // 
             // lbCsk1TitleStopbit
             // 
-            this.lbCsk1TitleStopbit.AutoSize = true;
-            this.lbCsk1TitleStopbit.Location = new System.Drawing.Point(9, 243);
-            this.lbCsk1TitleStopbit.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1TitleStopbit.Name = "lbCsk1TitleStopbit";
-            this.lbCsk1TitleStopbit.Size = new System.Drawing.Size(57, 20);
-            this.lbCsk1TitleStopbit.TabIndex = 9;
-            this.lbCsk1TitleStopbit.Text = "停止位";
+            lbCsk1TitleStopbit.AutoSize = true;
+            lbCsk1TitleStopbit.Location = new Point(9, 243);
+            lbCsk1TitleStopbit.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1TitleStopbit.Name = "lbCsk1TitleStopbit";
+            lbCsk1TitleStopbit.Size = new Size(57, 20);
+            lbCsk1TitleStopbit.TabIndex = 9;
+            lbCsk1TitleStopbit.Text = "停止位";
             // 
             // tbCsk1Parity
             // 
-            this.tbCsk1Parity.Location = new System.Drawing.Point(71, 197);
-            this.tbCsk1Parity.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbCsk1Parity.MaxLength = 1;
-            this.tbCsk1Parity.Name = "tbCsk1Parity";
-            this.tbCsk1Parity.ReadOnly = true;
-            this.tbCsk1Parity.Size = new System.Drawing.Size(65, 27);
-            this.tbCsk1Parity.TabIndex = 8;
-            this.tbCsk1Parity.Text = "0";
+            tbCsk1Parity.Location = new Point(71, 197);
+            tbCsk1Parity.Margin = new Padding(2, 3, 2, 3);
+            tbCsk1Parity.MaxLength = 1;
+            tbCsk1Parity.Name = "tbCsk1Parity";
+            tbCsk1Parity.ReadOnly = true;
+            tbCsk1Parity.Size = new Size(65, 27);
+            tbCsk1Parity.TabIndex = 8;
+            tbCsk1Parity.Text = "0";
             // 
             // lbCsk1TitleChecksum
             // 
-            this.lbCsk1TitleChecksum.AutoSize = true;
-            this.lbCsk1TitleChecksum.Location = new System.Drawing.Point(9, 197);
-            this.lbCsk1TitleChecksum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1TitleChecksum.Name = "lbCsk1TitleChecksum";
-            this.lbCsk1TitleChecksum.Size = new System.Drawing.Size(57, 20);
-            this.lbCsk1TitleChecksum.TabIndex = 7;
-            this.lbCsk1TitleChecksum.Text = "校验位";
+            lbCsk1TitleChecksum.AutoSize = true;
+            lbCsk1TitleChecksum.Location = new Point(9, 197);
+            lbCsk1TitleChecksum.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1TitleChecksum.Name = "lbCsk1TitleChecksum";
+            lbCsk1TitleChecksum.Size = new Size(57, 20);
+            lbCsk1TitleChecksum.TabIndex = 7;
+            lbCsk1TitleChecksum.Text = "校验位";
             // 
             // tbCsk1Databits
             // 
-            this.tbCsk1Databits.Location = new System.Drawing.Point(71, 153);
-            this.tbCsk1Databits.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbCsk1Databits.MaxLength = 1;
-            this.tbCsk1Databits.Name = "tbCsk1Databits";
-            this.tbCsk1Databits.ReadOnly = true;
-            this.tbCsk1Databits.Size = new System.Drawing.Size(65, 27);
-            this.tbCsk1Databits.TabIndex = 6;
-            this.tbCsk1Databits.Text = "8";
+            tbCsk1Databits.Location = new Point(71, 153);
+            tbCsk1Databits.Margin = new Padding(2, 3, 2, 3);
+            tbCsk1Databits.MaxLength = 1;
+            tbCsk1Databits.Name = "tbCsk1Databits";
+            tbCsk1Databits.ReadOnly = true;
+            tbCsk1Databits.Size = new Size(65, 27);
+            tbCsk1Databits.TabIndex = 6;
+            tbCsk1Databits.Text = "8";
             // 
             // lbCsk1TitleDatabit
             // 
-            this.lbCsk1TitleDatabit.AutoSize = true;
-            this.lbCsk1TitleDatabit.Location = new System.Drawing.Point(9, 156);
-            this.lbCsk1TitleDatabit.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1TitleDatabit.Name = "lbCsk1TitleDatabit";
-            this.lbCsk1TitleDatabit.Size = new System.Drawing.Size(57, 20);
-            this.lbCsk1TitleDatabit.TabIndex = 5;
-            this.lbCsk1TitleDatabit.Text = "数据位";
+            lbCsk1TitleDatabit.AutoSize = true;
+            lbCsk1TitleDatabit.Location = new Point(9, 156);
+            lbCsk1TitleDatabit.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1TitleDatabit.Name = "lbCsk1TitleDatabit";
+            lbCsk1TitleDatabit.Size = new Size(57, 20);
+            lbCsk1TitleDatabit.TabIndex = 5;
+            lbCsk1TitleDatabit.Text = "数据位";
             // 
             // tbCsk1BaudRate
             // 
-            this.tbCsk1BaudRate.Location = new System.Drawing.Point(71, 111);
-            this.tbCsk1BaudRate.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbCsk1BaudRate.MaxLength = 7;
-            this.tbCsk1BaudRate.Name = "tbCsk1BaudRate";
-            this.tbCsk1BaudRate.Size = new System.Drawing.Size(65, 27);
-            this.tbCsk1BaudRate.TabIndex = 4;
-            this.tbCsk1BaudRate.Text = "3000000";
+            tbCsk1BaudRate.Location = new Point(71, 111);
+            tbCsk1BaudRate.Margin = new Padding(2, 3, 2, 3);
+            tbCsk1BaudRate.MaxLength = 7;
+            tbCsk1BaudRate.Name = "tbCsk1BaudRate";
+            tbCsk1BaudRate.Size = new Size(65, 27);
+            tbCsk1BaudRate.TabIndex = 4;
+            tbCsk1BaudRate.Text = "3000000";
             // 
             // lbCsk1TitleBaudRate
             // 
-            this.lbCsk1TitleBaudRate.AutoSize = true;
-            this.lbCsk1TitleBaudRate.Location = new System.Drawing.Point(9, 113);
-            this.lbCsk1TitleBaudRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1TitleBaudRate.Name = "lbCsk1TitleBaudRate";
-            this.lbCsk1TitleBaudRate.Size = new System.Drawing.Size(57, 20);
-            this.lbCsk1TitleBaudRate.TabIndex = 3;
-            this.lbCsk1TitleBaudRate.Text = "波特率";
+            lbCsk1TitleBaudRate.AutoSize = true;
+            lbCsk1TitleBaudRate.Location = new Point(9, 113);
+            lbCsk1TitleBaudRate.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1TitleBaudRate.Name = "lbCsk1TitleBaudRate";
+            lbCsk1TitleBaudRate.Size = new Size(57, 20);
+            lbCsk1TitleBaudRate.TabIndex = 3;
+            lbCsk1TitleBaudRate.Text = "波特率";
             // 
             // tbCsk1Port
             // 
-            this.tbCsk1Port.Location = new System.Drawing.Point(71, 71);
-            this.tbCsk1Port.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.tbCsk1Port.MaxLength = 6;
-            this.tbCsk1Port.Name = "tbCsk1Port";
-            this.tbCsk1Port.Size = new System.Drawing.Size(65, 27);
-            this.tbCsk1Port.TabIndex = 2;
-            this.tbCsk1Port.Text = "COM";
+            tbCsk1Port.Location = new Point(71, 71);
+            tbCsk1Port.Margin = new Padding(2, 3, 2, 3);
+            tbCsk1Port.MaxLength = 6;
+            tbCsk1Port.Name = "tbCsk1Port";
+            tbCsk1Port.Size = new Size(65, 27);
+            tbCsk1Port.TabIndex = 2;
+            tbCsk1Port.Text = "COM";
             // 
             // lbCsk1TitlePort
             // 
-            this.lbCsk1TitlePort.AutoSize = true;
-            this.lbCsk1TitlePort.Location = new System.Drawing.Point(24, 73);
-            this.lbCsk1TitlePort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1TitlePort.Name = "lbCsk1TitlePort";
-            this.lbCsk1TitlePort.Size = new System.Drawing.Size(41, 20);
-            this.lbCsk1TitlePort.TabIndex = 1;
-            this.lbCsk1TitlePort.Text = "串口";
+            lbCsk1TitlePort.AutoSize = true;
+            lbCsk1TitlePort.Location = new Point(24, 73);
+            lbCsk1TitlePort.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1TitlePort.Name = "lbCsk1TitlePort";
+            lbCsk1TitlePort.Size = new Size(41, 20);
+            lbCsk1TitlePort.TabIndex = 1;
+            lbCsk1TitlePort.Text = "串口";
             // 
             // lbCsk1Title
             // 
-            this.lbCsk1Title.AutoSize = true;
-            this.lbCsk1Title.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbCsk1Title.Location = new System.Drawing.Point(9, 21);
-            this.lbCsk1Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbCsk1Title.Name = "lbCsk1Title";
-            this.lbCsk1Title.Size = new System.Drawing.Size(132, 28);
-            this.lbCsk1Title.TabIndex = 0;
-            this.lbCsk1Title.Text = "CSK串口烧录";
+            lbCsk1Title.AutoSize = true;
+            lbCsk1Title.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            lbCsk1Title.Location = new Point(9, 21);
+            lbCsk1Title.Margin = new Padding(2, 0, 2, 0);
+            lbCsk1Title.Name = "lbCsk1Title";
+            lbCsk1Title.Size = new Size(132, 28);
+            lbCsk1Title.TabIndex = 0;
+            lbCsk1Title.Text = "CSK串口烧录";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1347, 663);
-            this.Controls.Add(this.gbMod1);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.gbSettings);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "聆思模组烧录工具 v1.0.0-rc.3";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.gbSettings.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.gbMod1.ResumeLayout(false);
-            this.panelResult1.ResumeLayout(false);
-            this.panelResult1.PerformLayout();
-            this.panelSn1.ResumeLayout(false);
-            this.panelSn1.PerformLayout();
-            this.panelWifi1.ResumeLayout(false);
-            this.panelWifi1.PerformLayout();
-            this.panelCsk1.ResumeLayout(false);
-            this.panelCsk1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1347, 663);
+            Controls.Add(gbMod1);
+            Controls.Add(statusStrip1);
+            Controls.Add(gbSettings);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(2, 3, 2, 3);
+            MaximizeBox = false;
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "聆思模组烧录工具 v1.0.0-rc.3";
+            FormClosing += MainForm_FormClosing;
+            FormClosed += MainForm_FormClosed;
+            Load += MainForm_Load;
+            gbSettings.ResumeLayout(false);
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            gbMod1.ResumeLayout(false);
+            panelResult1.ResumeLayout(false);
+            panelResult1.PerformLayout();
+            panelSn1.ResumeLayout(false);
+            panelSn1.PerformLayout();
+            panelWifi1.ResumeLayout(false);
+            panelWifi1.PerformLayout();
+            panelCsk1.ResumeLayout(false);
+            panelCsk1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -631,5 +642,6 @@
         private Button btnCommon1Result;
         private ProgressBar pbCommon1Progress;
         private ToolStripStatusLabel tsslSafeMode;
+        private Button btnPack;
     }
 }
