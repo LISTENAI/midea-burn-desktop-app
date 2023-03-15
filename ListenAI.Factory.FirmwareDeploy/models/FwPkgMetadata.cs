@@ -3,7 +3,7 @@
 namespace ListenAI.Factory.FirmwareDeploy.Models {
     internal class FwPkgMetadata {
         [JsonProperty("pkg_ver")]
-        public string Version { get; set; }
+        public string Version { get; set; } = string.Empty;
 
         [JsonProperty("files")]
         public List<FwPkgFileMetadata> Files { get; set; } = new();
@@ -14,10 +14,10 @@ namespace ListenAI.Factory.FirmwareDeploy.Models {
         public int Id { get; set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [JsonProperty("ver")]
-        public string Version { get; set; }
+        public string Version { get; set; } = string.Empty;
 
         [JsonProperty("offset")]
         public int Offset { get; set; } = 0;
@@ -26,6 +26,6 @@ namespace ListenAI.Factory.FirmwareDeploy.Models {
         public long Size { get; set; }
 
         [JsonProperty("md5")]
-        public string Hash { get; set; }
+        public string Hash { get; set; } = string.Empty;
     }
 }

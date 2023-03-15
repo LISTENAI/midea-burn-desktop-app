@@ -26,8 +26,8 @@ namespace ListenAI.Factory.FirmwareDeploy.Models {
         [JsonProperty("type")]
         public PortConfigType Type { get; set; }
 
-        [JsonProperty("port")]
-        public string Port { get; set; }
+        [JsonProperty("port", Required = Required.Always)]
+        public string? Port { get; set; }
 
         [JsonProperty("baudRate")]
         public long BaudRate { get; set; }

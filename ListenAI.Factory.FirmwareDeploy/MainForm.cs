@@ -19,14 +19,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void ApplicationOnThreadException(object sender, ThreadExceptionEventArgs e) {
             var exMsg = e.Exception?.ToString() ?? "没有更多技术信息";
-            Global.FailsafeMode.Invoke(sender, e);
+            Global.FailsafeMode?.Invoke(sender, e);
             MessageBox.Show($"[902] 出现了意外错误！\n工具将尝试以安全模式继续运行。但建议用户尽快保存配置，然后重启本工具。\n以下为技术信息：\n{exMsg}");
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) {
             var ex = e.ExceptionObject as Exception;
             var exMsg = ex?.ToString() ?? "没有更多技术信息";
-            Global.FailsafeMode.Invoke(sender, e);
+            Global.FailsafeMode?.Invoke(sender, e);
             MessageBox.Show($"[901] 出现了意外错误！\n工具将尝试以安全模式继续运行。但建议用户尽快保存配置，然后重启本工具。\n以下为技术信息：\n{exMsg}");
         }
 
@@ -80,33 +80,33 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 for (var t = 0; t <= 1; t++) {
                     //assign event handler for all default checkbox
                     var groupType = (Constants.GroupType)t;
-                    var defaultCheckbox = (CheckBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.IsDefault);
+                    var defaultCheckbox = Constants.GetControl<CheckBox>(groupId, groupType, Constants.GroupConfigType.IsDefault);
                     defaultCheckbox.CheckStateChanged += (_, _) => {
-                        ((ComboBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.Port))
+                        (Constants.GetControl<ComboBox>(groupId, groupType, Constants.GroupConfigType.Port))
                             .Enabled = !defaultCheckbox.Checked;
-                        ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.BaudRate))
+                        (Constants.GetControl<TextBox>(groupId, groupType, Constants.GroupConfigType.BaudRate))
                             .ReadOnly = defaultCheckbox.Checked;
-                        ((ComboBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.Port))
+                        (Constants.GetControl<ComboBox>(groupId, groupType, Constants.GroupConfigType.Port))
                             .BackColor = defaultCheckbox.Checked ? SystemColors.Control : SystemColors.Window;
-                        ((TextBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.BaudRate))
+                        (Constants.GetControl<TextBox>(groupId, groupType, Constants.GroupConfigType.BaudRate))
                             .BackColor = defaultCheckbox.Checked ? SystemColors.Control : SystemColors.Window;
                         Utils.SaveUiConfig();
                     };
 
                     //assign event handler for port combobox
-                    var portComboBox = (ComboBox)Constants.GetControl(groupId, groupType, Constants.GroupConfigType.Port);
+                    var portComboBox = Constants.GetControl<ComboBox>(groupId, groupType, Constants.GroupConfigType.Port);
                     portComboBox.Items.Clear();
                     portComboBox.Items.AddRange(allPresetComPorts);
 
                     portComboBox.Click += (sender, _) => {
-                        var thisPort = (ComboBox)sender;
+                        var thisPort = (ComboBox)sender!;
                         thisPort.Items.Clear();
                         thisPort.Items.AddRange(Utils.ListComPorts());
                     };
                 }
 
                 //assign event handler for custom sn trigger
-                var serialTextbox = (TextBox)Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                var serialTextbox = Constants.GetControl<TextBox>(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
                 serialTextbox.KeyPress += (_, _) => {
                     Global.IsCustomSnEnabled[groupId] = true;
                 };
@@ -124,28 +124,20 @@ namespace ListenAI.Factory.FirmwareDeploy {
                             continue;
                         }
 
-                        var ctrlPort = (ComboBox)Constants.GetControl(portConfig.GroupId,
-                            (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.Port);
-                        if (ctrlPort == null) {
-                            continue;
-                        }
-                        ctrlPort.Text = portConfig.Port.ToLower().Replace("com", "");
+                        var ctrlPort = Constants.GetControl<ComboBox>(portConfig.GroupId, (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.Port);
+                        ctrlPort.Text = portConfig?.Port?.ToLower().Replace("com", "") ?? "0";
 
-                        var ctrlBaudRate = (TextBox)Constants.GetControl(portConfig.GroupId,
+                        var ctrlBaudRate = Constants.GetControl<TextBox>(portConfig!.GroupId,
                             (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.BaudRate);
-                        if (ctrlBaudRate == null) {
-                            continue;
-                        }
                         ctrlBaudRate.Text = portConfig.BaudRate.ToString();
 
-                        var ctrlIsDefault = (CheckBox)Constants.GetControl(portConfig.GroupId,
+                        var ctrlIsDefault = Constants.GetControl<CheckBox>(portConfig.GroupId,
                             (Constants.GroupType)portConfig.Type, Constants.GroupConfigType.IsDefault);
-                        if (ctrlIsDefault == null) {
-                            continue;
-                        }
                         ctrlIsDefault.Checked = true;
                     }
-                    catch (Exception ex) { }
+                    catch (Exception) {
+                        // ignored
+                    }
                 }
             }
         }
@@ -199,7 +191,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                         throw new ListenAiException(102, "", "配置文件无法解析", 3);
                     }
 
-                    var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
+                    var fwPackFilePath = Path.Combine(fwPackDirPath!, file.Name!);
                     if (!File.Exists(fwPackFilePath)) {
                         throw new ListenAiException(103, "", $"固件 {file.Name} 不存在！");
                     }
@@ -218,7 +210,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 }
 
                 btnFwSelect.BackColor = SystemColors.Control;
-                fwCfg.FullPath = fwPackDirPath;
+                fwCfg.FullPath = fwPackDirPath!;
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
                 var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
                 if (fwCskInfo == null || fwWifiInfo == null) {
@@ -275,10 +267,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     var existPorts = new HashSet<string>();
                     for (var g = 1; g <= Global.GroupCount; g++) {
                         for (var t = 0; t <= 1; t++) {
-                            var ctrl = Constants.GetControl(g, (Constants.GroupType)t, Constants.GroupConfigType.Port);
-                            if (ctrl == null) {
-                                continue;
-                            }
+                            var ctrl = Constants.GetControl<ComboBox>(g, (Constants.GroupType)t, Constants.GroupConfigType.Port);
 
                             var intendedPort = ctrl.Text;
                             if (!Utils.IsPositiveNumber(intendedPort)) {
@@ -298,7 +287,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
                     foreach (var groupId in checkCskPortResult) {
                         if (checkWifiPortResult.Contains(groupId)) {
-                            var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                            var serialControl = Constants.GetControl<TextBox>(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
                             if (!Global.IsCustomSnEnabled[groupId]) {
                                 serialControl.Text = Utils.GetSerialNumberWithDate();
                             }
@@ -357,16 +346,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
             btnPack.Enabled = isEnabled;
 
             for (var i = 1; i <= Global.GroupCount; i++) {
-                var isCskDefault = ((CheckBox)Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault)).Checked;
-                var isWifiDefault = ((CheckBox)Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.IsDefault)).Checked;
-                Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.Port).Enabled = !isCskDefault && isEnabled;
-                Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Port).Enabled = !isWifiDefault && isEnabled;
+                var isCskDefault = Constants.GetControl<CheckBox>(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault).Checked;
+                var isWifiDefault = Constants.GetControl<CheckBox>(i, Constants.GroupType.Wifi, Constants.GroupConfigType.IsDefault).Checked;
+                Constants.GetControl<ComboBox>(i, Constants.GroupType.Csk, Constants.GroupConfigType.Port).Enabled = !isCskDefault && isEnabled;
+                Constants.GetControl<ComboBox>(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Port).Enabled = !isWifiDefault && isEnabled;
 
-                Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
-                Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
-                Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
-                Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
-                Constants.GetControl(i, Constants.GroupType.Common, Constants.GroupConfigType.Serial).Enabled = isEnabled;
+                Constants.GetControl<TextBox>(i, Constants.GroupType.Csk, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
+                Constants.GetControl<CheckBox>(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
+                Constants.GetControl<TextBox>(i, Constants.GroupType.Wifi, Constants.GroupConfigType.BaudRate).Enabled = isEnabled;
+                Constants.GetControl<CheckBox>(i, Constants.GroupType.Wifi, Constants.GroupConfigType.IsDefault).Enabled = isEnabled;
+                Constants.GetControl<TextBox>(i, Constants.GroupType.Common, Constants.GroupConfigType.Serial).Enabled = isEnabled;
             }
         }
 

@@ -22,16 +22,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var binding = BindingFlags.Public | BindingFlags.Instance;
             foreach (PropertyInfo prop in srcCtl.GetType().GetProperties(binding)) {
                 if (IsClonable(prop)) {
-                    object val = prop.GetValue(srcCtl);
-                    prop.SetValue(cloned, val, null);
+                    object? val = prop?.GetValue(srcCtl);
+                    prop?.SetValue(cloned, val, null);
                 }
             }
 
             foreach (Control ctl in srcCtl.Controls) {
-                cloned.Controls.Add(CloneControl(ctl));
+                cloned?.Controls.Add(CloneControl(ctl));
             }
 
-            return cloned;
+            return cloned!;
         }
 
         /// <summary>
@@ -62,10 +62,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             foreach (PropertyInfo prop in ctrl.GetType().GetProperties(binding)) {
                 if (IsClonable(prop)) {
-                    object val = prop.GetValue(ctrl);
+                    object? val = prop.GetValue(ctrl);
                     switch (prop.Name) {
                         case "Name":
-                            var newName = val.ToString().Replace("1", id.ToString());
+                            var newName = val?.ToString()?.Replace("1", id.ToString()) ?? "";
                             prop.SetValue(ctrl, newName);
                             if (ctrl.GetType() != typeof(Label)) {
                                 AddControlGroupMember(id, newName, ctrl);
@@ -155,7 +155,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var result = new HashSet<int>();
 
             for (int i = 1; i <= Global.GroupCount; i++) {
-                var targetCskControl = Constants.GetControl(i, groupType, Constants.GroupConfigType.Port);
+                var targetCskControl = Constants.GetControl<ComboBox>(i, groupType, Constants.GroupConfigType.Port);
                 if (string.IsNullOrWhiteSpace(targetCskControl.Text) || !IsPositiveNumber(targetCskControl.Text)) {
                     continue;
                 }
@@ -166,7 +166,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
                 try {
                     var comPort = "COM" + targetCskControl.Text;
-                    var baudRate = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.BaudRate).Text);
+                    var baudRate = int.Parse(Constants.GetControl<TextBox>(i, groupType, Constants.GroupConfigType.BaudRate).Text);
 
                     var portOpenResult = IsComPortWorking(comPort, baudRate);
                     if (!portOpenResult) {
@@ -298,15 +298,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 for (var i = 1; i <= Global.GroupCount; i++) {
                     var groupId = i;
                     for (var t = 0; t <= 1; t++) {
-                        var defaultCheckbox = (CheckBox)Constants.GetControl(groupId, (Constants.GroupType)t,
+                        var defaultCheckbox = Constants.GetControl<CheckBox>(groupId, (Constants.GroupType)t,
                             Constants.GroupConfigType.IsDefault);
                         if (defaultCheckbox.Checked) {
                             result.PortConfig.Add(new PortConfig() {
                                 GroupId = groupId,
                                 Type = (PortConfigType)t,
-                                Port = Constants.GetControl(groupId, (Constants.GroupType)t,
+                                Port = Constants.GetControl<ComboBox>(groupId, (Constants.GroupType)t,
                                     Constants.GroupConfigType.Port).Text,
-                                BaudRate = long.Parse(Constants.GetControl(groupId, (Constants.GroupType)t,
+                                BaudRate = long.Parse(Constants.GetControl<TextBox>(groupId, (Constants.GroupType)t,
                                     Constants.GroupConfigType.BaudRate).Text)
                             });
                         }

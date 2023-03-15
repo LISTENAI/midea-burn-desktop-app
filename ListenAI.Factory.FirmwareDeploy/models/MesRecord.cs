@@ -16,15 +16,15 @@
 
         #region Database config (for state retaining purpose only)
 
-        public string DbIp { get; set; }
+        public string DbIp { get; set; } = string.Empty;
 
-        public string DbName { get; set; }
+        public string DbName { get; set; } = string.Empty;
 
-        public string DbUsername { get; set; }
+        public string DbUsername { get; set; } = string.Empty;
 
-        public string DbPassword { get; set; }
+        public string DbPassword { get; set; } = string.Empty;
 
-        public string DbTableName { get; set; }
+        public string DbTableName { get; set; } = string.Empty;
 
         #endregion
     }

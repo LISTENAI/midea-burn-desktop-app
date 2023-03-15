@@ -9,8 +9,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static Dictionary<int, LineWorker> WorkersPool = new();
         public static Dictionary<int, bool> IsCustomSnEnabled = new();
         public static object LogOperationLock = new();
-        public static EventHandler AllWorkersCompleted;
-        public static EventHandler FailsafeMode;
+        public static EventHandler? AllWorkersCompleted;
+        public static EventHandler? FailsafeMode;
 
         public static int NextSerialNumber = 0;
     }
@@ -60,13 +60,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <summary>
         /// Get dynamically generated control by name
         /// </summary>
+        /// <typeparam name="T">control type</typeparam>
         /// <param name="groupId">group id</param>
         /// <param name="groupType">group type</param>
         /// <param name="configType">config type</param>
         /// <returns></returns>
-        public static Control? GetControl(int groupId, GroupType groupType, GroupConfigType configType) {
+        public static T GetControl<T>(int groupId, GroupType groupType, GroupConfigType configType) {
             var controlName = GetControlName(groupId, groupType, configType);
-            return Global.ControlGroups[groupId]?[controlName];
+            return (T)Convert.ChangeType(Global.ControlGroups[groupId][controlName], typeof(T));
         }
 
         public enum GroupType {

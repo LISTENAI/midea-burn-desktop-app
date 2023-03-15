@@ -3,13 +3,13 @@ using static ListenAI.Factory.FirmwareDeploy.Constants;
 
 namespace ListenAI.Factory.FirmwareDeploy.Models {
     public class FirmwareConfig {
-        public string FullPath { get; set; }
-
+        public string FullPath { get; set; } = ""
+;
         [JsonProperty("pkg_ver", Required = Required.Always)]
-        public string PackageVersion { get; set; }
+        public string PackageVersion { get; set; } = "1.0.0";
 
         [JsonProperty("files", Required = Required.Always)]
-        public List<FirmwareFile> Files { get; set; }
+        public List<FirmwareFile> Files { get; set; } = new();
 
         public static FirmwareConfig? FromJson(string json) {
             try {
@@ -43,10 +43,10 @@ namespace ListenAI.Factory.FirmwareDeploy.Models {
         public int Id { get; set; }
 
         [JsonProperty("name", Required = Required.Always)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonProperty("ver", Required = Required.Always)]
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         [JsonProperty("offset", Required = Required.Always)]
         public int Offset { get; set; }
@@ -55,6 +55,6 @@ namespace ListenAI.Factory.FirmwareDeploy.Models {
         public long Size { get; set; }
 
         [JsonProperty("md5", Required = Required.Always)]
-        public string Checksum { get; set; }
+        public string? Checksum { get; set; }
     }
 }

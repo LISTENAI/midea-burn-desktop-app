@@ -212,7 +212,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void tbFlashMachineId_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == 13) {
-                btnConfirm_Click(sender, null);
+                btnConfirm_Click(sender, e);
             }
         }
     }

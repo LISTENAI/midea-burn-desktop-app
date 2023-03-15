@@ -1,6 +1,6 @@
 namespace ListenAI.Factory.FirmwareDeploy {
     internal static class Program {
-        private static Mutex mutex = null;
+        private static Mutex? _mutex;
 
         /// <summary>
         ///  The main entry point for the application.
@@ -9,7 +9,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         static void Main() {
             const string appName = "ListenAI.Factory.FirmwareDeploy";
 
-            mutex = new Mutex(true, appName, out var createdNew);
+            _mutex = new Mutex(true, appName, out var createdNew);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
