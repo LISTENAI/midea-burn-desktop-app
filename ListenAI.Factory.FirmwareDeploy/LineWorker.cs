@@ -100,7 +100,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var groupType = GroupType.Csk;
 
             var baudRate = GetControl(_groupId, groupType, GroupConfigType.BaudRate).Text;
-            var port = GetControl(_groupId, groupType, GroupConfigType.Port).Text;
+            var port = "COM";
+            var portCtrl = GetControl(_groupId, groupType, GroupConfigType.Port);
+            portCtrl.Invoke(() => {
+                port = $"COM{((ComboBox)portCtrl).Text}";
+            });
             var fwPackPath = Global.SelectedFirmware.FullPath;
             var fwFile = Global.SelectedFirmware.GetFirmware(GroupType.Csk);
             if (fwFile == null) {
@@ -230,7 +234,12 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _wifiState = WorkerState.Processing;
             var groupType = GroupType.Wifi;
 
-            var port = GetControl(_groupId, groupType, GroupConfigType.Port).Text;
+
+            var port = "COM";
+            var portCtrl = GetControl(_groupId, groupType, GroupConfigType.Port);
+            portCtrl.Invoke(() => {
+                port = $"COM{((ComboBox)portCtrl).Text}";
+            });
 
             //step 1 - Check for device
             Debug.WriteLine("[ASR] step 1...");

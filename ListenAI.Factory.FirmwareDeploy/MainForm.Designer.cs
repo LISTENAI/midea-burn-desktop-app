@@ -40,6 +40,7 @@
             tbCommon1Serial = new TextBox();
             lbCommon1TitleSn = new Label();
             panelWifi1 = new Panel();
+            cmbWifi1Port = new ComboBox();
             cbWifi1IsDefault = new CheckBox();
             lbWifi1TitleDefault = new Label();
             tbWifi1Stopbits = new TextBox();
@@ -50,10 +51,10 @@
             lbWifi1TitleDatabit = new Label();
             tbWifi1BaudRate = new TextBox();
             lbWifi1TitleBaudRate = new Label();
-            tbWifi1Port = new TextBox();
             lbWifi1TitlePort = new Label();
             lbWifi1Title = new Label();
             panelCsk1 = new Panel();
+            cmbCsk1Port = new ComboBox();
             cbCsk1IsDefault = new CheckBox();
             lbCsk1TitleDefault = new Label();
             tbCsk1Stopbits = new TextBox();
@@ -64,7 +65,6 @@
             lbCsk1TitleDatabit = new Label();
             tbCsk1BaudRate = new TextBox();
             lbCsk1TitleBaudRate = new Label();
-            tbCsk1Port = new TextBox();
             lbCsk1TitlePort = new Label();
             lbCsk1Title = new Label();
             gbSettings.SuspendLayout();
@@ -256,6 +256,7 @@
             // 
             // panelWifi1
             // 
+            panelWifi1.Controls.Add(cmbWifi1Port);
             panelWifi1.Controls.Add(cbWifi1IsDefault);
             panelWifi1.Controls.Add(lbWifi1TitleDefault);
             panelWifi1.Controls.Add(tbWifi1Stopbits);
@@ -266,7 +267,6 @@
             panelWifi1.Controls.Add(lbWifi1TitleDatabit);
             panelWifi1.Controls.Add(tbWifi1BaudRate);
             panelWifi1.Controls.Add(lbWifi1TitleBaudRate);
-            panelWifi1.Controls.Add(tbWifi1Port);
             panelWifi1.Controls.Add(lbWifi1TitlePort);
             panelWifi1.Controls.Add(lbWifi1Title);
             panelWifi1.Location = new Point(166, 24);
@@ -274,6 +274,14 @@
             panelWifi1.Name = "panelWifi1";
             panelWifi1.Size = new Size(147, 323);
             panelWifi1.TabIndex = 1;
+            // 
+            // cmbWifi1Port
+            // 
+            cmbWifi1Port.FormattingEnabled = true;
+            cmbWifi1Port.Location = new Point(72, 70);
+            cmbWifi1Port.Name = "cmbWifi1Port";
+            cmbWifi1Port.Size = new Size(66, 28);
+            cmbWifi1Port.TabIndex = 25;
             // 
             // cbWifi1IsDefault
             // 
@@ -378,16 +386,6 @@
             lbWifi1TitleBaudRate.TabIndex = 15;
             lbWifi1TitleBaudRate.Text = "波特率";
             // 
-            // tbWifi1Port
-            // 
-            tbWifi1Port.Location = new Point(74, 71);
-            tbWifi1Port.Margin = new Padding(2, 3, 2, 3);
-            tbWifi1Port.MaxLength = 6;
-            tbWifi1Port.Name = "tbWifi1Port";
-            tbWifi1Port.Size = new Size(65, 27);
-            tbWifi1Port.TabIndex = 14;
-            tbWifi1Port.Text = "COM";
-            // 
             // lbWifi1TitlePort
             // 
             lbWifi1TitlePort.AutoSize = true;
@@ -411,6 +409,7 @@
             // 
             // panelCsk1
             // 
+            panelCsk1.Controls.Add(cmbCsk1Port);
             panelCsk1.Controls.Add(cbCsk1IsDefault);
             panelCsk1.Controls.Add(lbCsk1TitleDefault);
             panelCsk1.Controls.Add(tbCsk1Stopbits);
@@ -421,7 +420,6 @@
             panelCsk1.Controls.Add(lbCsk1TitleDatabit);
             panelCsk1.Controls.Add(tbCsk1BaudRate);
             panelCsk1.Controls.Add(lbCsk1TitleBaudRate);
-            panelCsk1.Controls.Add(tbCsk1Port);
             panelCsk1.Controls.Add(lbCsk1TitlePort);
             panelCsk1.Controls.Add(lbCsk1Title);
             panelCsk1.Location = new Point(14, 24);
@@ -429,6 +427,14 @@
             panelCsk1.Name = "panelCsk1";
             panelCsk1.Size = new Size(147, 323);
             panelCsk1.TabIndex = 0;
+            // 
+            // cmbCsk1Port
+            // 
+            cmbCsk1Port.FormattingEnabled = true;
+            cmbCsk1Port.Location = new Point(70, 70);
+            cmbCsk1Port.Name = "cmbCsk1Port";
+            cmbCsk1Port.Size = new Size(66, 28);
+            cmbCsk1Port.TabIndex = 5;
             // 
             // cbCsk1IsDefault
             // 
@@ -533,16 +539,6 @@
             lbCsk1TitleBaudRate.TabIndex = 3;
             lbCsk1TitleBaudRate.Text = "波特率";
             // 
-            // tbCsk1Port
-            // 
-            tbCsk1Port.Location = new Point(71, 71);
-            tbCsk1Port.Margin = new Padding(2, 3, 2, 3);
-            tbCsk1Port.MaxLength = 6;
-            tbCsk1Port.Name = "tbCsk1Port";
-            tbCsk1Port.Size = new Size(65, 27);
-            tbCsk1Port.TabIndex = 2;
-            tbCsk1Port.Text = "COM";
-            // 
             // lbCsk1TitlePort
             // 
             lbCsk1TitlePort.AutoSize = true;
@@ -577,7 +573,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "聆思模组烧录工具 v1.0.0-rc.3";
+            Text = "聆思模组烧录工具 v2.0.0-beta.1";
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;
@@ -611,7 +607,6 @@
         private Panel panelWifi1;
         private Label lbWifi1Title;
         private Panel panelSn1;
-        private TextBox tbCsk1Port;
         private Label lbCsk1TitlePort;
         private TextBox tbCsk1Stopbits;
         private Label lbCsk1TitleStopbit;
@@ -632,7 +627,6 @@
         private Label lbWifi1TitleDatabit;
         private TextBox tbWifi1BaudRate;
         private Label lbWifi1TitleBaudRate;
-        private TextBox tbWifi1Port;
         private Label lbWifi1TitlePort;
         private CheckBox cbCsk1IsDefault;
         private TextBox tbCommon1Serial;
@@ -643,5 +637,7 @@
         private ProgressBar pbCommon1Progress;
         private ToolStripStatusLabel tsslSafeMode;
         private Button btnPack;
+        private ComboBox cmbWifi1Port;
+        private ComboBox cmbCsk1Port;
     }
 }

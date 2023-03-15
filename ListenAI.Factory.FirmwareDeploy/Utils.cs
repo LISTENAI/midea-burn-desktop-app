@@ -151,21 +151,21 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// </summary>
         /// <returns></returns>
         public static HashSet<int> CheckComPorts(Constants.GroupType groupType) {
-            var allPorts = SerialPort.GetPortNames().ToHashSet();
+            var allPorts = SerialPort.GetPortNames().Select(p => p.Replace("COM", "")).ToHashSet();
             var result = new HashSet<int>();
 
             for (int i = 1; i <= Global.GroupCount; i++) {
                 var targetCskControl = Constants.GetControl(i, groupType, Constants.GroupConfigType.Port);
-                if (string.IsNullOrWhiteSpace(targetCskControl.Text) || targetCskControl.Text == "COM") {
+                if (string.IsNullOrWhiteSpace(targetCskControl.Text) || !IsPositiveNumber(targetCskControl.Text)) {
                     continue;
                 }
 
-                if (!targetCskControl.Text.StartsWith("COM") || !allPorts.Contains(targetCskControl.Text)) {
+                if (!IsPositiveNumber(targetCskControl.Text) || !allPorts.Contains(targetCskControl.Text)) {
                     throw new ListenAiException(302, $"模组{ConvertToChineseChars(i)}串口设置错误", "");
                 }
 
                 try {
-                    var comPort = targetCskControl.Text;
+                    var comPort = "COM" + targetCskControl.Text;
                     var baudRate = int.Parse(Constants.GetControl(i, groupType, Constants.GroupConfigType.BaudRate).Text);
 
                     var portOpenResult = IsComPortWorking(comPort, baudRate);
@@ -188,9 +188,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// </summary>
         /// <param name="comPort">com port</param>
         /// <param name="baudRate">baud rate</param>
-        /// <param name="databits">data bits</param>
-        /// <param name="parity">parity</param>
-        /// <param name="stopBits">stop bits</param>
         /// <returns></returns>
         private static bool IsComPortWorking(string comPort, int baudRate) {
             try {
@@ -204,6 +201,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
             catch {
                 return false;
             }
+        }
+
+        public static string[] ListComPorts() {
+            return SerialPort.GetPortNames().Select(p => p.Replace("COM", "")).ToArray();
         }
 
         /// <summary>
@@ -392,6 +393,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         public static long GetFileSize(string path) {
             return new FileInfo(path).Length;
+        }
+
+        public static bool IsPositiveNumber(string str) {
+            try {
+                var result = int.Parse(str);
+                return result > 0;
+            }
+            catch {
+                return false;
+            }
         }
     }
 
