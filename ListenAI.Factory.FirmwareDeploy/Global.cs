@@ -43,6 +43,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 case GroupConfigType.Progress:
                     result = "pb";
                     break;
+                case GroupConfigType.Port:
+                    result = "cmb";
+                    break;
                 default:
                     result = "tb";
                     break;
