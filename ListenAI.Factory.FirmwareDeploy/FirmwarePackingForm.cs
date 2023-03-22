@@ -74,14 +74,22 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 EnableMainFormUi(false);
 
                 //check version numbers
-                if (string.IsNullOrWhiteSpace(tbCskFwVer.Text) || string.IsNullOrWhiteSpace(tbAsrFwPath.Text) ||
-                    string.IsNullOrWhiteSpace(tbPackFwPath.Text)) {
+                if (string.IsNullOrWhiteSpace(tbCskFwVer.Text) || string.IsNullOrWhiteSpace(tbAsrFwVer.Text) ||
+                    string.IsNullOrWhiteSpace(tbPackFwVer.Text)) {
                     throw new ListenAiException(401, "请输入版本号。", "");
                 }
 
-                //check firmware
+                //check firmware pack
                 if (string.IsNullOrWhiteSpace(tbPackFwPath.Text)) {
                     throw new ListenAiException(402, "请选择固件包保存位置。", "");
+                }
+
+                //check csk6/asr firmware file
+                if (string.IsNullOrWhiteSpace(tbCskFwPath.Text)) {
+                    throw new ListenAiException(403, "请导入正确的 CSK6 固件", "", 1);
+                }
+                if (string.IsNullOrWhiteSpace(tbAsrFwPath.Text)) {
+                    throw new ListenAiException(403, "请导入正确的 ASR 固件", "", 2);
                 }
 
                 //generate work dir
