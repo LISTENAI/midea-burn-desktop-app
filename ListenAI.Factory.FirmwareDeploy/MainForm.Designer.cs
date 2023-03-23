@@ -527,7 +527,7 @@
             tbCsk1BaudRate.Name = "tbCsk1BaudRate";
             tbCsk1BaudRate.Size = new Size(65, 27);
             tbCsk1BaudRate.TabIndex = 4;
-            tbCsk1BaudRate.Text = "3000000";
+            tbCsk1BaudRate.Text = "1500000";
             // 
             // lbCsk1TitleBaudRate
             // 
@@ -573,7 +573,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "聆思模组烧录工具 v2.0.0-beta.2";
+            Text = "聆思模组烧录工具 v2.0.0-beta.3";
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;
