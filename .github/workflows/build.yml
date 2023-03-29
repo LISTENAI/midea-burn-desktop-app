@@ -1,14 +1,14 @@
 on:
   push:
     branches: [ master ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ master ]
 
-permissions: read-all
-
 jobs:
-  build:
+  test:
     runs-on: windows-latest
+    permissions: read-all
 
     steps:
     - name: Checkout
@@ -25,4 +25,43 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release --no-restore
+
+  publish:
+    runs-on: windows-latest
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions: write-all
+    env:
+      VER_TAG: ${{ github.ref_name }}
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      PROJECT_NAME: ListenAI.Factory.FirmwareDeploy
+      DOTNET_FRAMEWORK: net6.0-windows
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Create Publish Packages per Runtime
+      run: |
+        dotnet publish -c Release -r win-x64 -f ${Env:DOTNET_FRAMEWORK} --no-self-contained -p:PublishSingleFile=true
+        dotnet publish -c Release -r win-x86 -f ${Env:DOTNET_FRAMEWORK} --no-self-contained -p:PublishSingleFile=true
+        
+    - name: Merge Packages
+      run: |
+        New-Item -Path ${Env:PROJECT_NAME}\bin\Publish -ItemType Directory
+        Remove-Item -Path ${Env:PROJECT_NAME}\bin\Release\${Env:DOTNET_FRAMEWORK}\win-x64\publish\*.pdb -Force
+        Copy-Item ${Env:PROJECT_NAME}\bin\Release\${Env:DOTNET_FRAMEWORK}\win-x64\publish -Destination ${Env:PROJECT_NAME}\bin\Publish\win-x64 -Recurse
+        Remove-Item -Path ${Env:PROJECT_NAME}\bin\Release\${Env:DOTNET_FRAMEWORK}\win-x86\publish\*.pdb -Force
+        Copy-Item ${Env:PROJECT_NAME}\bin\Release\${Env:DOTNET_FRAMEWORK}\win-x86\publish -Destination ${Env:PROJECT_NAME}\bin\Publish\win-x86 -Recurse
+        Compress-Archive -Path ${Env:PROJECT_NAME}\bin\Publish\* -DestinationPath ${Env:PROJECT_NAME}\bin\${Env:VER_TAG}.zip
+
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "${{ env.PROJECT_NAME }}/bin/${{ github.ref_name }}.zip"
+        bodyFile: "RELEASE"
+        draft: true
+        tag: ${{ github.ref_name }}
