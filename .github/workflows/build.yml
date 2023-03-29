@@ -32,6 +32,8 @@ jobs:
     needs: test
     if: startsWith(github.ref, 'refs/tags/v')
     permissions: write-all
+    env:
+      VER_TAG: ${{ github.ref_name }}
 
     steps:
     - name: Checkout
@@ -48,17 +50,18 @@ jobs:
         dotnet publish -c Release -r win-x86 -f net6.0-windows --no-self-contained -p:PublishSingleFile=true
         Remove-Item -Path ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish\*.pdb -Force
         Copy-Item ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish -Destination ListenAI.Factory.FirmwareDeploy\bin\Publish\win-x86 -Recurse
+        Compress-Archive -Path ListenAI.Factory.FirmwareDeploy\bin\Publish\* -DestinationPath ListenAI.Factory.FirmwareDeploy\bin\${Env:VER_TAG}.zip
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ github.ref_name }}
-        path: ListenAI.Factory.FirmwareDeploy\bin\Publish\*
+#    - name: Upload Artifact
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{ github.ref_name }}
+#        path: ListenAI.Factory.FirmwareDeploy\bin\Publish\*
 
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ github.ref_name }}.zip
+        artifacts: "ListenAI.Factory.FirmwareDeploy/bin/${{ github.ref_name }}.zip"
         body: |
           ${{ github.ref_name }} 更新内容：
         draft: false
