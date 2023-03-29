@@ -57,8 +57,6 @@ jobs:
 
     - name: Create Release
       uses: ncipollo/release-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         artifacts: ${{ github.ref_name }}
         body: |
@@ -66,4 +64,3 @@ jobs:
         draft: false
         prerelease: true
         tag: ${{ github.ref_name }}
-        token: ${{ secrets.GITHUB_TOKEN }}
