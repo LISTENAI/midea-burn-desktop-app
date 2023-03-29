@@ -1,13 +1,14 @@
 on:
   push:
     branches: [ master ]
+    tags: [ '*' ]
   pull_request:
     branches: [ master ]
 
 permissions: read-all
 
 jobs:
-  build:
+  test:
     runs-on: windows-latest
 
     steps:
@@ -25,4 +26,31 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release --no-restore
+
+  publish:
+    runs-on: windows-latest
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Publish & Pack
+      run: |
+        New-Item -Path ListenAI.Factory.FirmwareDeploy\bin\Publish -ItemType Directory
+        dotnet publish -c Release -r win-x64 -f net6.0-windows --no-self-contained -p:PublishSingleFile=true
+        Remove-Item -Path ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x64\publish\*.pdb -Force
+        Copy-Item ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x64\publish -Destination ListenAI.Factory.FirmwareDeploy\bin\Publish\win-x64 -Recurse
+        dotnet publish -c Release -r win-x86 -f net6.0-windows --no-self-contained -p:PublishSingleFile=true
+        Remove-Item -Path ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish\*.pdb -Force
+        Copy-Item ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish -Destination ListenAI.Factory.FirmwareDeploy\bin\Publish\win-x86 -Recurse
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.ref_name }}
+        path: ListenAI.Factory.FirmwareDeploy\bin\Publish\*
