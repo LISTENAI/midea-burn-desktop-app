@@ -52,18 +52,10 @@ jobs:
         Copy-Item ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish -Destination ListenAI.Factory.FirmwareDeploy\bin\Publish\win-x86 -Recurse
         Compress-Archive -Path ListenAI.Factory.FirmwareDeploy\bin\Publish\* -DestinationPath ListenAI.Factory.FirmwareDeploy\bin\${Env:VER_TAG}.zip
 
-#    - name: Upload Artifact
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: ${{ github.ref_name }}
-#        path: ListenAI.Factory.FirmwareDeploy\bin\Publish\*
-
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
         artifacts: "ListenAI.Factory.FirmwareDeploy/bin/${{ github.ref_name }}.zip"
-        body: |
-          ${{ github.ref_name }} 更新内容：
-        draft: false
-        prerelease: true
+        bodyFile: "RELEASE"
+        draft: true
         tag: ${{ github.ref_name }}
