@@ -1,15 +1,14 @@
 on:
   push:
     branches: [ master ]
-    tags: [ '*' ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ master ]
-
-permissions: read-all
 
 jobs:
   test:
     runs-on: windows-latest
+    permissions: read-all
 
     steps:
     - name: Checkout
@@ -32,6 +31,10 @@ jobs:
     runs-on: windows-latest
     needs: test
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions: write-all
+    env:
+      VER_TAG: ${{ github.ref_name }}
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     steps:
     - name: Checkout
@@ -48,9 +51,12 @@ jobs:
         dotnet publish -c Release -r win-x86 -f net6.0-windows --no-self-contained -p:PublishSingleFile=true
         Remove-Item -Path ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish\*.pdb -Force
         Copy-Item ListenAI.Factory.FirmwareDeploy\bin\Release\net6.0-windows\win-x86\publish -Destination ListenAI.Factory.FirmwareDeploy\bin\Publish\win-x86 -Recurse
+        Compress-Archive -Path ListenAI.Factory.FirmwareDeploy\bin\Publish\* -DestinationPath ListenAI.Factory.FirmwareDeploy\bin\${Env:VER_TAG}.zip
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+    - name: Create Release
+      uses: ncipollo/release-action@v1
       with:
-        name: ${{ github.ref_name }}
-        path: ListenAI.Factory.FirmwareDeploy\bin\Publish\*
+        artifacts: "ListenAI.Factory.FirmwareDeploy/bin/${{ github.ref_name }}.zip"
+        bodyFile: "RELEASE"
+        draft: true
+        tag: ${{ github.ref_name }}
