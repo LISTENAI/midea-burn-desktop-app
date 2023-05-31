@@ -10,12 +10,6 @@
     <Authors>LISTENAI</Authors>
     <Copyright>LISTENAI</Copyright>
   </PropertyGroup>
-	
-  <ItemGroup>
-    <Content Include="tools\ASR_downloader_V1.0.6.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />

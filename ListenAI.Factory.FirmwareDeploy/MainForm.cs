@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using ListenAI.Factory.FirmwareDeploy.Models;
+﻿using ListenAI.Factory.FirmwareDeploy.Models;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
@@ -37,7 +36,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
-            Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
             Utils.KillProcessByName("Uart_Burn_Tool_v2.exe");
             Application.Exit();
         }
@@ -189,7 +187,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     throw new ListenAiException(102, "", "配置文件无法解析", 1);
                 }
 
-                if (fwCfg.Files.Count != 2) {
+                if (fwCfg.Files.Count != 1) {
                     throw new ListenAiException(102, "", "配置文件无法解析", 2);
                 }
 
