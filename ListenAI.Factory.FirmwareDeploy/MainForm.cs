@@ -220,13 +220,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 btnFwSelect.BackColor = SystemColors.Control;
                 fwCfg.FullPath = fwPackDirPath;
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
-                var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
-                if (fwCskInfo == null || fwWifiInfo == null) {
+                if (fwCskInfo == null) {
                     throw new ListenAiException(102, "", "配置文件无法解析", 4);
                 }
 
                 tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
-                                           $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
                                            $"固件包路径: {fwCfg.FullPath}";
                 Global.SelectedFirmware = fwCfg;
                 EnableFirmwareButton(true, false);
