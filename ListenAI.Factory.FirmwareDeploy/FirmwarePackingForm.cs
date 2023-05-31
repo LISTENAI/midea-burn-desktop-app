@@ -33,24 +33,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void btnAsrFwPathSelect_Click(object sender, EventArgs e) {
-            using var ofd = new OpenFileDialog();
-            ofd.Filter = "ASR固件(*.bin)|*.bin";
-            ofd.Multiselect = false;
-            ofd.Title = "选择ASR固件";
-            ofd.CheckPathExists = true;
-            var result = ofd.ShowDialog();
-
-            if (result != DialogResult.OK) {
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(ofd.FileName) ||
-                !Utils.IsValidFirmware(ofd.FileName, Constants.FirmwareType.Asr)) {
-                MessageBox.Show("[403-2] 请导入正确的 ASR 固件。");
-                return;
-            }
-
-            tbAsrFwPath.Text = ofd.FileName;
+            return;
         }
 
         private void btnPackFwPathSelect_Click(object sender, EventArgs e) {
@@ -74,8 +57,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 EnableMainFormUi(false);
 
                 //check version numbers
-                if (string.IsNullOrWhiteSpace(tbCskFwVer.Text) || string.IsNullOrWhiteSpace(tbAsrFwVer.Text) ||
-                    string.IsNullOrWhiteSpace(tbPackFwVer.Text)) {
+                if (string.IsNullOrWhiteSpace(tbCskFwVer.Text) || string.IsNullOrWhiteSpace(tbPackFwVer.Text)) {
                     throw new ListenAiException(401, "请输入版本号。", "");
                 }
 
@@ -84,12 +66,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     throw new ListenAiException(402, "请选择固件包保存位置。", "");
                 }
 
-                //check csk6/asr firmware file
+                //check csk6 firmware file
                 if (string.IsNullOrWhiteSpace(tbCskFwPath.Text)) {
                     throw new ListenAiException(403, "请导入正确的 CSK6 固件", "", 1);
-                }
-                if (string.IsNullOrWhiteSpace(tbAsrFwPath.Text)) {
-                    throw new ListenAiException(403, "请导入正确的 ASR 固件", "", 2);
                 }
 
                 //generate work dir
@@ -99,8 +78,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 //Generate package metadata
                 var csk6Hash = Utils.GetFileMd5Hash(tbCskFwPath.Text);
                 var csk6Size = Utils.GetFileSize(tbCskFwPath.Text);
-                var asrHash = Utils.GetFileMd5Hash(tbAsrFwPath.Text);
-                var asrSize = Utils.GetFileSize(tbAsrFwPath.Text);
 
                 var metadata = new FwPkgMetadata() {
                     Version = tbPackFwVer.Text,
@@ -112,36 +89,30 @@ namespace ListenAI.Factory.FirmwareDeploy {
                             Version = tbCskFwVer.Text,
                             Size = csk6Size,
                             Hash = csk6Hash
-                        },
-                        //asr
-                        new FwPkgFileMetadata() {
-                            Id = 1,
-                            Name = Path.GetFileName(tbAsrFwPath.Text),
-                            Version = tbAsrFwVer.Text,
-                            Size = asrSize,
-                            Hash = asrHash
-                        },
+                        }
                     }
                 };
                 File.WriteAllText(Path.Combine(workDirPath, "config.json"), JsonConvert.SerializeObject(metadata));
                 File.Copy(tbCskFwPath.Text, Path.Combine(workDirPath, Path.GetFileName(tbCskFwPath.Text)));
-                File.Copy(tbAsrFwPath.Text, Path.Combine(workDirPath, Path.GetFileName(tbAsrFwPath.Text)));
 
                 var zipResult = Utils.Zip(workDirPath, tbPackFwPath.Text);
-                Directory.Delete(workDirPath, true);
-
                 if (!zipResult) {
                     throw new ListenAiException(404, "固件打包失败！", "");
                 }
 
+                try {
+                    Directory.Delete(workDirPath, true);
+                }
+                catch { }
+
                 tsslStatus.Text = "当前状态：空闲";
-                MessageBox.Show("打包完成！");
+                MessageBox.Show($"打包完成！");
             }
             catch (ListenAiException lex) {
                 MessageBox.Show($"[{lex.Code}] {lex.Message}\n{lex.Details}");
             }
             catch (Exception ex) {
-                MessageBox.Show($"[499] 打包固件时出现了意外状况！\n{ex.Message}");
+                MessageBox.Show($"[499] 打包固件时出现了意外状况！\n{ex}");
             }
             finally {
                 tsslStatus.Text = "当前状态：空闲";

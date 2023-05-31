@@ -194,7 +194,6 @@
             // 
             pbCommon1Progress.Location = new Point(23, 9);
             pbCommon1Progress.Margin = new Padding(2, 3, 2, 3);
-            pbCommon1Progress.Maximum = 200;
             pbCommon1Progress.Name = "pbCommon1Progress";
             pbCommon1Progress.Size = new Size(258, 25);
             pbCommon1Progress.Step = 1;
@@ -573,7 +572,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "聆思模组烧录工具 v2.0.0";
+            Text = "聆思模组烧录工具 v2.1.0-edu";
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;

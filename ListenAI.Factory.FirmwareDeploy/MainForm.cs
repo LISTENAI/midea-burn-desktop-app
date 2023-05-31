@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using ListenAI.Factory.FirmwareDeploy.Models;
+﻿using ListenAI.Factory.FirmwareDeploy.Models;
 
 namespace ListenAI.Factory.FirmwareDeploy {
     public partial class MainForm : Form {
@@ -37,7 +36,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
-            Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
             Utils.KillProcessByName("Uart_Burn_Tool_v2.exe");
             Application.Exit();
         }
@@ -189,7 +187,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     throw new ListenAiException(102, "", "配置文件无法解析", 1);
                 }
 
-                if (fwCfg.Files.Count != 2) {
+                if (fwCfg.Files.Count != 1) {
                     throw new ListenAiException(102, "", "配置文件无法解析", 2);
                 }
 
@@ -220,13 +218,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 btnFwSelect.BackColor = SystemColors.Control;
                 fwCfg.FullPath = fwPackDirPath;
                 var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
-                var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
-                if (fwCskInfo == null || fwWifiInfo == null) {
+                if (fwCskInfo == null) {
                     throw new ListenAiException(102, "", "配置文件无法解析", 4);
                 }
 
                 tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
-                                           $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
                                            $"固件包路径: {fwCfg.FullPath}";
                 Global.SelectedFirmware = fwCfg;
                 EnableFirmwareButton(true, false);
@@ -274,42 +270,37 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     //check if there are any duplicated ports
                     var existPorts = new HashSet<string>();
                     for (var g = 1; g <= Global.GroupCount; g++) {
-                        for (var t = 0; t <= 1; t++) {
-                            var ctrl = Constants.GetControl(g, (Constants.GroupType)t, Constants.GroupConfigType.Port);
-                            if (ctrl == null) {
-                                continue;
-                            }
-
-                            var intendedPort = ctrl.Text;
-                            if (!Utils.IsPositiveNumber(intendedPort)) {
-                                continue;
-                            }
-
-                            if (existPorts.Contains(intendedPort)) {
-                                throw new ListenAiException(301, "重复的端口，", "", 4);
-                            }
-                            existPorts.Add(intendedPort);
+                        var ctrl = Constants.GetControl(g, Constants.GroupType.Csk, Constants.GroupConfigType.Port);
+                        if (ctrl == null) {
+                            continue;
                         }
+
+                        var intendedPort = ctrl.Text;
+                        if (!Utils.IsPositiveNumber(intendedPort)) {
+                            continue;
+                        }
+
+                        if (existPorts.Contains(intendedPort)) {
+                            throw new ListenAiException(301, "重复的端口，", "", 4);
+                        }
+                        existPorts.Add(intendedPort);
                     }
 
                     var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
-                    var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
                     var availableGroups = new List<int>();
 
                     foreach (var groupId in checkCskPortResult) {
-                        if (checkWifiPortResult.Contains(groupId)) {
-                            var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
-                            if (!Global.IsCustomSnEnabled[groupId]) {
-                                serialControl.Text = Utils.GetSerialNumberWithDate();
-                            }
-                            else {
-                                if (string.IsNullOrWhiteSpace(serialControl.Text)) {
-                                    throw new ListenAiException(301, $"模组{Utils.ConvertToChineseChars(groupId)}产品序列号为空。",
-                                        "", 3);
-                                }
-                            }
-                            availableGroups.Add(groupId);
+                        var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                        if (!Global.IsCustomSnEnabled[groupId]) {
+                            serialControl.Text = Utils.GetSerialNumberWithDate();
                         }
+                        else {
+                            if (string.IsNullOrWhiteSpace(serialControl.Text)) {
+                                throw new ListenAiException(301, $"模组{Utils.ConvertToChineseChars(groupId)}产品序列号为空。",
+                                    "", 3);
+                            }
+                        }
+                        availableGroups.Add(groupId);
                     }
                     if (availableGroups.Count == 0) {
                         throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);

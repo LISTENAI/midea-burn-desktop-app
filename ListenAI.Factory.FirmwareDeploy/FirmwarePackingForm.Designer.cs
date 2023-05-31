@@ -121,9 +121,11 @@
             gbAsr.TabIndex = 1;
             gbAsr.TabStop = false;
             gbAsr.Text = "ASR固件设置";
+            gbAsr.Visible = false;
             // 
             // btnAsrFwPathSelect
             // 
+            btnAsrFwPathSelect.Enabled = false;
             btnAsrFwPathSelect.Location = new Point(406, 86);
             btnAsrFwPathSelect.Name = "btnAsrFwPathSelect";
             btnAsrFwPathSelect.Size = new Size(94, 29);
@@ -151,6 +153,7 @@
             // 
             // tbAsrFwVer
             // 
+            tbAsrFwVer.Enabled = false;
             tbAsrFwVer.Location = new Point(139, 36);
             tbAsrFwVer.Name = "tbAsrFwVer";
             tbAsrFwVer.PlaceholderText = "0.0.0";
