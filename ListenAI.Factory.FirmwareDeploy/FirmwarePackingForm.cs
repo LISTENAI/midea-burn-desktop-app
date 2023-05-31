@@ -141,7 +141,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 MessageBox.Show($"[{lex.Code}] {lex.Message}\n{lex.Details}");
             }
             catch (Exception ex) {
-                MessageBox.Show($"[499] 打包固件时出现了意外状况！\n{ex.Message}");
+                MessageBox.Show($"[499] 打包固件时出现了意外状况！\n{ex}");
             }
             finally {
                 tsslStatus.Text = "当前状态：空闲";

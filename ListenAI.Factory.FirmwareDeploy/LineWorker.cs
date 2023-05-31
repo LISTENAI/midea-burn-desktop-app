@@ -8,23 +8,19 @@ namespace ListenAI.Factory.FirmwareDeploy {
     public class LineWorker {
         private int _groupId;
         private WorkerState _cskState;
-        private WorkerState _wifiState;
         private Process _cskProcess;
-        private Process _wifiProcess;
         private DateTime? _startAt;
         private DateTime? _endAt;
         private int _cskProgress;
-        private int _wifiProgress;
 
         private BackgroundWorker _cskWorker;
-        private BackgroundWorker _wifiWorker;
 
         public WorkerState State {
             get {
-                if (_cskState == WorkerState.Error || _wifiState == WorkerState.Error) {
+                if (_cskState == WorkerState.Error) {
                     return WorkerState.Error;
                 }
-                if (_cskState == WorkerState.Success && _wifiState == WorkerState.Success) {
+                if (_cskState == WorkerState.Success) {
                     return WorkerState.Success;
                 }
                 return WorkerState.Processing;
@@ -46,19 +42,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _cskWorker.ProgressChanged += CskFlash_ProgressChanged;
             _cskWorker.RunWorkerCompleted += CskFlash_RunWorkerCompleted;
 
-            _wifiWorker = new BackgroundWorker();
-            _wifiWorker.WorkerReportsProgress = true;
-            _wifiWorker.WorkerSupportsCancellation = true;
-            _wifiWorker.DoWork += WifiFlash_Work;
-            _wifiWorker.ProgressChanged += WifiFlash_ProgressChanged;
-            _wifiWorker.RunWorkerCompleted += WifiFlash_RunWorkerCompleted;
-
             _startAt = DateTime.UtcNow.AddHours(8);
             _cskWorker.RunWorkerAsync();
-            _wifiWorker.RunWorkerAsync();
 
             _cskProgress = 0;
-            _wifiProgress = 0;
 
             var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
             ctrlPb.Invoke(() => { ctrlPb.Value = 0; });
@@ -77,12 +64,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (_cskState == WorkerState.Processing) {
                 _cskWorker.CancelAsync();
                 _cskProcess?.Kill(true);
-                _cskState = WorkerState.Error;
-            }
-
-            if (_wifiState == WorkerState.Processing) {
-                _wifiWorker.CancelAsync();
-                _wifiProcess?.Kill(true);
                 _cskState = WorkerState.Error;
             }
         }
@@ -186,10 +167,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
 
             ctrlPb.Invoke(() => {
-                ctrlPb.Value = _cskProgress + _wifiProgress;
+                ctrlPb.Value = _cskProgress;
             });
             ctrlResult.Invoke(() => {
-                var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
+                decimal fullProgress = _cskProgress;
                 fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
                 ctrlResult.Text = $"烧录中...{fullProgress:0.0}%";
             });
@@ -201,125 +182,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void CskFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
-            if (_cskProgress < 100 || e.Cancelled || _wifiState == WorkerState.Error) {
+            if (_cskProgress < 100 || e.Cancelled) {
                 _cskState = WorkerState.Error;
-                _wifiWorker.CancelAsync();
-                _wifiProcess?.Kill();
-                _wifiState = WorkerState.Error;
             }
             else {
                 _cskState = WorkerState.Success;
             }
 
             Thread.Sleep(new Random().Next(500, 2000));
-            if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
-                ReportResultToUi();
-            }
-        }
-
-        /// <summary>
-        /// Just let worker knows how to flash WB01 chips
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void WifiFlash_Work(object? sender, DoWorkEventArgs e) {
-            if (_wifiState == WorkerState.Processing) {
-                return;
-            }
-            if (Global.SelectedFirmware == null) {
-                Debug.WriteLine("[ASR] 未选择固件。");
-                (sender as BackgroundWorker)?.TryToReportProgress(-1, "未选择固件。");
-                return;
-            }
-            _wifiState = WorkerState.Processing;
-            var groupType = GroupType.Wifi;
-
-
-            var port = "COM";
-            var portCtrl = GetControl(_groupId, groupType, GroupConfigType.Port);
-            portCtrl.Invoke(() => {
-                port = $"COM{((ComboBox)portCtrl).Text}";
-            });
-
-            //step 1 - Check for device
-            Debug.WriteLine("[ASR] step 1...");
-            var args = $"dl --port {port} --chip 2";
-            var runAsr = StartProcessSync(ASRToolPath, args);
-            if (runAsr.ExitCode == 0) {
-                (sender as BackgroundWorker)?.TryToReportProgress(20);
-            }
-            else {
-                Debug.WriteLine($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
-                (sender as BackgroundWorker)?.TryToReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
-                return;
-            }
-
-            //step 2 - flash firmware
-            Debug.WriteLine("[ASR] step 2...");
-            var fwInfo = Global.SelectedFirmware?.GetFirmware(GroupType.Wifi);
-            args = $"burn --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
-            runAsr = StartProcessSync(ASRToolPath, args);
-            if (runAsr.ExitCode == 0) {
-                (sender as BackgroundWorker)?.TryToReportProgress(80);
-            }
-            else {
-                Debug.WriteLine($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
-                (sender as BackgroundWorker)?.TryToReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
-                return;
-            }
-
-            //step 3 - verify firmware flashed
-            Debug.WriteLine("[ASR] step 3...");
-            args = $"verify --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
-            runAsr = StartProcessSync(ASRToolPath, args);
-            if (runAsr.ExitCode == 0) {
-                (sender as BackgroundWorker)?.TryToReportProgress(100);
-            }
-            else {
-                Debug.WriteLine($"[ASR] 校验失败。Code = {runAsr.ExitCode}");
-                (sender as BackgroundWorker)?.TryToReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
-                return;
-            }
-
-            Debug.WriteLine("[ASR] Completed!");
-        }
-
-        private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
-            _wifiProgress = e.ProgressPercentage;
-
-            var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
-            if (ctrlPb == null || e.ProgressPercentage < 0) {
-                return;
-            }
-
-            var ctrlResult = (Button)GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
-            if (ctrlResult == null) {
-                return;
-            }
-
-            ctrlPb.Invoke(() => {
-                ctrlPb.Value = _cskProgress + _wifiProgress;
-            });
-            ctrlResult.Invoke(() => {
-                var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
-                fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
-                ctrlResult.Text = $"烧录中...{fullProgress:0.0}%";
-            });
-        }
-
-        private void WifiFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
-            if (_wifiProgress < 100 || e.Cancelled || _cskState == WorkerState.Error) {
-                _wifiState = WorkerState.Error;
-                _cskWorker.CancelAsync();
-                _cskProcess?.Kill();
-                _cskState = WorkerState.Error;
-            }
-            else {
-                _wifiState = WorkerState.Success;
-            }
-
-            Thread.Sleep(new Random().Next(500, 2000));
-            if (_cskState != WorkerState.Processing && _wifiState != WorkerState.Processing) {
+            if (_cskState != WorkerState.Processing) {
                 ReportResultToUi();
             }
         }
@@ -329,16 +200,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// </summary>
         private void ReportResultToUi() {
             SaveLog();
-            Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
             Utils.KillProcessByName("Uart_Burn_Tool_v2.exe");
 
             var passFailIndicator = (Button) GetControl(_groupId, GroupType.Common, GroupConfigType.Result);
             if (passFailIndicator == null) {
                 return;
             }
-            var bgc = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? 
-                ColorProcceed : ColorBlock;
-            var text = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "烧录成功" : "烧录失败";
+            var bgc = _cskState == WorkerState.Success ? ColorProcceed : ColorBlock;
+            var text = _cskState == WorkerState.Success ? "烧录成功" : "烧录失败";
 
             if (passFailIndicator.InvokeRequired) {
                 passFailIndicator.Invoke(() => {
@@ -379,7 +248,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 }
 
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
-                var isSuccess = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "OK" : "NG";
+                var isSuccess = _cskState == WorkerState.Success ? "OK" : "NG";
 
                 var mesRecord = Global.MesRecord ?? new MesRecord();
                 File.AppendAllText(logPath, $"{mesRecord.MesCmdId},{mesRecord.ProductId},{mesRecord.ProductName},{mesRecord.ProductModel}," +
@@ -403,27 +272,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _cskProcess.StartInfo = startInfo;
             _cskProcess.Start();
             _cskProcess.BeginOutputReadLine();
-        }
-
-        private ProcessExitInfo StartProcessSync(string file, string args) {
-            var startInfo = new ProcessStartInfo(file, args) {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                //RedirectStandardOutput = true,
-                //RedirectStandardError = true
-            };
-
-            _wifiProcess = new Process();
-            _wifiProcess.StartInfo = startInfo;
-            _wifiProcess.Start();
-
-            _wifiProcess.WaitForExit();
-
-            return new ProcessExitInfo {
-                ExitCode = _wifiProcess.ExitCode,
-                StdErr = "",//_wifiProcess.StandardError.ReadToEnd(),
-                StdOut = ""//_wifiProcess.StandardOutput.ReadToEnd()
-            };
         }
     }
 }

@@ -274,42 +274,37 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     //check if there are any duplicated ports
                     var existPorts = new HashSet<string>();
                     for (var g = 1; g <= Global.GroupCount; g++) {
-                        for (var t = 0; t <= 1; t++) {
-                            var ctrl = Constants.GetControl(g, (Constants.GroupType)t, Constants.GroupConfigType.Port);
-                            if (ctrl == null) {
-                                continue;
-                            }
-
-                            var intendedPort = ctrl.Text;
-                            if (!Utils.IsPositiveNumber(intendedPort)) {
-                                continue;
-                            }
-
-                            if (existPorts.Contains(intendedPort)) {
-                                throw new ListenAiException(301, "重复的端口，", "", 4);
-                            }
-                            existPorts.Add(intendedPort);
+                        var ctrl = Constants.GetControl(g, Constants.GroupType.Csk, Constants.GroupConfigType.Port);
+                        if (ctrl == null) {
+                            continue;
                         }
+
+                        var intendedPort = ctrl.Text;
+                        if (!Utils.IsPositiveNumber(intendedPort)) {
+                            continue;
+                        }
+
+                        if (existPorts.Contains(intendedPort)) {
+                            throw new ListenAiException(301, "重复的端口，", "", 4);
+                        }
+                        existPorts.Add(intendedPort);
                     }
 
                     var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
-                    var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
                     var availableGroups = new List<int>();
 
                     foreach (var groupId in checkCskPortResult) {
-                        if (checkWifiPortResult.Contains(groupId)) {
-                            var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
-                            if (!Global.IsCustomSnEnabled[groupId]) {
-                                serialControl.Text = Utils.GetSerialNumberWithDate();
-                            }
-                            else {
-                                if (string.IsNullOrWhiteSpace(serialControl.Text)) {
-                                    throw new ListenAiException(301, $"模组{Utils.ConvertToChineseChars(groupId)}产品序列号为空。",
-                                        "", 3);
-                                }
-                            }
-                            availableGroups.Add(groupId);
+                        var serialControl = Constants.GetControl(groupId, Constants.GroupType.Common, Constants.GroupConfigType.Serial);
+                        if (!Global.IsCustomSnEnabled[groupId]) {
+                            serialControl.Text = Utils.GetSerialNumberWithDate();
                         }
+                        else {
+                            if (string.IsNullOrWhiteSpace(serialControl.Text)) {
+                                throw new ListenAiException(301, $"模组{Utils.ConvertToChineseChars(groupId)}产品序列号为空。",
+                                    "", 3);
+                            }
+                        }
+                        availableGroups.Add(groupId);
                     }
                     if (availableGroups.Count == 0) {
                         throw new ListenAiException(301, "请正确配置烧录串口后再点击烧录", "", 2);
