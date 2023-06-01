@@ -345,7 +345,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void EnableMainFormUi(bool isEnabled) {
             btnMES.Enabled = isEnabled;
             btnFwSelect.Enabled = isEnabled;
-            btnPack.Enabled = isEnabled;
+            btnPack.Enabled = false;
 
             for (var i = 1; i <= Global.GroupCount; i++) {
                 var isCskDefault = ((CheckBox)Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault)).Checked;
