@@ -1,13 +1,22 @@
 namespace ListenAI.Factory.FirmwareDeploy {
     internal static class Program {
+        private static Mutex mutex = null;
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main() {
+            var appName = "ListenAI.Factory.FirmwareDeploy_" + CreateMD5(AppDomain.CurrentDomain.BaseDirectory);
+            mutex = new Mutex(true, appName, out var createdNew);
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            if (!createdNew) {
+                MessageBox.Show("在此路径下的工具已打开，请勿重复打开\n" + AppDomain.CurrentDomain.BaseDirectory, "重复运行");
+                return;
+            }
             if (!CheckTools()) {
                 MessageBox.Show("烧录工具缺失，请重新安装！", "错误");
                 return;
@@ -17,12 +26,22 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         static bool CheckTools() {
-            var cskPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool_v2.exe");
+            var cskPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "Uart_Burn_Tool_v2.exe");
             if (!File.Exists(cskPath)) {
                 return false;
             }
 
             return true;
+        }
+
+        static string CreateMD5(string input) {
+            // Use input string to calculate MD5 hash
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create()) {
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                return Convert.ToHexString(hashBytes);
+            }
         }
     }
 }

@@ -22,10 +22,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static Color ColorAbleToSelect = SystemColors.Highlight;
         public static Color ColorCsk6PanelBackground = Color.FromArgb(247, 252, 254);
         public static Color ColorWifiPanelBackground = Color.FromArgb(253, 245, 234);
-        public static string BurnToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool_v2.exe");
-        public static string ASRToolPath = Path.Combine(Environment.CurrentDirectory, "tools", "ASR_downloader_V1.0.6.exe");
-        public static string UiConfigPath = Path.Combine(Environment.CurrentDirectory, "config.json");
-        public static string LogDirPath = Path.Combine(Environment.CurrentDirectory, "logs");
+        public static string BurnToolPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "Uart_Burn_Tool_v2.exe");
+        public static string UiConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
+        public static string LogDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
 
         public static byte[] ValidAsrFirmwareHeader = {
             0xff, 0x41, 0x53, 0x52, 0x2d, 0x49, 0x6f, 0x54

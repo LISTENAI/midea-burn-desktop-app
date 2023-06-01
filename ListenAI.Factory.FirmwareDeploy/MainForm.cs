@@ -167,13 +167,13 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             try {
                 //try to unzip
-                var unzipResult = Utils.Unzip(ofd.FileName, Path.Combine(Environment.CurrentDirectory, "firmware"));
+                var unzipResult = Utils.Unzip(ofd.FileName, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "firmware"));
                 if (!unzipResult) {
                     EnableFirmwareButton(true);
                     throw new ListenAiException(101, "", "固件包无法解压");
                 }
 
-                var fwPackConfigPath = Path.Combine(Environment.CurrentDirectory, "firmware", "config.json");
+                var fwPackConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "firmware", "config.json");
                 var fwPackDirPath = Path.GetDirectoryName(fwPackConfigPath);
 
                 //parse config file
@@ -393,8 +393,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void btnPack_Click(object sender, EventArgs e) {
-            var fwPackForm = new FirmwarePackingForm();
-            fwPackForm.ShowDialog();
+            return;
         }
     }
 }
