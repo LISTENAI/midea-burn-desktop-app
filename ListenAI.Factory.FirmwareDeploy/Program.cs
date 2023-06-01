@@ -26,7 +26,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         static bool CheckTools() {
-            var cskPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool_v2.exe");
+            var cskPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tools", "Uart_Burn_Tool_v2.exe");
             if (!File.Exists(cskPath)) {
                 return false;
             }
