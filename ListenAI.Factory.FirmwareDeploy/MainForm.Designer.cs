@@ -94,6 +94,7 @@
             // btnPack
             // 
             btnPack.BackColor = SystemColors.Control;
+            btnPack.Enabled = false;
             btnPack.Location = new Point(1074, 36);
             btnPack.Margin = new Padding(2, 3, 2, 3);
             btnPack.Name = "btnPack";

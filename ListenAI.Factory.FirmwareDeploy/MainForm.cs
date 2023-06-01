@@ -393,8 +393,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void btnPack_Click(object sender, EventArgs e) {
-            var fwPackForm = new FirmwarePackingForm();
-            fwPackForm.ShowDialog();
+            return;
         }
     }
 }
