@@ -37,8 +37,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
-            Utils.KillProcessByName("ASR_downloader_V1.0.6.exe");
-            Utils.KillProcessByName("Uart_Burn_Tool_v2.exe");
+            Utils.KillProcessByName(Constants.ASRToolExeName);
+            Utils.KillProcessByName(Constants.BurnToolExeName);
             Application.Exit();
         }
 
