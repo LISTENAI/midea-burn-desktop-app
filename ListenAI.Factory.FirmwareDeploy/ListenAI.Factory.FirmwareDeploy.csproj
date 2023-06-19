@@ -6,13 +6,20 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>2.0.2.99</Version>
+    <Version>3.0.0.1</Version>
     <Authors>LISTENAI</Authors>
     <Copyright>LISTENAI</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="tools\Uart_Burn_Tool_v3.exe" />
+  </ItemGroup>
 	
   <ItemGroup>
     <Content Include="tools\ASR_downloader_V1.0.6.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\Uart_Burn_Tool_v3.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -23,12 +30,6 @@
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="tools\Uart_Burn_Tool_v2.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

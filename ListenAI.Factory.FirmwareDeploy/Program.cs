@@ -28,8 +28,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         static bool CheckTools() {
-            var asrPath = Path.Combine(Environment.CurrentDirectory, "tools", "ASR_downloader_V1.0.6.exe");
-            var cskPath = Path.Combine(Environment.CurrentDirectory, "tools", "Uart_Burn_Tool_v2.exe");
+            var asrPath = Constants.ASRToolPath;
+            var cskPath = Constants.BurnToolPath;
             if (!File.Exists(asrPath) || !File.Exists(cskPath)) {
                 return false;
             }
