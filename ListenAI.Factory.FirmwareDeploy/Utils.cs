@@ -365,9 +365,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             try {
                 var fw = File.ReadAllBytes(path);
+                var ext = Path.GetExtension(path);
                 switch (type) {
                     case Constants.FirmwareType.Csk:
-                        return fw[0] == 0x0;
+                        switch (ext.ToLower()) {
+                            case ".img":
+                                return fw[0] == 0x0;
+                            case ".hex":
+                                return fw[0] == ':';
+                            default:
+                                return false;
+                        }
                     case Constants.FirmwareType.Asr:
                         var header = fw.Take(8).ToArray();
                         return header.SequenceEqual(Constants.ValidAsrFirmwareHeader);

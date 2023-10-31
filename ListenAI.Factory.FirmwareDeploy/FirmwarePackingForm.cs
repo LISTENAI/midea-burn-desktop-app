@@ -13,7 +13,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         private void btnCskFwPathSelect_Click(object sender, EventArgs e) {
             using var ofd = new OpenFileDialog();
-            ofd.Filter = "CSK6固件(*.img)|*.img";
+            ofd.Filter = "CSK6固件(*.img,*.hex)|*.img;*.hex";
             ofd.Multiselect = false;
             ofd.Title = "选择CSK6固件";
             ofd.CheckPathExists = true;
