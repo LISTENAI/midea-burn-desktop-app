@@ -107,8 +107,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         public enum WorkingMode {
-            OnlineAndOffline = 0,
-            OfflineOnly = 1
+            OfflineOnly = 0,
+            OnlineAndOffline = 1
         }
     }
 }
