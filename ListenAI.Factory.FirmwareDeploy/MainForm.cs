@@ -227,7 +227,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
                 tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
                                            $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
-                                           $"固件包路径: {fwCfg.FullPath}";
+                                           $"固件包路径: {ofd.FileName}";
                 Global.SelectedFirmware = fwCfg;
                 EnableFirmwareButton(true, false);
             }
