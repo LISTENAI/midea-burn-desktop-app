@@ -470,6 +470,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     tsslWorkingMode.Text = "当前模式: 纯离线";
                     tsslWorkingMode.ForeColor = Color.Blue;
                     Global.WorkingMode = Constants.WorkingMode.OfflineOnly;
+                    btnPack.Visible = false;
                     // hide all wifi config panel
                     for (var i = 1; i <= Global.GroupCount; i++) {
                         Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Panel).Visible = false;
@@ -480,6 +481,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     tsslWorkingMode.Text = "当前模式: 离在线";
                     tsslWorkingMode.ForeColor = Color.Orange;
                     Global.WorkingMode = Constants.WorkingMode.OnlineAndOffline;
+                    btnPack.Visible = true;
                     // show all wifi config panel
                     for (var i = 1; i <= Global.GroupCount; i++) {
                         Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Panel).Visible = true;

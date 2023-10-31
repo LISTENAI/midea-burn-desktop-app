@@ -122,7 +122,6 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (fwFile == null) {
                 return;
             }
-            //var flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
             string flashArgs = string.Empty;
             switch (Global.WorkingMode) {
                 case WorkingMode.OnlineAndOffline:
