@@ -11,6 +11,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public static object LogOperationLock = new();
         public static EventHandler AllWorkersCompleted;
         public static EventHandler FailsafeMode;
+        public static Constants.WorkingMode WorkingMode = Constants.WorkingMode.OnlineAndOffline;
 
         public static int NextSerialNumber = 0;
     }
@@ -48,13 +49,16 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 case GroupConfigType.Port:
                     result = "cmb";
                     break;
+                case GroupConfigType.Panel:
+                    result = "panel";
+                    break;
                 default:
                     result = "tb";
                     break;
             }
             result += Enum.GetName(typeof(GroupType), groupType);
             result += groupId.ToString();
-            result += Enum.GetName(typeof(GroupConfigType), configType);
+            result += (int)configType != 99 ? Enum.GetName(typeof(GroupConfigType), configType) : "";
 
             return result;
         }
@@ -86,7 +90,8 @@ namespace ListenAI.Factory.FirmwareDeploy {
             IsDefault = 5,
             Result = 6,
             Serial = 7,
-            Progress = 8
+            Progress = 8,
+            Panel = 99
         }
 
         public enum WorkerState {
@@ -99,6 +104,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public enum FirmwareType {
             Csk = 0,
             Asr = 1
+        }
+
+        public enum WorkingMode {
+            OfflineOnly = 0,
+            OnlineAndOffline = 1
         }
     }
 }

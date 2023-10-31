@@ -30,6 +30,7 @@
             btnMES = new Button();
             statusStrip1 = new StatusStrip();
             tsslSafeMode = new ToolStripStatusLabel();
+            tsslWorkingMode = new ToolStripStatusLabel();
             tsslCurrentFirmware = new ToolStripStatusLabel();
             gbMod1 = new GroupBox();
             panelResult1 = new Panel();
@@ -82,7 +83,7 @@
             gbSettings.Controls.Add(btnFlash);
             gbSettings.Controls.Add(btnFwSelect);
             gbSettings.Controls.Add(btnMES);
-            gbSettings.Location = new Point(9, 9);
+            gbSettings.Location = new Point(9, 11);
             gbSettings.Margin = new Padding(2, 3, 2, 3);
             gbSettings.Name = "gbSettings";
             gbSettings.Padding = new Padding(2, 3, 2, 3);
@@ -97,7 +98,7 @@
             btnPack.Location = new Point(1074, 36);
             btnPack.Margin = new Padding(2, 3, 2, 3);
             btnPack.Name = "btnPack";
-            btnPack.Size = new Size(228, 55);
+            btnPack.Size = new Size(229, 55);
             btnPack.TabIndex = 3;
             btnPack.Text = "打包";
             btnPack.UseVisualStyleBackColor = false;
@@ -109,7 +110,7 @@
             btnFlash.Location = new Point(725, 36);
             btnFlash.Margin = new Padding(2, 3, 2, 3);
             btnFlash.Name = "btnFlash";
-            btnFlash.Size = new Size(228, 55);
+            btnFlash.Size = new Size(229, 55);
             btnFlash.TabIndex = 2;
             btnFlash.Text = "烧录";
             btnFlash.UseVisualStyleBackColor = false;
@@ -121,7 +122,7 @@
             btnFwSelect.Location = new Point(376, 36);
             btnFwSelect.Margin = new Padding(2, 3, 2, 3);
             btnFwSelect.Name = "btnFwSelect";
-            btnFwSelect.Size = new Size(228, 55);
+            btnFwSelect.Size = new Size(229, 55);
             btnFwSelect.TabIndex = 1;
             btnFwSelect.Text = "浏览";
             btnFwSelect.UseVisualStyleBackColor = false;
@@ -133,7 +134,7 @@
             btnMES.Location = new Point(27, 36);
             btnMES.Margin = new Padding(2, 3, 2, 3);
             btnMES.Name = "btnMES";
-            btnMES.Size = new Size(228, 55);
+            btnMES.Size = new Size(229, 55);
             btnMES.TabIndex = 0;
             btnMES.Text = "MES记录";
             btnMES.UseVisualStyleBackColor = false;
@@ -142,8 +143,8 @@
             // statusStrip1
             // 
             statusStrip1.ImageScalingSize = new Size(24, 24);
-            statusStrip1.Items.AddRange(new ToolStripItem[] { tsslSafeMode, tsslCurrentFirmware });
-            statusStrip1.Location = new Point(0, 637);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { tsslSafeMode, tsslWorkingMode, tsslCurrentFirmware });
+            statusStrip1.Location = new Point(0, 639);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new Padding(1, 0, 11, 0);
             statusStrip1.Size = new Size(1347, 26);
@@ -159,11 +160,25 @@
             tsslSafeMode.Text = "安全模式，请尽快重启！";
             tsslSafeMode.Visible = false;
             // 
+            // tsslWorkingMode
+            // 
+            tsslWorkingMode.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            tsslWorkingMode.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            tsslWorkingMode.ForeColor = Color.FromArgb(255, 128, 0);
+            tsslWorkingMode.Name = "tsslWorkingMode";
+            tsslWorkingMode.Size = new Size(136, 20);
+            tsslWorkingMode.Text = "当前模式: 离在线";
+            tsslWorkingMode.Click += tsslWorkingMode_Click;
+            tsslWorkingMode.MouseEnter += tsslWorkingMode_MouseEnter;
+            tsslWorkingMode.MouseLeave += tsslWorkingMode_MouseLeave;
+            // 
             // tsslCurrentFirmware
             // 
+            tsslCurrentFirmware.DisplayStyle = ToolStripItemDisplayStyle.Text;
             tsslCurrentFirmware.Name = "tsslCurrentFirmware";
             tsslCurrentFirmware.Size = new Size(138, 20);
             tsslCurrentFirmware.Text = "当前固件: (未选定)";
+            tsslCurrentFirmware.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // gbMod1
             // 
@@ -171,7 +186,7 @@
             gbMod1.Controls.Add(panelSn1);
             gbMod1.Controls.Add(panelWifi1);
             gbMod1.Controls.Add(panelCsk1);
-            gbMod1.Location = new Point(9, 125);
+            gbMod1.Location = new Point(9, 127);
             gbMod1.Margin = new Padding(2, 3, 2, 3);
             gbMod1.Name = "gbMod1";
             gbMod1.Padding = new Padding(2, 3, 2, 3);
@@ -278,7 +293,7 @@
             // cmbWifi1Port
             // 
             cmbWifi1Port.FormattingEnabled = true;
-            cmbWifi1Port.Location = new Point(72, 70);
+            cmbWifi1Port.Location = new Point(72, 69);
             cmbWifi1Port.Name = "cmbWifi1Port";
             cmbWifi1Port.Size = new Size(66, 28);
             cmbWifi1Port.TabIndex = 25;
@@ -431,7 +446,7 @@
             // cmbCsk1Port
             // 
             cmbCsk1Port.FormattingEnabled = true;
-            cmbCsk1Port.Location = new Point(70, 70);
+            cmbCsk1Port.Location = new Point(70, 69);
             cmbCsk1Port.Name = "cmbCsk1Port";
             cmbCsk1Port.Size = new Size(66, 28);
             cmbCsk1Port.TabIndex = 5;
@@ -564,7 +579,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1347, 663);
+            ClientSize = new Size(1347, 665);
             Controls.Add(gbMod1);
             Controls.Add(statusStrip1);
             Controls.Add(gbSettings);
@@ -573,7 +588,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "聆思模组烧录工具 v3.0.0";
+            Text = "聆思模组烧录工具 v3.1.0";
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;
@@ -639,5 +654,6 @@
         private Button btnPack;
         private ComboBox cmbWifi1Port;
         private ComboBox cmbCsk1Port;
+        private ToolStripStatusLabel tsslWorkingMode;
     }
 }

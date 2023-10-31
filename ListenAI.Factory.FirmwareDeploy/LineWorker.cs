@@ -21,13 +21,21 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         public WorkerState State {
             get {
-                if (_cskState == WorkerState.Error || _wifiState == WorkerState.Error) {
-                    return WorkerState.Error;
+                switch (Global.WorkingMode) {
+                    case WorkingMode.OnlineAndOffline:
+                        if (_cskState == WorkerState.Error || _wifiState == WorkerState.Error) {
+                            return WorkerState.Error;
+                        }
+                        if (_cskState == WorkerState.Success && _wifiState == WorkerState.Success) {
+                            return WorkerState.Success;
+                        }
+                        return WorkerState.Processing;
+                    case WorkingMode.OfflineOnly:
+                        return _cskState;
+                    default:
+                        return WorkerState.Error;
                 }
-                if (_cskState == WorkerState.Success && _wifiState == WorkerState.Success) {
-                    return WorkerState.Success;
-                }
-                return WorkerState.Processing;
+                
             }
         }
 
@@ -39,24 +47,28 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// Start working
         /// </summary>
         public void Start() {
+            _startAt = DateTime.UtcNow.AddHours(8);
+
             _cskWorker = new BackgroundWorker();
             _cskWorker.WorkerReportsProgress = true;
             _cskWorker.WorkerSupportsCancellation = true;
             _cskWorker.DoWork += CskFlash_Work;
             _cskWorker.ProgressChanged += CskFlash_ProgressChanged;
             _cskWorker.RunWorkerCompleted += CskFlash_RunWorkerCompleted;
-
-            _wifiWorker = new BackgroundWorker();
-            _wifiWorker.WorkerReportsProgress = true;
-            _wifiWorker.WorkerSupportsCancellation = true;
-            _wifiWorker.DoWork += WifiFlash_Work;
-            _wifiWorker.ProgressChanged += WifiFlash_ProgressChanged;
-            _wifiWorker.RunWorkerCompleted += WifiFlash_RunWorkerCompleted;
-
-            _startAt = DateTime.UtcNow.AddHours(8);
             _cskWorker.RunWorkerAsync();
-            _wifiWorker.RunWorkerAsync();
 
+            if (Global.WorkingMode == WorkingMode.OnlineAndOffline) {
+                _wifiWorker = new BackgroundWorker();
+                _wifiWorker.WorkerReportsProgress = true;
+                _wifiWorker.WorkerSupportsCancellation = true;
+                _wifiWorker.DoWork += WifiFlash_Work;
+                _wifiWorker.ProgressChanged += WifiFlash_ProgressChanged;
+                _wifiWorker.RunWorkerCompleted += WifiFlash_RunWorkerCompleted;
+                _wifiWorker.RunWorkerAsync();
+            } else {
+                _wifiState = WorkerState.Success;
+            }
+            
             _cskProgress = 0;
             _wifiProgress = 0;
 
@@ -81,7 +93,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
 
             if (_wifiState == WorkerState.Processing) {
-                _wifiWorker.CancelAsync();
+                _wifiWorker?.CancelAsync();
                 _wifiProcess?.Kill(true);
                 _cskState = WorkerState.Error;
             }
@@ -110,7 +122,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
             if (fwFile == null) {
                 return;
             }
-            var flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
+            //var flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
+            string flashArgs = string.Empty;
+            switch (Global.WorkingMode) {
+                case WorkingMode.OnlineAndOffline:
+                default:
+                    flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
+                    break;
+                case WorkingMode.OfflineOnly:
+                    flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -s";
+                    break;
+            }
             var timeoutCount = 0;
 
             StartProcessAsync(BurnToolPath, flashArgs, (_, args) => {
@@ -186,10 +208,18 @@ namespace ListenAI.Factory.FirmwareDeploy {
             }
 
             ctrlPb.Invoke(() => {
-                ctrlPb.Value = _cskProgress + _wifiProgress;
+                switch (Global.WorkingMode) {
+                    case WorkingMode.OnlineAndOffline:
+                    default:
+                        ctrlPb.Value = _cskProgress + _wifiProgress;
+                        break;
+                    case WorkingMode.OfflineOnly:
+                        ctrlPb.Value = _cskProgress * 2;
+                        break;
+                }
             });
             ctrlResult.Invoke(() => {
-                var fullProgress = (_cskProgress + _wifiProgress) / 2.0m;
+                var fullProgress = Global.WorkingMode == WorkingMode.OnlineAndOffline ? (_cskProgress + _wifiProgress) / 2.0m : _cskProgress;
                 fullProgress = fullProgress >= 100.0m ? 99.9m : fullProgress;
                 ctrlResult.Text = $"烧录中...{fullProgress:0.0}%";
             });
@@ -203,7 +233,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void CskFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
             if (_cskProgress < 100 || e.Cancelled || _wifiState == WorkerState.Error) {
                 _cskState = WorkerState.Error;
-                _wifiWorker.CancelAsync();
+                _wifiWorker?.CancelAsync();
                 _wifiProcess?.Kill();
                 _wifiState = WorkerState.Error;
             }
@@ -223,6 +253,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void WifiFlash_Work(object? sender, DoWorkEventArgs e) {
+            if (Global.WorkingMode == WorkingMode.OfflineOnly) {
+                return;
+            }
+
             if (_wifiState == WorkerState.Processing) {
                 return;
             }
@@ -285,6 +319,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
+            if (Global.WorkingMode == WorkingMode.OfflineOnly) {
+                return;
+            }
+
             _wifiProgress = e.ProgressPercentage;
 
             var ctrlPb = (ProgressBar)GetControl(_groupId, GroupType.Common, GroupConfigType.Progress);
@@ -308,6 +346,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
         }
 
         private void WifiFlash_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e) {
+            if (Global.WorkingMode == WorkingMode.OfflineOnly) {
+                return;
+            }
+
             if (_wifiProgress < 100 || e.Cancelled || _cskState == WorkerState.Error) {
                 _wifiState = WorkerState.Error;
                 _cskWorker.CancelAsync();

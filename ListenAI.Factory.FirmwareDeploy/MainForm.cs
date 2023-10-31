@@ -157,7 +157,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="e"></param>
         private void btnFwSelect_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog();
-            ofd.Filter = "固件包 (*.zip)|*.zip";
+            switch (Global.WorkingMode) {
+                case Constants.WorkingMode.OnlineAndOffline:
+                    ofd.Filter = "固件包 (*.zip)|*.zip";
+                    break;
+                case Constants.WorkingMode.OfflineOnly:
+                    ofd.Filter = "CSK6固件(*.img,*.hex)|*.img;*.hex";
+                    break;
+            }
+
             ofd.Multiselect = false;
             var result = ofd.ShowDialog();
 
@@ -167,78 +175,111 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
             EnableFirmwareButton(false);
 
-            try {
-                //try to unzip
-                var unzipResult = Utils.Unzip(ofd.FileName, Path.Combine(Environment.CurrentDirectory, "firmware"));
-                if (!unzipResult) {
-                    EnableFirmwareButton(true);
-                    throw new ListenAiException(101, "", "固件包无法解压");
-                }
+            FirmwareConfig fwCfg;
+            switch (Global.WorkingMode) {
+                case Constants.WorkingMode.OnlineAndOffline:
+                    try {
+                        //try to unzip
+                        var unzipResult = Utils.Unzip(ofd.FileName, Path.Combine(Environment.CurrentDirectory, "firmware"));
+                        if (!unzipResult) {
+                            EnableFirmwareButton(true);
+                            throw new ListenAiException(101, "", "固件包无法解压");
+                        }
 
-                var fwPackConfigPath = Path.Combine(Environment.CurrentDirectory, "firmware", "config.json");
-                var fwPackDirPath = Path.GetDirectoryName(fwPackConfigPath);
+                        var fwPackConfigPath = Path.Combine(Environment.CurrentDirectory, "firmware", "config.json");
+                        var fwPackDirPath = Path.GetDirectoryName(fwPackConfigPath);
 
-                //parse config file
-                if (!File.Exists(fwPackConfigPath)) {
-                    throw new ListenAiException(102, "", "配置文件不存在！");
-                }
+                        //parse config file
+                        if (!File.Exists(fwPackConfigPath)) {
+                            throw new ListenAiException(102, "", "配置文件不存在！");
+                        }
 
-                var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
-                var fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
-                if (fwCfg == null) {
-                    throw new ListenAiException(102, "", "配置文件无法解析", 1);
-                }
+                        var fwCfgRaw = File.ReadAllText(fwPackConfigPath);
+                        fwCfg = FirmwareConfig.FromJson(fwCfgRaw);
+                        if (fwCfg == null) {
+                            throw new ListenAiException(102, "", "配置文件无法解析", 1);
+                        }
 
-                if (fwCfg.Files.Count != 2) {
-                    throw new ListenAiException(102, "", "配置文件无法解析", 2);
-                }
+                        if (fwCfg.Files.Count != 2) {
+                            throw new ListenAiException(102, "", "配置文件无法解析", 2);
+                        }
 
-                //check if all files mentioned in config exist
-                foreach (var file in fwCfg.Files) {
-                    if (file.Id != 0 && file.Id != 1) {
-                        throw new ListenAiException(102, "", "配置文件无法解析", 3);
+                        //check if all files mentioned in config exist
+                        foreach (var file in fwCfg.Files) {
+                            if (file.Id != 0 && file.Id != 1) {
+                                throw new ListenAiException(102, "", "配置文件无法解析", 3);
+                            }
+
+                            var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
+                            if (!File.Exists(fwPackFilePath)) {
+                                throw new ListenAiException(103, "", $"固件 {file.Name} 不存在！");
+                            }
+
+                            var fi = new FileInfo(fwPackFilePath);
+                            if (fi.Length != file.Size) {
+                                throw new ListenAiException(104, "",
+                                    $"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}");
+                            }
+
+                            var hash = Utils.GetMd5Hash(fwPackFilePath);
+                            if (hash != file.Checksum) {
+                                throw new ListenAiException(105, "",
+                                    $"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}");
+                            }
+                        }
+
+                        btnFwSelect.BackColor = SystemColors.Control;
+                        fwCfg.FullPath = fwPackDirPath;
+                        var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
+                        var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
+                        if (fwCskInfo == null || fwWifiInfo == null) {
+                            throw new ListenAiException(102, "", "配置文件无法解析", 4);
+                        }
+
+                        tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
+                                                   $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
+                                                   $"固件包路径: {ofd.FileName}";
+                        Global.SelectedFirmware = fwCfg;
+                        EnableFirmwareButton(true, false);
+                    }
+                    catch (ListenAiException lex) {
+                        EnableFirmwareButton(true, Global.SelectedFirmware == null);
+                        var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
+                        MessageBox.Show($"[{exCode}] 请浏览并导入正确的固件包后再点击烧录。\n{lex.Details}", "错误");
+                    }
+                    catch (Exception ex) {
+                        EnableFirmwareButton(true, Global.SelectedFirmware == null);
+                        MessageBox.Show($"[106] 解析固件包失败。\n{ex.Message}", "错误");
+                    }
+                    break;
+                case Constants.WorkingMode.OfflineOnly:
+                    if (!Utils.IsValidFirmware(ofd.FileName, Constants.FirmwareType.Csk)) {
+                        Global.SelectedFirmware = null;
+                        tsslCurrentFirmware.Text = "当前固件: (未选定)";
+                        EnableFirmwareButton(true, true);
+                        MessageBox.Show($"[106] 解析固件包失败。", "错误");
+                        return;
                     }
 
-                    var fwPackFilePath = Path.Combine(fwPackDirPath, file.Name);
-                    if (!File.Exists(fwPackFilePath)) {
-                        throw new ListenAiException(103, "", $"固件 {file.Name} 不存在！");
-                    }
+                    fwCfg = new FirmwareConfig() {
+                        PackageVersion = "-",
+                        FullPath = Path.GetDirectoryName(ofd.FileName),
+                        Files = new List<FirmwareFile>()
+                    };
+                    fwCfg.Files.Add(new FirmwareFile() {
+                        Id = 0,
+                        Name = Path.GetFileName(ofd.FileName),
+                        Version = "-",
+                        Offset = 0,
+                        Size = 0,
+                        Checksum = ""
+                    });
 
-                    var fi = new FileInfo(fwPackFilePath);
-                    if (fi.Length != file.Size) {
-                        throw new ListenAiException(104, "",
-                            $"固件 {file.Name} 大小不正确！\nActual = {fi.Length}, Expected = {file.Size}");
-                    }
-
-                    var hash = Utils.GetMd5Hash(fwPackFilePath);
-                    if (hash != file.Checksum) {
-                        throw new ListenAiException(105, "",
-                            $"固件 {file.Name} 校验失败！\nActual = {hash}\nExpected = {file.Checksum}");
-                    }
-                }
-
-                btnFwSelect.BackColor = SystemColors.Control;
-                fwCfg.FullPath = fwPackDirPath;
-                var fwCskInfo = fwCfg.GetFirmware(Constants.GroupType.Csk);
-                var fwWifiInfo = fwCfg.GetFirmware(Constants.GroupType.Wifi);
-                if (fwCskInfo == null || fwWifiInfo == null) {
-                    throw new ListenAiException(102, "", "配置文件无法解析", 4);
-                }
-
-                tsslCurrentFirmware.Text = $"CSK6固件: {fwCskInfo.Name} ({fwCskInfo.Version}) " +
-                                           $"WIFI固件: {fwWifiInfo.Name} ({fwWifiInfo.Version}) " +
-                                           $"固件包路径: {ofd.FileName}";
-                Global.SelectedFirmware = fwCfg;
-                EnableFirmwareButton(true, false);
-            }
-            catch (ListenAiException lex) {
-                EnableFirmwareButton(true, Global.SelectedFirmware == null);
-                var exCode = lex.SubCode != 0 ? $"{lex.Code:000}-{lex.SubCode}" : lex.Code.ToString();
-                MessageBox.Show($"[{exCode}] 请浏览并导入正确的固件包后再点击烧录。\n{lex.Details}", "错误");
-            }
-            catch (Exception ex) {
-                EnableFirmwareButton(true, Global.SelectedFirmware == null);
-                MessageBox.Show($"[106] 解析固件包失败。\n{ex.Message}", "错误");
+                    tsslCurrentFirmware.Text = $"CSK6固件: {Path.GetFileName(ofd.FileName)}";
+                    btnFwSelect.BackColor = SystemColors.Control;
+                    Global.SelectedFirmware = fwCfg;
+                    EnableFirmwareButton(true, false);
+                    break;
             }
         }
 
@@ -274,7 +315,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     //check if there are any duplicated ports
                     var existPorts = new HashSet<string>();
                     for (var g = 1; g <= Global.GroupCount; g++) {
-                        for (var t = 0; t <= 1; t++) {
+                        for (var t = 0; t <= (int)Global.WorkingMode; t++) {
                             var ctrl = Constants.GetControl(g, (Constants.GroupType)t, Constants.GroupConfigType.Port);
                             if (ctrl == null) {
                                 continue;
@@ -293,7 +334,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     }
 
                     var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
-                    var checkWifiPortResult = Utils.CheckComPorts(Constants.GroupType.Wifi);
+                    // say if working mode is offline only, then forget about wifi things, and copy available csk ports to wifi ports,
+                    // just for not breaking original flows.
+                    var checkWifiPortResult = Global.WorkingMode == Constants.WorkingMode.OnlineAndOffline ? 
+                        Utils.CheckComPorts(Constants.GroupType.Wifi) :
+                        checkCskPortResult;
                     var availableGroups = new List<int>();
 
                     foreach (var groupId in checkCskPortResult) {
@@ -355,6 +400,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             btnMES.Enabled = isEnabled;
             btnFwSelect.Enabled = isEnabled;
             btnPack.Enabled = isEnabled;
+            tsslWorkingMode.Enabled = isEnabled;
 
             for (var i = 1; i <= Global.GroupCount; i++) {
                 var isCskDefault = ((CheckBox)Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault)).Checked;
@@ -404,6 +450,61 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void btnPack_Click(object sender, EventArgs e) {
             var fwPackForm = new FirmwarePackingForm();
             fwPackForm.ShowDialog();
+        }
+
+        private void tsslWorkingMode_Click(object sender, EventArgs e) {
+            if (Global.SelectedFirmware != null) {
+                var cfm = MessageBox.Show("当前已选定固件，切换模式将导致此配置被清空，是否继续？", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (cfm != DialogResult.Yes) {
+                    MessageBox.Show("操作被取消，模式没有被切换。");
+                    return;
+                }
+            }
+
+            Global.SelectedFirmware = null;
+            tsslCurrentFirmware.Text = "当前固件: (未选定)";
+            btnFwSelect.BackColor = SystemColors.Highlight;
+
+            switch (Global.WorkingMode) {
+                case Constants.WorkingMode.OnlineAndOffline:
+                    tsslWorkingMode.Text = "当前模式: 纯离线";
+                    tsslWorkingMode.ForeColor = Color.Blue;
+                    Global.WorkingMode = Constants.WorkingMode.OfflineOnly;
+                    // hide all wifi config panel
+                    for (var i = 1; i <= Global.GroupCount; i++) {
+                        Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Panel).Visible = false;
+                    }
+                    break;
+                case Constants.WorkingMode.OfflineOnly:
+                default:
+                    tsslWorkingMode.Text = "当前模式: 离在线";
+                    tsslWorkingMode.ForeColor = Color.Orange;
+                    Global.WorkingMode = Constants.WorkingMode.OnlineAndOffline;
+                    // show all wifi config panel
+                    for (var i = 1; i <= Global.GroupCount; i++) {
+                        Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Panel).Visible = true;
+                    }
+                    break;
+            }
+        }
+
+        private void tsslWorkingMode_MouseEnter(object sender, EventArgs e) {
+            tsslWorkingMode.Text = "点击切换模式";
+            tsslWorkingMode.ForeColor = SystemColors.ControlText;
+        }
+
+        private void tsslWorkingMode_MouseLeave(object sender, EventArgs e) {
+            switch (Global.WorkingMode) {
+                case Constants.WorkingMode.OnlineAndOffline:
+                default:
+                    tsslWorkingMode.Text = "当前模式: 离在线";
+                    tsslWorkingMode.ForeColor = Color.Orange;
+                    break;
+                case Constants.WorkingMode.OfflineOnly:
+                    tsslWorkingMode.Text = "当前模式: 纯离线";
+                    tsslWorkingMode.ForeColor = Color.Blue;
+                    break;
+            }
         }
     }
 }
