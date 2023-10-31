@@ -336,7 +336,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     var checkCskPortResult = Utils.CheckComPorts(Constants.GroupType.Csk);
                     // say if working mode is offline only, then forget about wifi things, and copy available csk ports to wifi ports,
                     // just for not breaking original flows.
-                    var checkWifiPortResult = Global.WorkingMode == Constants.WorkingMode.OnlineAndOffline ? 
+                    var checkWifiPortResult = Global.WorkingMode == Constants.WorkingMode.OnlineAndOffline ?
                         Utils.CheckComPorts(Constants.GroupType.Wifi) :
                         checkCskPortResult;
                     var availableGroups = new List<int>();

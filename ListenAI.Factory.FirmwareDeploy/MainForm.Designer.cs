@@ -588,7 +588,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "聆思模组烧录工具 v3.1.0";
+            Text = "聆思模组烧录工具 v3.1.0-beta.1";
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;
