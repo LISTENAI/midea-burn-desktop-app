@@ -157,7 +157,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
         /// <param name="e"></param>
         private void btnFwSelect_Click(object sender, EventArgs e) {
             var ofd = new OpenFileDialog();
-            ofd.Filter = "固件包 (*.zip)|*.zip";
+            switch (Global.WorkingMode) {
+                case Constants.WorkingMode.OnlineAndOffline:
+                    ofd.Filter = "固件包 (*.zip)|*.zip";
+                    break;
+                case Constants.WorkingMode.OfflineOnly:
+                    ofd.Filter = "CSK6固件(*.img,*.hex)|*.img;*.hex";
+                    break;
+            }
+            
             ofd.Multiselect = false;
             var result = ofd.ShowDialog();
 
@@ -355,6 +363,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             btnMES.Enabled = isEnabled;
             btnFwSelect.Enabled = isEnabled;
             btnPack.Enabled = isEnabled;
+            tsslWorkingMode.Enabled = isEnabled;
 
             for (var i = 1; i <= Global.GroupCount; i++) {
                 var isCskDefault = ((CheckBox)Constants.GetControl(i, Constants.GroupType.Csk, Constants.GroupConfigType.IsDefault)).Checked;
@@ -404,6 +413,30 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private void btnPack_Click(object sender, EventArgs e) {
             var fwPackForm = new FirmwarePackingForm();
             fwPackForm.ShowDialog();
+        }
+
+        private void tsslWorkingMode_Click(object sender, EventArgs e) {
+            switch (Global.WorkingMode) {
+                case Constants.WorkingMode.OnlineAndOffline:
+                    tsslWorkingMode.Text = "当前模式: 纯离线";
+                    tsslWorkingMode.ForeColor = Color.Blue;
+                    Global.WorkingMode = Constants.WorkingMode.OfflineOnly;
+                    // hide all wifi config panel
+                    for (var i = 1; i <= Global.GroupCount; i++) {
+                        Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Panel).Visible = false;
+                    }
+                    break;
+                case Constants.WorkingMode.OfflineOnly:
+                default:
+                    tsslWorkingMode.Text = "当前模式: 离在线";
+                    tsslWorkingMode.ForeColor = Color.Orange;
+                    Global.WorkingMode = Constants.WorkingMode.OnlineAndOffline;
+                    // show all wifi config panel
+                    for (var i = 1; i <= Global.GroupCount; i++) {
+                        Constants.GetControl(i, Constants.GroupType.Wifi, Constants.GroupConfigType.Panel).Visible = true;
+                    }
+                    break;
+            }
         }
     }
 }
