@@ -254,9 +254,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     break;
                 case Constants.WorkingMode.OfflineOnly:
                     if (!Utils.IsValidFirmware(ofd.FileName, Constants.FirmwareType.Csk)) {
-                        Global.SelectedFirmware = null;
-                        tsslCurrentFirmware.Text = "当前固件: (未选定)";
-                        EnableFirmwareButton(true, true);
+                        EnableFirmwareButton(true, Global.SelectedFirmware == null);
                         MessageBox.Show($"[106] 解析固件包失败。", "错误");
                         return;
                     }
