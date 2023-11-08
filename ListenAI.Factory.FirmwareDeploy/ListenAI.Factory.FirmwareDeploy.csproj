@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>3.1.0.2</Version>
+    <Version>3.1.0.99</Version>
     <Authors>LISTENAI</Authors>
     <Copyright>LISTENAI</Copyright>
   </PropertyGroup>
