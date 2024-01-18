@@ -126,7 +126,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             switch (Global.WorkingMode) {
                 case WorkingMode.OnlineAndOffline:
                 default:
-                    flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -a 0x{fwFile.Offset:x} -s";
+                    flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -l -m -d -a 0x{fwFile.Offset:x} -s";
                     break;
                 case WorkingMode.OfflineOnly:
                     flashArgs = $"-b {baudRate} -p {port} -c -t 10 -f \"{Path.Combine(fwPackPath, fwFile.Name)}\" -c -m -d -s";
