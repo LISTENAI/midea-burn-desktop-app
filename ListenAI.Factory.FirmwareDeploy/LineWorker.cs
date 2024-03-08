@@ -288,7 +288,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var args = $"dl --port {port} --chip 2";
             WriteDebugLog($"[ASR] step 1, args = {args}");
             var runAsr = StartProcessSync(ASRToolPath, args);
-            WriteDebugLog($"[ASR] step 1 debug\ncode = {runAsr.ExitCode}\nstdout:\n{runAsr.StdOut}\nstderr:\n{runAsr.StdErr}");
+            WriteDebugLog($"[ASR] step 1 debug\ncode = {runAsr.ExitCode}");
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker)?.TryToReportProgress(20);
             }
@@ -304,7 +304,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             args = $"burn --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             WriteDebugLog($"[ASR] step 2, args = {args}");
             runAsr = StartProcessSync(ASRToolPath, args);
-            WriteDebugLog($"[ASR] step 2 debug\ncode = {runAsr.ExitCode}\nstdout:\n{runAsr.StdOut}\nstderr:\n{runAsr.StdErr}");
+            WriteDebugLog($"[ASR] step 2 debug\ncode = {runAsr.ExitCode}");
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker)?.TryToReportProgress(80);
             }
@@ -319,7 +319,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
             args = $"verify --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
             WriteDebugLog($"[ASR] step 3, args = {args}");
             runAsr = StartProcessSync(ASRToolPath, args);
-            WriteDebugLog($"[ASR] step 3 debug\ncode = {runAsr.ExitCode}\nstdout:\n{runAsr.StdOut}\nstderr:\n{runAsr.StdErr}");
+            WriteDebugLog($"[ASR] step 3 debug\ncode = {runAsr.ExitCode}");
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker)?.TryToReportProgress(100);
             }
@@ -431,7 +431,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var encoding = new UTF8Encoding(false);
 
                 if (!File.Exists(logPath)) {
-                    File.WriteAllText(logPath, "mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）\r\n", encoding);
+                    File.WriteAllText(logPath, "mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）,模组编号\r\n", encoding);
                 }
 
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
@@ -440,7 +440,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var mesRecord = Global.MesRecord ?? new MesRecord();
                 File.AppendAllText(logPath, $"{mesRecord.MesCmdId},{mesRecord.ProductId},{mesRecord.ProductName},{mesRecord.ProductModel}," +
                                            $"{_startAt},{_endAt},{mesRecord.FlashOperator},{mesRecord.FlashToolName},{mesRecord.FlashMachineId}," +
-                                           $"{isSuccess},{sn}\r\n");
+                                           $"{isSuccess},{sn},{_groupId}\r\n");
             }
         }
 
