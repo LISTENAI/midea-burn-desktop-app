@@ -7,6 +7,7 @@ using static ListenAI.Factory.FirmwareDeploy.Constants;
 namespace ListenAI.Factory.FirmwareDeploy {
     public class LineWorker {
         private int _groupId;
+        private string? _chipId;
         private WorkerState _cskState;
         private WorkerState _wifiState;
         private Process _cskProcess;
@@ -41,6 +42,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
 
         public LineWorker(int groupId) { 
             _groupId = groupId;
+            _chipId = null;
         }
 
         /// <summary>
@@ -175,6 +177,9 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     _cskState = WorkerState.Error;
                     Debug.WriteLine($"Critical error, flash aborted! Msg = {args.Data}");
                     (sender as BackgroundWorker)?.TryToReportProgress(-1, $"Critical error, flash aborted! Msg = {args.Data}");
+                } else if (args.Data.StartsWith("uuid:")) {
+                    _chipId = args.Data.Replace("uuid:", "");
+                    Debug.WriteLine($"Chip ID = {args.Data.Replace("uuid:", "")}");
                 }
             }, (_, _) => {
                 Debug.WriteLine($"Burn-tools exited with code {_cskProcess.ExitCode}");
@@ -416,14 +421,14 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var encoding = new UTF8Encoding(false);
 
                 if (!File.Exists(logPath)) {
-                    File.WriteAllText(logPath, "mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）\r\n", encoding);
+                    File.WriteAllText(logPath, "chipID,mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）\r\n", encoding);
                 }
 
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
                 var isSuccess = _cskState == WorkerState.Success && _wifiState == WorkerState.Success ? "OK" : "NG";
 
                 var mesRecord = Global.MesRecord ?? new MesRecord();
-                File.AppendAllText(logPath, $"{mesRecord.MesCmdId},{mesRecord.ProductId},{mesRecord.ProductName},{mesRecord.ProductModel}," +
+                File.AppendAllText(logPath, $"{_chipId},{mesRecord.MesCmdId},{mesRecord.ProductId},{mesRecord.ProductName},{mesRecord.ProductModel}," +
                                            $"{_startAt},{_endAt},{mesRecord.FlashOperator},{mesRecord.FlashToolName},{mesRecord.FlashMachineId}," +
                                            $"{isSuccess},{sn}\r\n");
             }
