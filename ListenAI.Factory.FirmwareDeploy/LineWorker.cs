@@ -8,6 +8,13 @@ namespace ListenAI.Factory.FirmwareDeploy {
     public class LineWorker {
         private int _groupId;
         private string? _chipId;
+        private string _asrLogPath;
+        private string _cskLogPath;
+        //private StringBuilder _asrLogTemp = new StringBuilder();
+        //private StringBuilder _cskLogTemp = new StringBuilder();
+        private StreamWriter _asrLogTemp;
+        private StreamWriter _cskLogTemp;
+
         private WorkerState _cskState;
         private WorkerState _wifiState;
         private Process _cskProcess;
@@ -43,6 +50,17 @@ namespace ListenAI.Factory.FirmwareDeploy {
         public LineWorker(int groupId) { 
             _groupId = groupId;
             _chipId = null;
+
+            var now = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+            var logDir = Path.Join(Environment.CurrentDirectory, "logcat");
+            _asrLogPath = Path.Join(logDir, $"asr_{_groupId}_{now}.log");
+            _cskLogPath = Path.Join(logDir, $"csk_{_groupId}_{now}.log");
+            if (!Directory.Exists(logDir)) {
+                Directory.CreateDirectory(logDir);
+            }
+
+            _asrLogTemp = new StreamWriter(_asrLogPath);
+            _cskLogTemp = new StreamWriter(_cskLogPath);
         }
 
         /// <summary>
@@ -146,7 +164,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     return;
                 }
                 //data handler
-                Debug.WriteLine(args.Data);
+                WriteDebugLog(args.Data, type: FirmwareType.Csk);
                 if (args.Data.StartsWith("FLASH DATA SEND PROGESS:")) {
                     try {
                         var prog = int.Parse(args.Data.Replace("FLASH DATA SEND PROGESS:", "").Replace("%", "").Trim());
@@ -280,46 +298,52 @@ namespace ListenAI.Factory.FirmwareDeploy {
             });
 
             //step 1 - Check for device
-            Debug.WriteLine("[ASR] step 1...");
+            WriteDebugLog("[ASR] step 1...");
             var args = $"dl --port {port} --chip 2";
+            WriteDebugLog($"[ASR] step 1, args = {args}");
             var runAsr = StartProcessSync(ASRToolPath, args);
+            WriteDebugLog($"[ASR] step 1 debug\ncode = {runAsr.ExitCode}");
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker)?.TryToReportProgress(20);
             }
             else {
-                Debug.WriteLine($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
+                WriteDebugLog($"[ASR] 无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 (sender as BackgroundWorker)?.TryToReportProgress(-1, $"无法与模块通讯，请检查连线。Code = {runAsr.ExitCode}");
                 return;
             }
 
             //step 2 - flash firmware
-            Debug.WriteLine("[ASR] step 2...");
+            WriteDebugLog("[ASR] step 2...");
             var fwInfo = Global.SelectedFirmware?.GetFirmware(GroupType.Wifi);
             args = $"burn --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
+            WriteDebugLog($"[ASR] step 2, args = {args}");
             runAsr = StartProcessSync(ASRToolPath, args);
+            WriteDebugLog($"[ASR] step 2 debug\ncode = {runAsr.ExitCode}");
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker)?.TryToReportProgress(80);
             }
             else {
-                Debug.WriteLine($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
+                WriteDebugLog($"[ASR] 烧录失败。Code = {runAsr.ExitCode}");
                 (sender as BackgroundWorker)?.TryToReportProgress(-1, $"烧录失败。Code = {runAsr.ExitCode}");
                 return;
             }
 
             //step 3 - verify firmware flashed
-            Debug.WriteLine("[ASR] step 3...");
+            WriteDebugLog("[ASR] step 3...");
             args = $"verify --port {port} --chip 2 --path \"{Path.Combine(Global.SelectedFirmware.FullPath, fwInfo.Name)}\" --multi";
+            WriteDebugLog($"[ASR] step 3, args = {args}");
             runAsr = StartProcessSync(ASRToolPath, args);
+            WriteDebugLog($"[ASR] step 3 debug\ncode = {runAsr.ExitCode}");
             if (runAsr.ExitCode == 0) {
                 (sender as BackgroundWorker)?.TryToReportProgress(100);
             }
             else {
-                Debug.WriteLine($"[ASR] 校验失败。Code = {runAsr.ExitCode}");
+                WriteDebugLog($"[ASR] 校验失败。Code = {runAsr.ExitCode}");
                 (sender as BackgroundWorker)?.TryToReportProgress(-1, $"校验失败。Code = {runAsr.ExitCode}");
                 return;
             }
 
-            Debug.WriteLine("[ASR] Completed!");
+            WriteDebugLog("[ASR] Completed!");
         }
 
         private void WifiFlash_ProgressChanged(object? sender, ProgressChangedEventArgs e) {
@@ -412,6 +436,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     return;
                 }
                 _endAt = DateTime.UtcNow.AddHours(8);
+                _asrLogTemp.Flush();
+                _cskLogTemp.Flush();
+                _asrLogTemp.Close();
+                _cskLogTemp.Close();
 
                 if (!Directory.Exists(LogDirPath)) {
                     Directory.CreateDirectory(LogDirPath);
@@ -421,7 +449,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var encoding = new UTF8Encoding(false);
 
                 if (!File.Exists(logPath)) {
-                    File.WriteAllText(logPath, "chipID,mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）\r\n", encoding);
+                    File.WriteAllText(logPath, "ChipID,mes指令单号,产品编号,产品名称,规格型号,烧录开始时间,烧录结束时间,烧录人,烧录程序名,烧录机器编号,烧录结果,产品序列号（按年月日5位流水码）\r\n", encoding);
                 }
 
                 var sn = ((TextBox)GetControl(_groupId, GroupType.Common, GroupConfigType.Serial))?.Text;
@@ -430,7 +458,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                 var mesRecord = Global.MesRecord ?? new MesRecord();
                 File.AppendAllText(logPath, $"{_chipId},{mesRecord.MesCmdId},{mesRecord.ProductId},{mesRecord.ProductName},{mesRecord.ProductModel}," +
                                            $"{_startAt},{_endAt},{mesRecord.FlashOperator},{mesRecord.FlashToolName},{mesRecord.FlashMachineId}," +
-                                           $"{isSuccess},{sn}\r\n");
+                                           $"{isSuccess},{sn},{_groupId}\r\n");
             }
         }
 
@@ -455,21 +483,49 @@ namespace ListenAI.Factory.FirmwareDeploy {
             var startInfo = new ProcessStartInfo(file, args) {
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                //RedirectStandardOutput = true,
-                //RedirectStandardError = true
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             };
 
             _wifiProcess = new Process();
+            _wifiProcess.EnableRaisingEvents = true;
+            _wifiProcess.OutputDataReceived += (_, args) => {
+                if (args.Data != null) {
+                    WriteDebugLog(args.Data);
+                }
+            };
+            _wifiProcess.ErrorDataReceived += (_, args) => {
+                if (args.Data != null) {
+                    WriteDebugLog(args.Data);
+                }
+            };
             _wifiProcess.StartInfo = startInfo;
             _wifiProcess.Start();
+            _wifiProcess.BeginOutputReadLine();
+            _wifiProcess.BeginErrorReadLine();
 
             _wifiProcess.WaitForExit();
 
             return new ProcessExitInfo {
                 ExitCode = _wifiProcess.ExitCode,
-                StdErr = "",//_wifiProcess.StandardError.ReadToEnd(),
-                StdOut = ""//_wifiProcess.StandardOutput.ReadToEnd()
+                StdErr = "",
+                StdOut = ""
             };
+        }
+
+        private void WriteDebugLog(string log, bool noTimestamp = false, FirmwareType type = FirmwareType.Asr) {
+            var timeNow = DateTime.UtcNow;
+            Debug.WriteLine($"[{timeNow}] {log}");
+            try {
+                switch (type) {
+                    case FirmwareType.Asr:
+                        _asrLogTemp.WriteLine(noTimestamp ? log : $"[{timeNow}] {log}");
+                        break;
+                    case FirmwareType.Csk:
+                        _cskLogTemp.WriteLine(noTimestamp ? log : $"[{timeNow}] {log}");
+                        break;
+                }
+            } catch { }
         }
     }
 }
