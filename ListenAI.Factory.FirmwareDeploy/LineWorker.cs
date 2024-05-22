@@ -9,7 +9,11 @@ namespace ListenAI.Factory.FirmwareDeploy {
         private int _groupId;
         private string? _chipId;
         private string _asrLogPath;
-        private StringBuilder _asrLogTemp = new StringBuilder();
+        private string _cskLogPath;
+        //private StringBuilder _asrLogTemp = new StringBuilder();
+        //private StringBuilder _cskLogTemp = new StringBuilder();
+        private StreamWriter _asrLogTemp;
+        private StreamWriter _cskLogTemp;
 
         private WorkerState _cskState;
         private WorkerState _wifiState;
@@ -48,11 +52,15 @@ namespace ListenAI.Factory.FirmwareDeploy {
             _chipId = null;
 
             var now = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
-            var asrLogDir = Path.Join(Environment.CurrentDirectory, "logs");
-            _asrLogPath = Path.Join(asrLogDir, $"asr_{_groupId}_{now}.log");
-            if (!Directory.Exists(asrLogDir)) {
-                Directory.CreateDirectory(asrLogDir);
+            var logDir = Path.Join(Environment.CurrentDirectory, "logcat");
+            _asrLogPath = Path.Join(logDir, $"asr_{_groupId}_{now}.log");
+            _cskLogPath = Path.Join(logDir, $"csk_{_groupId}_{now}.log");
+            if (!Directory.Exists(logDir)) {
+                Directory.CreateDirectory(logDir);
             }
+
+            _asrLogTemp = new StreamWriter(_asrLogPath);
+            _cskLogTemp = new StreamWriter(_cskLogPath);
         }
 
         /// <summary>
@@ -156,7 +164,7 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     return;
                 }
                 //data handler
-                Debug.WriteLine(args.Data);
+                WriteDebugLog(args.Data, type: FirmwareType.Csk);
                 if (args.Data.StartsWith("FLASH DATA SEND PROGESS:")) {
                     try {
                         var prog = int.Parse(args.Data.Replace("FLASH DATA SEND PROGESS:", "").Replace("%", "").Trim());
@@ -428,6 +436,10 @@ namespace ListenAI.Factory.FirmwareDeploy {
                     return;
                 }
                 _endAt = DateTime.UtcNow.AddHours(8);
+                _asrLogTemp.Flush();
+                _cskLogTemp.Flush();
+                _asrLogTemp.Close();
+                _cskLogTemp.Close();
 
                 if (!Directory.Exists(LogDirPath)) {
                     Directory.CreateDirectory(LogDirPath);
@@ -501,17 +513,19 @@ namespace ListenAI.Factory.FirmwareDeploy {
             };
         }
 
-        private void WriteDebugLog(string log, bool noTimestamp = false) {
+        private void WriteDebugLog(string log, bool noTimestamp = false, FirmwareType type = FirmwareType.Asr) {
             var timeNow = DateTime.UtcNow;
             Debug.WriteLine($"[{timeNow}] {log}");
-            while (true) {
-                try {
-                    Thread.Sleep(Random.Shared.Next(50, 500));
-                    File.AppendAllText(_asrLogPath, noTimestamp ? $"{log}\r\n" : $"[{timeNow}] {log}\r\n");
-                    break;
+            try {
+                switch (type) {
+                    case FirmwareType.Asr:
+                        _asrLogTemp.WriteLine(noTimestamp ? log : $"[{timeNow}] {log}");
+                        break;
+                    case FirmwareType.Csk:
+                        _cskLogTemp.WriteLine(noTimestamp ? log : $"[{timeNow}] {log}");
+                        break;
                 }
-                catch { }
-            }
+            } catch { }
         }
     }
 }
